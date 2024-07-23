@@ -4,7 +4,7 @@ We are the platform engineers who have gathered to build a platform called Phill
 
 ### Local Setup
 
-1. Download the local file from (repo address)
+1. Download the local file from ![Philly Truce](git@github.com:johnjang94/phillytruce-frontend.git)
 2. Install all the dependencies using the following command
 
 ```
@@ -25,6 +25,17 @@ yarn install
   - MongoDB (tentative)
   - Mongoose
   - Express.js
+
+### Working Tree
+
+```
+- public
+- src
+    - app
+        - layout.tsx
+        - page.tsx
+- configuration files
+```
 
 ### Background
 
