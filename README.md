@@ -18,6 +18,7 @@ yarn install
   - Next.js
   - TypeScript
   - React
+  - Vite
   - Tailwind CSS
 
 - Back-End
