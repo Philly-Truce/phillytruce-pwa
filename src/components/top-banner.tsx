@@ -1,6 +1,7 @@
 import { MdOutlineSignalCellularAlt } from "react-icons/md";
 import { FaWifi } from "react-icons/fa6";
 import { FaBatteryFull } from "react-icons/fa6";
+import MenuDrawer from "./menu-drawer";
 
 // Define the prop types
 interface TopBannerProps {
@@ -37,6 +38,8 @@ export default function TopBanner({ page }: TopBannerProps) {
     }
   };
 
+  const showMenuDrawer = true
+
   return (
     <header>
       <div className="bg-primary justify-between flex rounded-t-2xl p-3 px-10 text-white items-center">
@@ -47,10 +50,12 @@ export default function TopBanner({ page }: TopBannerProps) {
           <FaBatteryFull />
         </div>
       </div>
+      { showMenuDrawer ? <MenuDrawer /> :
       <div className="p-4 bg-primary font-normal text-center flex items-center justify-start px-4 space-x-32">
         <div className="rounded-full w-5 bg-slate-400">P</div>
         <h1 className="text-white">{getPageTitle()}</h1>
       </div>
+}
     </header>
   );
 }
