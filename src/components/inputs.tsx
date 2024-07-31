@@ -9,24 +9,30 @@ type InputFieldProps = {
   onChange?: any,
   readOnly?: boolean
   disabled?: boolean
-  width?: number //1/2 or full
+  width?: string //1/2 or full
+  icon?: React.ReactNode
 }
 
-export const InputField = ({ name, placeholder, label, type, value, onChange, readOnly, disabled, width } 
+export const InputField = ({ name, placeholder, label, type, value, onChange, readOnly, disabled, width, icon } 
     : InputFieldProps) => (
-  <div className="form-group">
-    <label htmlFor={name}>{label}</label>
-    <input
-      type={type}
-      name={name}
-      className="grid grid-cols-6"
-      id={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      readOnly={readOnly}
-      disabled={disabled}
-    />
-  </div>
-
+    <div
+    className={`${width ? `w-${width}` : 'w-full'} rounded-md bg-level-2 p-2`}
+    >
+    <label 
+    className="sr-only" htmlFor={name}>{label}
+    </label>
+    <div>
+        {icon && icon}
+        <input
+            type={type}
+            name={name}
+            id={name}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            readOnly={readOnly}
+            disabled={disabled}
+            />
+        </div>
+    </div>
 )

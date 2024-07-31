@@ -1,5 +1,4 @@
 import React from 'react'
-
 /**
  * layout for the reports view
  * 

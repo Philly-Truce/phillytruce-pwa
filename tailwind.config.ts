@@ -15,9 +15,9 @@ const config: Config = {
       },
       colors: {
         primary: '#1C4587',
-        background: {
-          'level-1': '#FFFFFF',
-          'level-2': '#F3F3F3',
+        level: {
+          '1': '#FFFFFF',
+          '2': '#F3F3F3',
         },
         status: {
           'positive': '#4ECB71',
