@@ -2,9 +2,9 @@
     {
         "id": "1023",
         "statusType": "unclaimed",
-        "submittedType": "SPM Alyssa",
-        "incidentType": "Fight",
-        "location": "Corner of 23rd and Washington",
+        "submittedType": "Text In",
+        "incidentType": "",
+        "location": "19019",
         "date": "2024-07-31T05:47:09.608Z",
         "details": "",
         "connectedReports": ["1025", "1022"]

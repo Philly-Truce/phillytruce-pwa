@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 const colors = require("tailwindcss/colors");
+const defaultTheme = require("tailwindcss/defaultTheme")
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -26,24 +28,10 @@ const config: Config = {
         },
         transparent: colors.transparent,
         white: colors.white,
-        yellow: colors.amber,
-        blue: colors.blue,
-        indigo: colors.indigo,
-        purple: colors.purple,
-        pink: colors.pink,
-        gray: colors.coolGray,
-        coolGray: colors.coolGray,
-        trueGray: colors.trueGray,
-        warmGray: colors.warmGray,
-        red: colors.red,
-        orange: colors.orange,
-        amber: colors.amber,
-        lime: colors.lime,
-        green: colors.green,
-        emerald: colors.emerald,
-        teal: colors.teal,
-        cyan: colors.cyan,
-        sky: colors.sky,
+        black: colors.black
+      },
+      boxShadow: {
+        ...defaultTheme.boxShadow,
       }
     },
   },

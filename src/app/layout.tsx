@@ -1,26 +1,34 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+"use client";
 import "./globals.css";
-import ClientLayout from "./client-layout";
+import TopBanner from "@/components/top-banner";
+import Menu from "@/components/menu";
+import { usePathname } from "next/navigation";
+import { Roboto } from 'next/font/google'
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
+  subsets: ["latin"],
+});
 
-export const metadata: Metadata = {
-  title: "Philly Truce",
-  description:
-    "An Extraordinary Web-based Mobile Application that seeks to reduce violence around in the community",
-};
-
-export default function RootLayout({
+export default function ClientLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const pathname = usePathname();
+
+  const showTopBanner = pathname !== "/login";
+  const showMenu = pathname !== "/login";
+
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ClientLayout>{children}</ClientLayout>
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <body className={roboto.className}>
+          {showTopBanner && <TopBanner />}
+          {children}
+          {showMenu && <Menu />}
+        </body>
+      </html>
+    </>
   );
 }

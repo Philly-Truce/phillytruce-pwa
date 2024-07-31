@@ -31,7 +31,8 @@ const BaseField: React.FC<BaseFieldProps & { children: React.ReactNode }> = ({
     label,
     width,
     icon,
-    children
+    children,
+    disabled
   }) => (
     <div
       className={`
@@ -47,7 +48,7 @@ const BaseField: React.FC<BaseFieldProps & { children: React.ReactNode }> = ({
       </label>
       <div className="flex flex-row">
         {icon && (
-          <div className="flex flex-row items-center h-full w-12">
+          <div className={`flex flex-row items-center h-full w-12 ${disabled == true ? 'opacity-[0.50]' : ''}`}> 
             <Image width={24} height={24} src={icon} alt="" className="mr-2" />
           </div>
         )}
@@ -71,7 +72,7 @@ const BaseField: React.FC<BaseFieldProps & { children: React.ReactNode }> = ({
   }) => (
     <BaseField name={name} label={label} width={width} icon={icon}>
       <input 
-        className="bg-transparent w-full"
+        className="bg-transparent w-full capitalize"
         type={type}
         name={name}
         id={name}
@@ -95,11 +96,11 @@ const BaseField: React.FC<BaseFieldProps & { children: React.ReactNode }> = ({
     disabled,
     width,
     icon,
-    rows = 3
+    rows = 1
   }) => (
     <BaseField name={name} label={label} width={width} icon={icon}>
       <textarea
-        className="bg-transparent w-full"
+        className="bg-transparent w-full capitalize"
         name={name}
         id={name}
         placeholder={placeholder}
