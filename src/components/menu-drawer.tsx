@@ -1,7 +1,8 @@
 import React from 'react'
 
 export default function MenuDrawer() {
-
+// import icons
+//menu style positioning
     const menuOptions = [
         { icon: '@', option: 'Profile'},
         { icon: '@', option: 'Contacts'},
@@ -25,6 +26,7 @@ export default function MenuDrawer() {
 
             </ul>
         </div>
+        {/* make this a flex box and put this as flex-end */}
         <button className='flex flex-col px-[10px] py-[15px] justify-center items-center w-full bg-[#1C4587] rounded-full text-white mt-40'>Log Out</button>
     </div>
   )
