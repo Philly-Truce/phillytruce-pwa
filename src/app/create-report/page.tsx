@@ -3,7 +3,7 @@ import { GoArrowLeft } from "react-icons/go";
 
 export default function createReport() {
   return (
-    <div>
+    <div className="scroll-smooth">
       <div className="flex flex-row bg-primary text-white h-[64px] justify-start items-center p-[16px] gap-4">
         <GoArrowLeft size={25}/>
         <h1 className="text-xl">Create New Report</h1>
