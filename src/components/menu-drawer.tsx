@@ -3,6 +3,7 @@ import React from 'react'
 export default function MenuDrawer() {
 // import icons
 //menu style positioning
+//create menu option component
     const menuOptions = [
         { icon: '@', option: 'Profile'},
         { icon: '@', option: 'Contacts'},
