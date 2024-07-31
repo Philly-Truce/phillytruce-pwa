@@ -6,7 +6,14 @@ import { useState, MouseEvent } from "react";
 export default function OverviewField() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [showIncident, setShowIncident] = useState<boolean>(false);
-  // const [incident,setIncident] = useState<string>('')
+  const incidents = [
+    "Fight",
+    "Shooting",
+    "Bullying",
+    "Threat",
+    "Weapon",
+    "Other",
+  ];
 
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -14,6 +21,10 @@ export default function OverviewField() {
   ) => {
     if (e.target.checked) {
       setSelectedOptions([...selectedOptions, incident]);
+    } else {
+      setSelectedOptions(
+        selectedOptions.filter((option) => option !== incident)
+      );
     }
   };
 
@@ -26,7 +37,7 @@ export default function OverviewField() {
       <fieldset className="border p-1 rounded-md border-black">
         <legend className="text-sm px-2">Incident Type</legend>
         <div className="relative">
-          <div className="flex flex-row" onClick={(e)=>handleClick(e)}>
+          <div className="flex flex-row" onClick={(e) => handleClick(e)}>
             <Image src={flagIcon} alt="Flag Icon" />
             <input
               type="text"
@@ -43,60 +54,18 @@ export default function OverviewField() {
       {showIncident ? (
         <div className="w-full flex flex-col bg-gray-100 px-8 py-4 gap-3 rounded-lg">
           <small>Select all that apply</small>
-          <div>
-            <input
-              type="checkbox"
-              className="w-4 h-4"
-              value="Fight"
-              onChange={(e) => handleCheckboxChange(e, e.target.value)}
-            />
-            <label className="pl-4">Fight</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-4 h-4"
-              value="shooting"
-              onChange={(e) => handleCheckboxChange(e, e.target.value)}
-            />
-            <label className="pl-4">Shooting</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-4 h-4"
-              value="Bullying"
-              onChange={(e) => handleCheckboxChange(e, e.target.value)}
-            />
-            <label className="pl-4">Bullying</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-4 h-4"
-              value="Weapon"
-              onChange={(e) => handleCheckboxChange(e, e.target.value)}
-            />
-            <label className="pl-4">Weapon</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-4 h-4"
-              value="Threat"
-              onChange={(e) => handleCheckboxChange(e, e.target.value)}
-            />
-            <label className="pl-4">Threat</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-4 h-4"
-              value="Other"
-              onChange={(e) => handleCheckboxChange(e, e.target.value)}
-            />
-            <label className="pl-4">Other</label>
-          </div>
+
+          {incidents.map((incident, index) => (
+            <div key={index}>
+              <input
+                type="checkbox"
+                className="w-4 h-4"
+                value={incident}
+                onChange={(e) => handleCheckboxChange(e, incident)}
+              />
+              <label className="pl-4">{incident}</label>
+            </div>
+          ))}
         </div>
       ) : (
         <></>
