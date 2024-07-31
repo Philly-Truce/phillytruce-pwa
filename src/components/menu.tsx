@@ -25,10 +25,12 @@ export default function Menu() {
         <MdOutlineMessage className={center} />
         Message
       </button>
-      <button className={gap}>
-        <IoIosMore className={center} />
-        More
-      </button>
+      <Link href="/more">
+        <button className={gap}>
+          <IoIosMore className={center} />
+          More
+        </button>
+      </Link>
     </div>
   );
 }

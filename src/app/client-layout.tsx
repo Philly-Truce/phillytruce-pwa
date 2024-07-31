@@ -1,7 +1,7 @@
 "use client";
 
-import TopBanner from "@/components/top-banner";
 import Menu from "@/components/menu";
+import TopBanner from "@/components/top-banner";
 import { usePathname } from "next/navigation";
 
 export default function ClientLayout({
@@ -11,11 +11,16 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
 
-  const showTopBanner = pathname !== "/login";
-  const showMenu = pathname !== "/login";
+  const pathnamesForTopBanner = ["/login", "/more"];
+  const pathnamesForMenu = ["/login"];
+
+  const showTopBanner = !pathnamesForTopBanner.includes(pathname);
+  const showMenu = !pathnamesForMenu.includes(pathname);
 
   const getPage = (pathname: string) => {
     switch (pathname) {
+      case "/more":
+        return "more";
       case "/reports":
         return "reports";
       case "/messages":

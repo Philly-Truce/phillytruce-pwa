@@ -1,6 +1,11 @@
 import { IoSearchSharp } from "react-icons/io5";
 import { IoMicOutline } from "react-icons/io5";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/shadixui/tabs";
 import ReportList from "@/app/reports/reportList.js";
 
 export default function Main() {
