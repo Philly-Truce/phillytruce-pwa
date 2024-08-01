@@ -13,4 +13,3 @@ body {
   text-overflow: ellipsis; /* Adds ellipsis if the text overflows */
   overflow: hidden; /* Ensures that the text does not overflow the input field */
 }
-
