@@ -1,9 +1,9 @@
 import textIcon from "@/assets/create-form-image/textIcon.svg";
 import dropdownIcon from "@/assets/create-form-image/dropdownIcon.svg";
 import Image from "next/image";
-import { useState,MouseEvent } from "react";
+import { useState, MouseEvent } from "react";
 
-export default function ConnectedReportsField(){
+export default function ConnectedReportsField() {
   const [connectedReport, setConnectedReport] = useState<string[]>([]);
   const [showReport, setShowReport] = useState<boolean>(false);
   const reports = [
@@ -22,37 +22,33 @@ export default function ConnectedReportsField(){
     if (e.target.checked) {
       setConnectedReport([...connectedReport, report]);
     } else {
-      setConnectedReport(
-        connectedReport.filter((option) => option !== report)
-      );
+      setConnectedReport(connectedReport.filter((option) => option !== report));
+    }
   };
-  }
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowReport(!showReport);
   };
-    return(
-        <>
-         <fieldset className="border p-1 rounded-md border-black">
-          <legend className="text-sm px-2">Group with</legend>
-          <div className="relative">
-            <button onClick={handleClick}>
-            <div className="flex flex-row">
-              <Image src={textIcon} alt="Location Icon" />
-              <input
-                type="text"
-                placeholder="Select any connected reports"
-                className="block w-full appearance-none bg-white flex-grow-3 placeholder-wrap pb-4"
-                value={connectedReport}
-                readOnly
-              />
-              <Image src={dropdownIcon} alt="Icon" className="w-20"/>
-            </div>
-            </button>
+  return (
+    <>
+      <fieldset className="border p-1 rounded-md border-black">
+        <legend className="text-sm px-2">Group with</legend>
+        <button onClick={handleClick} className="w-full">
+        <div className="relative flex flex-row">
+            <Image src={textIcon} alt="Location Icon" />
+            <input
+              type="text"
+              placeholder="Select any connected reports"
+              className="block w-full appearance-none bg-white placeholder-wrap pb-4"
+              value={connectedReport}
+              readOnly
+            />
+            <Image src={dropdownIcon} alt="Icon" />
           </div>
-        </fieldset>
-       
-        {showReport ? (
+        </button>
+      </fieldset>
+
+      {showReport ? (
         <div className="w-full flex flex-col bg-gray-100 px-8 py-4 gap-3 rounded-lg shadow-md">
           <small>Select all that apply</small>
 
@@ -69,8 +65,11 @@ export default function ConnectedReportsField(){
           ))}
         </div>
       ) : (
-        <> <small className="px-4">If none,leave blank</small></>
-      )}
+        <>
+          {" "}
+          <small className="px-4">If none,leave blank</small>
         </>
-    )
+      )}
+    </>
+  );
 }
