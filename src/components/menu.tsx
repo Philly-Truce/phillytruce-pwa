@@ -21,10 +21,12 @@ export default function Menu() {
           Reports
         </button>
       </Link>
-      <button className={gap}>
-        <MdOutlineMessage className={center} />
-        Message
-      </button>
+      <Link href="/messages">
+        <button className={gap}>
+          <MdOutlineMessage className={center} />
+          Message
+        </button>
+      </Link>
       <Link href="/more">
         <button className={gap}>
           <IoIosMore className={center} />
