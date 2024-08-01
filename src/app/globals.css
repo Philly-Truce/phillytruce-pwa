@@ -7,3 +7,10 @@
 body {
   /* @apply max-w-96 justify-center items-center mx-auto my-2; */
 }
+
+.placeholder-wrap::placeholder {
+  white-space: pre-wrap; /* Allows the placeholder text to wrap */
+  text-overflow: ellipsis; /* Adds ellipsis if the text overflows */
+  overflow: hidden; /* Ensures that the text does not overflow the input field */
+}
+
