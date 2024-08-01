@@ -10,6 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
+import { ConnectedReportSummary } from './summaries'
   
 export type Report = {
     id: string,
@@ -30,18 +31,19 @@ type StatusConfiguration = {
 };
 
 const reportStatusState = (statusType: string): StatusConfiguration | null => {
+
     const statusConfigurations: { [key: string]: StatusConfiguration } = {
         unclaimed: {
             dialogTitle: 'Would you like to claim this report?',
             dialogDescription: 'Claiming this report will make it attached t you as a Safe Path Monitor and you will be responsible for resolving it.',
             ctaButtonText: 'Claim Report',
-            buttonTWClasses: 'bg-primary text-white',
+            buttonTWClasses: 'bg-primary text-white'
         },
         'in progress': {
-            dialogTitle: 'Wyould you like to close this report?',
+            dialogTitle: 'Would you like to close this report?',
             dialogDescription: 'This report will be submitted for view and marked as closed.',
-            ctaButtonText: 'Archive Report',
-            buttonTWClasses: 'bg-secondary text-white',
+            ctaButtonText: 'Close Report',
+            buttonTWClasses: 'bg-secondary text-black'
         }
     };
 
@@ -76,7 +78,7 @@ export default async function ReportView({ report } : { report: Report }) {
                             <InputField 
                             name="status-type" 
                             placeholder="" 
-                            icon="/icons/warning_amber.svg"
+                            icon={submittedType === 'text-in' ? '/icons/textsms.svg' : '/icons/SPM_shield.svg'}
                             label="Status Type" 
                             value={statusType}
                             readOnly={true} 
@@ -134,6 +136,15 @@ export default async function ReportView({ report } : { report: Report }) {
                         disabled={statusType === 'in progress' ? false : true}
                         />
                     </div>
+                    {(statusType === 'closed' && connectedReports) && (
+                        <>
+                            <h3 className='font-semibold text-base text-primary mb-2'>Connected Reports</h3>
+                            {connectedReports.map((report) => (
+                                <ConnectedReportSummary key={report.id} id={report.id} />
+                            ))}
+                        </>
+                    )}
+
                 </div>
                 <div className='fixed p-8 left-0 bottom-0 w-full flex flex-col items-center justify-center'>
                     <Dialog>
@@ -142,7 +153,7 @@ export default async function ReportView({ report } : { report: Report }) {
                                 {ctaButtonText}
                             </button>
                         </DialogTrigger>
-                        <DialogContent className>
+                        <DialogContent>
                             <DialogHeader>
                             <DialogTitle>{dialogTitle}</DialogTitle>
                             <DialogDescription>
