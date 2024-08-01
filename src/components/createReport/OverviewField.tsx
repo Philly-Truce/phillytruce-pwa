@@ -54,7 +54,7 @@ export default function OverviewField() {
         </div>
       </fieldset>
       {showIncident ? (
-        <div className="w-full flex flex-col bg-gray-100 px-8 py-4 gap-3 rounded-lg">
+        <div className="w-full flex flex-col bg-gray-100 px-8 py-4 gap-3 rounded-lg shadow-md">
           <small>Select all that apply</small>
 
           {incidents.map((incident, index) => (
