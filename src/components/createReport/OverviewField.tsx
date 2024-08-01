@@ -36,22 +36,24 @@ export default function OverviewField() {
     <>
       <fieldset className="border p-1 rounded-md border-black">
         <legend className="text-sm px-2">Incident Type</legend>
-        <div className="relative">
-          <button onClick={handleClick}>
-            <div className="flex flex-row">
-              <Image src={flagIcon} alt="Flag Icon" />
-              <input
-                type="text"
-                placeholder="Select"
-                value={selectedOptions}
-                className="block w-full appearance-none bg-white placeholder-wrap border border-white"
-                readOnly
-              />
-
-              <Image src={dropdownIcon} alt="dropdown Icon" className="w-20" />
-            </div>
-          </button>
+        <button onClick={handleClick} className="w-full">
+        <div className="relative flex flex-row">
+          <Image src={flagIcon} alt="Flag Icon" />
+          <input
+            type="text"
+            placeholder="Select"
+            value={selectedOptions}
+            className="block w-full appearance-none bg-white placeholder-wrap"
+            readOnly
+          />
+         
+            <Image
+              src={dropdownIcon}
+              alt="dropdown Icon"
+            />
+         
         </div>
+        </button>
       </fieldset>
       {showIncident ? (
         <div className="w-full flex flex-col bg-gray-100 px-8 py-4 gap-3 rounded-lg shadow-md">
