@@ -3,15 +3,11 @@ import { jwt } from "twilio";
 
 const { AccessToken } = jwt;
 const { ChatGrant } = AccessToken;
-import dotenv from "dotenv";
 
-// Load environment variables
-dotenv.config();
-
-const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID as string;
-const twilioApiKey = process.env.TWILIO_API_KEY as string;
-const twilioApiSecret = process.env.TWILIO_API_SECRET as string;
-const serviceSid = process.env.TWILIO_SERVICE_SID as string;
+const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+const twilioApiKey = process.env.TWILIO_API_KEY;
+const twilioApiSecret = process.env.TWILIO_API_SECRET;
+const serviceSid = process.env.TWILIO_SERVICE_SID;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -19,6 +15,13 @@ export async function POST(request: NextRequest) {
 
   if (!name) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
+  }
+
+  if (!twilioAccountSid || !twilioApiKey || !twilioApiSecret || !serviceSid) {
+    return NextResponse.json(
+      { error: "Missing Twilio credentials" },
+      { status: 500 }
+    );
   }
 
   const chatGrant = new ChatGrant({
