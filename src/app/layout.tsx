@@ -4,13 +4,14 @@ import TopBanner from "@/components/top-banner";
 import Menu from "@/components/menu";
 import { usePathname } from "next/navigation";
 import { Roboto } from 'next/font/google'
+import ClientLayout from "./client-layout";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
   subsets: ["latin"],
 });
 
-export default function ClientLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,14 +22,10 @@ export default function ClientLayout({
   const showMenu = pathname !== "/login";
 
   return (
-    <>
-      <html lang="en">
-        <body className={roboto.className}>
-          {showTopBanner && <TopBanner />}
-          {children}
-          {showMenu && <Menu />}
-        </body>
-      </html>
-    </>
+    <html lang="en">
+      <body className={roboto.className}>
+        <ClientLayout>{children}</ClientLayout>
+      </body>
+    </html>
   );
 }

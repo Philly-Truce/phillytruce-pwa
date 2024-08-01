@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 const colors = require("tailwindcss/colors");
-const defaultTheme = require("tailwindcss/defaultTheme")
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 const config: Config = {
   content: [
@@ -24,17 +24,20 @@ const config: Config = {
         status: {
           'positive': '#4ECB71',
           'notification': '#F6893C',
-          'negative': '#B3261E'
+          'negative': '#B3261E',
         },
+        default: "#334155",
+        accent: "#F2F2F2",
         transparent: colors.transparent,
         white: colors.white,
         black: colors.black
       },
       boxShadow: {
         ...defaultTheme.boxShadow,
-      }
+      },
     },
   },
   plugins: [],
 };
+
 export default config;
