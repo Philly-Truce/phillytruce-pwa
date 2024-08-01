@@ -2,6 +2,7 @@ import { MdHome } from "react-icons/md";
 import { MdOutlineMessage } from "react-icons/md";
 import { IoIosMore } from "react-icons/io";
 import { CgNotes } from "react-icons/cg";
+import Link from "next/link";
 
 export default function Menu() {
   const center = "mx-auto";
@@ -16,10 +17,12 @@ export default function Menu() {
         <CgNotes className={center} />
         Reports
       </button>
-      <button className={gap}>
-        <MdOutlineMessage className={center} />
-        Message
-      </button>
+      <Link href="/messages">
+        <button className={gap}>
+          <MdOutlineMessage className={center} />
+          Message
+        </button>
+      </Link>
       <button className={gap}>
         <IoIosMore className={center} />
         More

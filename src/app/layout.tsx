@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Philly Truce",
   description:
     "An Extraordinary Web-based Mobile Application that seeks to reduce violence around in the community",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
