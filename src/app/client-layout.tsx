@@ -44,7 +44,7 @@ export default function ClientLayout({
     <>
       {showTopBanner && <TopBanner page={getPage(pathname)} />}
       <div className="overflow-y-scroll h-[70vh]">{children}</div>
-      {/* {showMenu && <Menu />} */}
+      {showMenu && <Menu />}
     </>
   );
 }

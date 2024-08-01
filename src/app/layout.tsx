@@ -1,9 +1,6 @@
 "use client";
 import "./globals.css";
-import TopBanner from "@/components/top-banner";
-import Menu from "@/components/menu";
-import { usePathname } from "next/navigation";
-import { Roboto } from 'next/font/google'
+import { Roboto } from "next/font/google";
 import ClientLayout from "./client-layout";
 
 const roboto = Roboto({
@@ -11,16 +8,7 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const pathname = usePathname();
-
-  const showTopBanner = pathname !== "/login";
-  const showMenu = pathname !== "/login";
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={roboto.className}>
