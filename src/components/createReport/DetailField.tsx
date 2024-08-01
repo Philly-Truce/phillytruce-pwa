@@ -131,7 +131,7 @@ export default function DetailField() {
               value={description}
               onChange={handleDescriptionChange}
             />
-            <Image src={editIcon} alt="Icon" />
+            <Image src={editIcon} alt="Icon"/>
           </div>
         </div>
       </fieldset>
