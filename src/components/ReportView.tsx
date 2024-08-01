@@ -1,5 +1,5 @@
-import { InputField, TextAreaField } from '@/components/inputs'
 import React from 'react'
+import { InputField, TextAreaField } from '@/components/inputs'
 import dayjs from 'dayjs'
 import {
     Dialog,
@@ -10,7 +10,6 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-import { ConnectedReportSummary } from './summaries'
   
 export type Report = {
     id: string,
@@ -20,7 +19,7 @@ export type Report = {
     location: string,
     date: Date,
     details: string,
-    connectedReports: Report[]
+    connectedReports: string[]
 }
 
 type StatusConfiguration = {
@@ -44,6 +43,12 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
             dialogDescription: 'This report will be submitted for view and marked as closed.',
             ctaButtonText: 'Close Report',
             buttonTWClasses: 'bg-secondary text-black'
+        },
+        closed: {
+            dialogTitle: '',
+            dialogDescription: '',
+            ctaButtonText: '',
+            buttonTWClasses: 'bg-primary text-white'
         }
     };
 
@@ -57,9 +62,9 @@ export default async function ReportView({ report } : { report: Report }) {
         incidentType, 
         location, 
         date, 
-        details, 
-        connectedReports
+        details
     } : Report = report;
+
 
     const { dialogTitle, dialogDescription, ctaButtonText, buttonTWClasses } = reportStatusState(statusType) || {};
 
@@ -89,7 +94,6 @@ export default async function ReportView({ report } : { report: Report }) {
                             label='Submitted Type' 
                             value={submittedType} 
                             icon="/icons/textsms.svg"
-                            disabled={true}
                             readOnly={true} 
                             width="1/2" />
                         </div>
@@ -98,6 +102,7 @@ export default async function ReportView({ report } : { report: Report }) {
                         label='Incident Type'
                         value={incidentType}
                         readOnly={true}
+                        status={statusType}
                         icon='/icons/flag.svg' />
                     </div>
                 </div>
@@ -133,44 +138,38 @@ export default async function ReportView({ report } : { report: Report }) {
                         value={details}
                         icon='/icons/description.svg'
                         readOnly={true}
-                        disabled={statusType === 'in progress' ? false : true}
+                        status={statusType}
+                        maxRows={3}
                         />
                     </div>
-                    {(statusType === 'closed' && connectedReports) && (
-                        <>
-                            <h3 className='font-semibold text-base text-primary mb-2'>Connected Reports</h3>
-                            {connectedReports.map((report) => (
-                                <ConnectedReportSummary key={report.id} id={report.id} />
-                            ))}
-                        </>
-                    )}
-
                 </div>
-                <div className='fixed p-8 left-0 bottom-0 w-full flex flex-col items-center justify-center'>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <button className={buttonTWClasses + " " + buttonBaseClasses}>
-                                {ctaButtonText}
-                            </button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                            <DialogTitle>{dialogTitle}</DialogTitle>
-                            <DialogDescription>
-                                {dialogDescription}
-                            </DialogDescription>
-                            <div className='fle flex-row justify-end'>
-                                <div className='flex flex-row gap-x-4 h-'>
-                                    <DialogClose asChild>
-                                        <button className='text-primary font-medium'>No</button>
-                                    </DialogClose>
-                                    <button className='text-primary font-medium'>Yes</button>
+                {statusType !== 'closed' && (
+                    <div className='fixed p-8 left-0 bottom-0 w-full flex flex-col items-center justify-center'>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <button className={buttonTWClasses + " " + buttonBaseClasses}>
+                                    {ctaButtonText}
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                <DialogTitle>{dialogTitle}</DialogTitle>
+                                <DialogDescription>
+                                    {dialogDescription}
+                                </DialogDescription>
+                                <div className='fle flex-row justify-end'>
+                                    <div className='flex flex-row gap-x-4 h-full'>
+                                        <DialogClose asChild>
+                                            <button className='text-primary font-medium'>No</button>
+                                        </DialogClose>
+                                        <button className='text-primary font-medium'>Yes</button>
+                                    </div>
                                 </div>
-                            </div>
-                            </DialogHeader>
-                        </DialogContent>
-                    </Dialog>
-                </div>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+                )}
             </form>
         </>
     )

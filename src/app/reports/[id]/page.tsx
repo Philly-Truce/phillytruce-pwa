@@ -1,6 +1,4 @@
-import { InputField, TextAreaField } from '@/components/inputs'
 import React from 'react'
-import dayjs from 'dayjs'
 import axios from 'axios'
 import ReportView from '@/components/ReportView'
 import reports from '@/data/reports.json'
@@ -38,10 +36,12 @@ export default async function ReportsViewPage(
     { params } : { params: { id: string } }
 ) {
     const report = await fetchReportById(params.id);
-    
+
     return (
-        <div className='pt-6'>
+       <>
+         <div className='pt-6 px-4'>
             <ReportView report={report} />
         </div>
+       </>
     )
 }

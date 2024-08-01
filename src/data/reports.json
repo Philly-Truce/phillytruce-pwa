@@ -7,7 +7,7 @@
         "location": "19019",
         "date": "2024-07-31T05:47:09.608Z",
         "details": "",
-        "connectedReports": ["1025", "1022"]
+        "connectedReports": []
     },
     {
         "id": "1851",
@@ -27,6 +27,6 @@
         "location": "123 Main St",
         "date": "2024-07-25T05:47:09.608Z",
         "details": "The incident involved two individuals, identified as",
-        "connectedReports": []
+        "connectedReports": ["1805", "1851"]
     }
 ]
