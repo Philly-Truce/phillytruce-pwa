@@ -44,7 +44,7 @@ export default function ConnectedReportsField(){
               <input
                 type="text"
                 placeholder="Select any connected reports"
-                className="block w-full appearance-none bg-white flex-grow-3 grow"
+                className="block w-full appearance-none bg-white flex-grow-3 placeholder-wrap pb-4"
                 value={connectedReport}
                 readOnly
               />
