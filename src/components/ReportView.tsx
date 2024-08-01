@@ -1,9 +1,16 @@
 import { InputField, TextAreaField } from '@/components/inputs'
 import React from 'react'
 import dayjs from 'dayjs'
-
-import axios from 'axios'
-
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
+  
 export type Report = {
     id: string,
     statusType: string,
@@ -13,6 +20,32 @@ export type Report = {
     date: Date,
     details: string,
     connectedReports: Report[]
+}
+
+type StatusConfiguration = {
+    dialogTitle: string;
+    dialogDescription: string;
+    ctaButtonText: string;
+    buttonTWClasses: string;
+};
+
+const reportStatusState = (statusType: string): StatusConfiguration | null => {
+    const statusConfigurations: { [key: string]: StatusConfiguration } = {
+        unclaimed: {
+            dialogTitle: 'Would you like to claim this report?',
+            dialogDescription: 'Claiming this report will make it attached t you as a Safe Path Monitor and you will be responsible for resolving it.',
+            ctaButtonText: 'Claim Report',
+            buttonTWClasses: 'bg-primary text-white',
+        },
+        'in progress': {
+            dialogTitle: 'Wyould you like to close this report?',
+            dialogDescription: 'This report will be submitted for view and marked as closed.',
+            ctaButtonText: 'Archive Report',
+            buttonTWClasses: 'bg-secondary text-white',
+        }
+    };
+
+    return statusConfigurations[statusType] || null;
 }
 
 export default async function ReportView({ report } : { report: Report }) {
@@ -25,6 +58,10 @@ export default async function ReportView({ report } : { report: Report }) {
         details, 
         connectedReports
     } : Report = report;
+
+    const { dialogTitle, dialogDescription, ctaButtonText, buttonTWClasses } = reportStatusState(statusType) || {};
+
+    const buttonBaseClasses = 'uppercase border-accent rounded-2xl px-6 py-2 shadow-[0px_4px_8px_3px_rgba(0,0,0,0.15),0px_1px_3px_0px_rgba(0,0,0,0.30)] w-full text-center'
 
     return (
         <>
@@ -99,10 +136,29 @@ export default async function ReportView({ report } : { report: Report }) {
                     </div>
                 </div>
                 <div className='fixed p-8 left-0 bottom-0 w-full flex flex-col items-center justify-center'>
-                    <button className={`${statusType === 'unclaimed' ? 'bg-primary text-white' : 'bg-white text' } uppercase border-accent rounded-2xl px-6 py-2
-                     shadow-[0px_4px_8px_3px_rgba(0,0,0,0.15),0px_1px_3px_0px_rgba(0,0,0,0.30)] w-full text-center`}>
-                        {statusType === 'unclaimed' ? 'Claim Report' : 'Close Report'}
-                    </button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <button className={buttonTWClasses + " " + buttonBaseClasses}>
+                                {ctaButtonText}
+                            </button>
+                        </DialogTrigger>
+                        <DialogContent className>
+                            <DialogHeader>
+                            <DialogTitle>{dialogTitle}</DialogTitle>
+                            <DialogDescription>
+                                {dialogDescription}
+                            </DialogDescription>
+                            <div className='fle flex-row justify-end'>
+                                <div className='flex flex-row gap-x-4 h-'>
+                                    <DialogClose asChild>
+                                        <button className='text-primary font-medium'>No</button>
+                                    </DialogClose>
+                                    <button className='text-primary font-medium'>Yes</button>
+                                </div>
+                            </div>
+                            </DialogHeader>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </form>
         </>

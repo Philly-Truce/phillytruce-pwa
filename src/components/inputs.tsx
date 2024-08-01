@@ -36,7 +36,7 @@ const BaseField: React.FC<BaseFieldProps & { children: React.ReactNode }> = ({
   }) => (
     <div
       className={`
-        ${width === '1/2' ? 'flex-grow flex-basis-[calc(50%-0.25rem)]' : 'w-full'}
+        ${width === '1/2' ? 'flex-grow flex-basis-1' : 'w-full'}
         rounded-md bg-level-2 p-2
       `}
     >
