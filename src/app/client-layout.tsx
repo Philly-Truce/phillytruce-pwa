@@ -14,7 +14,7 @@ export default function ClientLayout({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* {showTopBanner && <TopBanner />} */}
+      {showTopBanner && <TopBanner />}
       <main className="flex-grow flex flex-col">
         <div className="flex-grow flex items-center justify-center">
           {children}
