@@ -18,7 +18,7 @@ const ReportBrief: React.FC = () => {
       {reportData.map((report, index) => (
         <div
           key={index}
-          className="border-b border-gray-200 py-4 "
+          className="border-b border-gray-200 py-4 flex justify-between items-center"
           onClick={() => handleClick(report.reportName)}
           style={{
             fontWeight: clickedReports.includes(report.reportName)
