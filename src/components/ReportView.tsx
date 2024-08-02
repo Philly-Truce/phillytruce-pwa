@@ -85,14 +85,14 @@ export default async function ReportView({ report } : { report: Report }) {
                             placeholder="" 
                             icon={submittedType === 'text-in' ? '/icons/textsms.svg' : '/icons/SPM_shield.svg'}
                             label="Status Type" 
-                            value={statusType}
+                            defaultValue={statusType}
                             readOnly={true} 
                             width='1/2'
                              />
                             <InputField name='submitted-type' 
                             placeholder='' 
                             label='Submitted Type' 
-                            value={submittedType} 
+                            defaultValue={submittedType} 
                             icon="/icons/textsms.svg"
                             readOnly={true} 
                             width="1/2" />
@@ -100,20 +100,20 @@ export default async function ReportView({ report } : { report: Report }) {
                         <InputField name='incident-type'
                         placeholder=''
                         label='Incident Type'
-                        value={incidentType}
+                        defaultValue={incidentType}
                         readOnly={true}
                         status={statusType}
                         icon='/icons/flag.svg' />
                     </div>
                 </div>
                 {/* Incident Details: Location, Date-Time, Details */}
-                <div className='incident-details w-full'>
+                <div className='incident-details w-full mt-4'>
                     <h3 className='font-semibold text-base text-primary mb-2'>Details</h3>
                     <div className='w-full gap-y-4 flex flex-col'>
                         <InputField name='location'
                             placeholder=''
                             label='Location'
-                            value={location}
+                            defaultValue={location}
                             readOnly={true}
                             width='full'
                             icon='/icons/location.svg' />
@@ -122,20 +122,20 @@ export default async function ReportView({ report } : { report: Report }) {
                             placeholder=''
                             label='Date'
                             icon='/icons/calendar.svg'
-                            value={dayjs(date).format('MM/DD/YYYY')}
+                            defaultValue={dayjs(date).format('MM/DD/YYYY')}
                             width='1/2'
                             />
                             <InputField name='time'
                             placeholder=''
                             label='Time'
                             icon='/icons/clock.svg'
-                            value={dayjs(date).format('hh:mm A')} 
+                            defaultValue={dayjs(date).format('hh:mm A')} 
                             width='1/2' />
                         </div>
                         <TextAreaField name='details' 
                         placeholder=''
                         label='Details'
-                        value={details}
+                        defaultValue={details}
                         icon='/icons/description.svg'
                         readOnly={true}
                         status={statusType}

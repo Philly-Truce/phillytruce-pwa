@@ -7,7 +7,7 @@ type BaseFieldProps = {
   name: string,
   placeholder?: string,
   label: string,
-  value?: string,
+  defaultValue?: string,
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
   readOnly?: boolean
   width?: "1/2" | "full"
@@ -64,7 +64,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   label,
   type = 'text',
-  value,
+  defaultValue,
   onChange,
   readOnly,
   width,
@@ -78,7 +78,7 @@ export const InputField: React.FC<InputFieldProps> = ({
       name={name}
       id={name}
       placeholder={placeholder}
-      value={value}
+      defaultValue={defaultValue}
       onChange={onChange}
       readOnly={readOnly}
     />
@@ -90,7 +90,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   name,
   placeholder,
   label,
-  value,
+  defaultValue,
   onChange,
   readOnly,
   width,
@@ -123,7 +123,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         textarea.style.height = `${scrollHeight}px`;
       }
     }
-  }, [value, maxRows, isExpanded]);
+  }, [defaultValue, maxRows, isExpanded]);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     if (onChange) {
@@ -152,7 +152,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         name={name}
         id={name}
         placeholder={placeholder}
-        value={value}
+        defaultValue={defaultValue}
         onChange={handleChange}
         readOnly={readOnly}
         rows={rows}
@@ -163,13 +163,13 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
           onClick={e => handleExpand(e)}
           aria-label={isExpanded ? "Collapse" : "Expand"}
         >
-          <Image 
-            className={`transition-transform ${isExpanded ? 'rotate-[270deg]' : 'rotate-90'}`} 
-            width={24} 
-            height={24} 
-            src="/icons/arrow_right_24px.svg" 
-            alt={isExpanded ? "collapse" : "expand"} 
-          />
+          <Image
+            className={`transition-transform ${isExpanded ? 'rotate-[270deg]' : 'rotate-90'}`}
+            width={24}
+            height={24}
+            src="/icons/arrow_right_24px.svg"
+            alt={isExpanded ? "collapse" : "expand"}
+            />
         </button>
       )}
       </div>
