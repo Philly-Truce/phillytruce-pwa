@@ -3,8 +3,8 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/shadixui/tabs";
-import ReportList from "@/app/reports/reportList.js";
+} from "@/components/shadcn-ui/tabs";
+import ReportBrief from "./reportBrief";
 
 export default function List() {
   return (
@@ -16,7 +16,7 @@ export default function List() {
           <TabsTrigger value="closed">Closed</TabsTrigger>
         </TabsList>
         <TabsContent value="unclaimed">
-          <ReportList />
+          <ReportBrief />
         </TabsContent>
         <TabsContent value="progress">
           Here are cases that are in-progress.

@@ -23,6 +23,8 @@ export default function ClientLayout({
         return "more";
       case "/reports":
         return "reports";
+      case "/reports-view":
+        return "reports-view";
       case "/messages":
         return "messages";
       case "/edit":

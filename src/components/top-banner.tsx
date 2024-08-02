@@ -6,6 +6,7 @@ interface TopBannerProps {
   page:
     | "home"
     | "reports"
+    | "reports-view"
     | "more"
     | "messages"
     | "edit"
@@ -20,6 +21,8 @@ export default function TopBanner({ page }: TopBannerProps) {
     switch (page) {
       case "reports":
         return "Reports";
+      case "reports-view":
+        return "Report";
       case "messages":
         return "Messages";
       case "edit":
