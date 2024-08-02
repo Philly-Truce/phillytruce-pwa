@@ -1,9 +1,8 @@
 import React from 'react'
 import axios from 'axios'
-import ReportView from '@/components/ReportView'
+import ReportView from '@/components/reportsView'
 import reports from '@/data/reports.json'
-import { Report } from '@/components/ReportView'
-
+import type { Report } from '@/components/reportsView'
 /**
  * 
  * @param id the report id
@@ -31,11 +30,8 @@ const fetchReportById = async (id: string): Promise<Report> => {
  * @param params - id of the report
  * @returns Report view 
  */
-
-export default async function ReportsViewPage(
-    { params } : { params: { id: string } }
-) {
-    const report = await fetchReportById(params.id);
+export default async function ReportsViewPage() {
+    const report = await fetchReportById("1805") ;
 
     return (
        <>
