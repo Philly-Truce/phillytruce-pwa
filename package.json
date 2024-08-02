@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.17.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@twilio/conversations": "^2.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
     "lucide-react": "^0.418.0",
     "next": "14.2.4",
     "next-pwa": "^5.6.0",
@@ -31,6 +33,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
+    "prisma": "^5.17.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

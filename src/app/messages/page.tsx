@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import {
   Client as ConversationsClient,
@@ -9,56 +8,50 @@ import ConversationsList from "@/components/messages/conversations-list";
 import ReportConversation from "@/components/messages/report-conversation";
 
 export default function Messages() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string>("testPineapple");
-  const [conversationsClient, setConversationsClient] =
-    useState<ConversationsClient | null>(null);
   const [statusString, setStatusString] = useState<String | null>(null);
   const [status, setStatus] = useState("default");
   const [selectedConversationSid, setSelectedConversationSid] =
     useState<String | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
-  // When user logs in, an access token for their chat account is created
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("/api/generate-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name }),
-      });
+  // Upon page render, fetch the access token
+  // this is temp, in the future will fetch once the user opens up the app again
+  // the token will need to be stored globally and then fetched when they go to conversation screens
+  useEffect(() => {
+    const fetchAccessToken = async () => {
+      try {
+        const response = await fetch("/api/generate-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to generate token");
+        if (!response.ok) {
+          throw new Error("Failed to generate token");
+        }
+
+        const data = await response.json();
+        setToken(data.token);
+      } catch (error) {
+        console.error("Error generating token:", error);
       }
+    };
+    fetchAccessToken();
+  }, []);
 
-      const data = await response.json();
-      setToken(data.token);
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error("Error generating token:", error);
-    }
-  };
-
-  // Once you have the token, initalize the conversations client
+  // Upon token retrieval, initilialize the conversations client
   useEffect(() => {
     if (token) {
       initConversations();
     }
   }, [token]);
-
-  //   Debugger
-  useEffect(() => {
-    console.log("conversations", conversations);
-  }, [conversations]);
-
   const initConversations = () => {
     if (!token) return; // Early return if token is null
     const client = new ConversationsClient(token);
-    setConversationsClient(client);
     setStatusString("Connecting to Twilio…");
 
     client.on("connectionStateChanged", (state) => {
@@ -104,7 +97,7 @@ export default function Messages() {
     });
   };
 
-  //
+  // select the current conversation
   const selectedConversation = conversations.find(
     (it) => it.sid === selectedConversationSid
   );
@@ -125,26 +118,16 @@ export default function Messages() {
 
   return (
     <main className="w-full flex flex-col items-center my-2">
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Enter your name"
-        className="mb-2 p-2 border rounded"
-      />
-      <Button onClick={handleLogin}>Login</Button>
-      {isLoggedIn && (
-        <div className="conversations-window-wrapper">
-          <ConversationsList
-            conversations={conversations}
-            selectedConversationSid={selectedConversationSid}
-            onConversationClick={(item: Conversation) => {
-              setSelectedConversationSid(item.sid);
-            }}
-          />
-          {conversationContent}
-        </div>
-      )}
+      <div className="conversations-window-wrapper">
+        <ConversationsList
+          conversations={conversations}
+          selectedConversationSid={selectedConversationSid}
+          onConversationClick={(item: Conversation) => {
+            setSelectedConversationSid(item.sid);
+          }}
+        />
+        {conversationContent}
+      </div>
     </main>
   );
 }
