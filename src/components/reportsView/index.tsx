@@ -1,5 +1,5 @@
 import React from 'react'
-import { InputField, TextAreaField } from '@/components/inputs'
+import { InputField, TextAreaField } from '@/components/reportView/inputs'
 import dayjs from 'dayjs'
 import {
     Dialog,
@@ -9,7 +9,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "@/components/ui/dialog"
+  } from "@/components/reportView/dialog"
   
 export type Report = {
     id: string,

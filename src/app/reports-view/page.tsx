@@ -1,9 +1,8 @@
 import React from 'react'
 import axios from 'axios'
-import ReportView from '@/components/ReportView'
+import ReportView from '@/components/reportsView'
 import reports from '@/data/reports.json'
-import { Report } from '@/components/ReportView'
-
+import type { Report } from '@/components/reportsView'
 /**
  * 
  * @param id the report id
