@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import ReportView from "@/components/reportsView";
+import ReportsView from "@/components/reportsView";
 import reports from "@/data/reports.json";
 import { Report } from "@/components/reportsView";
 
@@ -42,7 +42,7 @@ export default async function ReportsViewPage({
   return (
     <>
       <div className="pt-6 px-4">
-        <ReportView report={report} />
+        <ReportsView report={report} />
       </div>
     </>
   );

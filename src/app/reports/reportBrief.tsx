@@ -30,7 +30,7 @@ const ReportBrief: React.FC = () => {
             <h2 className="text-md">{report.reportName}</h2>
             <p className="text-sm">{report.reportDate}</p>
           </div>
-          <Link href="/report-view">
+          <Link href="/reports-view">
             <button className="flex gap-5 items-center">
               <p className="font-bold text-sm">New Message</p>
               <SlArrowRight />

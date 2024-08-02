@@ -160,7 +160,7 @@ export default async function ReportsView({ report }: { report: Report }) {
           </div>
         </div>
         {statusType !== "closed" && (
-          <div className="p-8 left-0 bottom-0 flex w-96 flex-col items-center justify-center">
+          <div className="p-8 left-0 bottom-0 flex w-full flex-col items-center justify-center">
             <Dialog>
               <DialogTrigger asChild>
                 <button className={buttonTWClasses + " " + buttonBaseClasses}>
