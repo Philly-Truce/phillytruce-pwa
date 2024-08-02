@@ -31,7 +31,6 @@ const fetchReportById = async (id: string): Promise<Report> => {
  * @param params - id of the report
  * @returns Report view 
  */
-
 export default async function ReportsViewPage(
     { params } : { params: { id: string } }
 ) {
