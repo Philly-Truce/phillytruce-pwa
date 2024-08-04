@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import twilioClient from "@/lib/twilio-client";
+import prisma from "@/db/index";
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("new-conversation endpoint hit!");
-
-    // Parse the incoming request body for conversation SID
+    // Parse request body
     const formData = await request.formData();
+    console.log(formData);
     const conversationSid = formData.get("ConversationSid") as string;
 
-    // Add studio flow webhook to Conversation
-    const flowWebhook = await twilioClient.conversations.v1
+    // Add flow webhook
+    await twilioClient.conversations.v1
       .conversations(conversationSid)
       .webhooks.create({
         target: "studio",
@@ -18,17 +18,40 @@ export async function POST(request: NextRequest) {
         "configuration.replayAfter": 0,
       });
 
-    // Add on-message-added webhook to new conversation
-    const msgWebhook = await twilioClient.conversations.v1
+    // Add inbound-messages webhook
+    await twilioClient.conversations.v1
       .conversations(conversationSid)
       .webhooks.create({
         "configuration.filters": ["onMessageAdded"],
         "configuration.method": "POST",
         "configuration.url":
-          "https://woods-ee-tennis-themes.trycloudflare.com/api/inbound-messages",
+          "https://department--learners-dynamic.trycloudflare.com/api/inbound-messages",
         "configuration.replayAfter": 0,
         target: "webhook",
       });
+
+    // Create a new report
+    await prisma.report.create({
+      data: {
+        incident_report_number: conversationSid.slice(-4),
+        report_origin: "witness_text",
+        report_initiated_at: new Date(),
+        report_stage: "data_gathering",
+        incident_type: "Example incident",
+        description: "This is a test report.",
+        location: "Test location",
+        report_last_updated_at: new Date(),
+        ppd_notified: false,
+
+        messages: {
+          message_id: formData.get("MessagingServiceSid"),
+          from: formData.get("MessagingBinding.Address"),
+          to: formData.get("MessagingBinding.ProxyAddress"),
+          message_content: "Example message.",
+          created_at: new Date(),
+        },
+      },
+    });
 
     return NextResponse.json(
       { message: "Webooks added to the conversation successfully" },

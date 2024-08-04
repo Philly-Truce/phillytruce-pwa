@@ -21,6 +21,11 @@ enum ReportStage {
   archived
 }
 
+enum ReportOrigin {
+  user_created
+  witness_text
+}
+
 model Witness {
   id                   String   @id @default(auto()) @map("_id") @db.ObjectId
   phone_number         String
@@ -42,7 +47,7 @@ model User {
 model Report {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   incident_report_number String
-  report_origin          String
+  report_origin          ReportOrigin
   report_initiated_at    DateTime
   report_stage           ReportStage
   incident_type          String
