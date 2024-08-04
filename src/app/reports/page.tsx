@@ -9,7 +9,7 @@ export default function Main() {
       id="reports-page-container"
       className="overflow-y-scroll flex flex-col gap-4"
     >
-      <SearchBar />
+      <SearchBar page="reports" />
       <List />
       <div id="new-report-button" className="bottom-4 right-4 float-end">
         <Link href="/create">

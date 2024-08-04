@@ -6,6 +6,7 @@ import {
 } from "@twilio/conversations";
 import ConversationsList from "@/components/messages/conversations-list";
 import ReportConversation from "@/components/messages/report-conversation";
+import SearchBar from "@/components/search-bar";
 
 export default function Messages() {
   const [token, setToken] = useState<string | null>(null);
@@ -117,17 +118,16 @@ export default function Messages() {
   }
 
   return (
-    <main className="w-full flex flex-col items-center my-2">
-      <div className="conversations-window-wrapper">
-        <ConversationsList
-          conversations={conversations}
-          selectedConversationSid={selectedConversationSid}
-          onConversationClick={(item: Conversation) => {
-            setSelectedConversationSid(item.sid);
-          }}
-        />
-        {conversationContent}
-      </div>
+    <main id="messages-page" className="flex flex-col gap-4">
+      <SearchBar page="messages" />
+      <ConversationsList
+        conversations={conversations}
+        selectedConversationSid={selectedConversationSid}
+        onConversationClick={(item: Conversation) => {
+          setSelectedConversationSid(item.sid);
+        }}
+      />
+      {conversationContent}
     </main>
   );
 }
