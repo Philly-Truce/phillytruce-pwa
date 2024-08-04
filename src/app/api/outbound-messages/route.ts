@@ -1,20 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import twilioClient from "@/lib/twilio-client";
 
+// ANSI escape codes for colors
+const PURPLE = "\x1b[35m";
+const RESET = "\x1b[0m";
+
 export async function POST(request: NextRequest) {
   try {
-    console.log("new-message endpoint hit");
     // Parse request body
-    const formData = await request.formData();
-    console.log(formData);
+    const formData = await request.json();
+    const messageSid = formData[0].data.messageSid;
 
-    const conversationSid = formData.get("ConversationSid") as string;
+    // Fetch the message details using the Twilio client
+    const message = await twilioClient.messages(messageSid).fetch();
 
-    // Log the last two messages from the conversation
-    const messages = await twilioClient.conversations.v1
-      .conversations(conversationSid)
-      .messages.list({ limit: 2, order: "desc" });
-    messages.forEach((m) => console.log(m));
+    // The message content is available in the 'body' property
+    const messageContent = message.body;
+    console.log(PURPLE + "Message:" + RESET, messageContent);
 
     // TODO: insert new message record into database
 

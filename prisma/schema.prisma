@@ -1,187 +1,73 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-type EmbeddedMoviesAwards {
-  nominations Int
-  text        String
-  wins        Int
+generator client {
+  provider = "prisma-client-js"
 }
 
-type EmbeddedMoviesImdb {
-  id     Int
-  rating Float?
-  votes  Int
+generator json {
+  provider = "prisma-json-types-generator"
+  // namespace = "PrismaJson"
+  // clientOutput = "<finds it automatically>"
+  // (./ -> relative to schema, or an importable path to require() it)
 }
 
-type EmbeddedMoviesTomatoes {
-  boxOffice   String?
-  consensus   String?
-  critic      EmbeddedMoviesTomatoesCritic?
-  dvd         DateTime?                     @db.Date
-  fresh       Int?
-  lastUpdated DateTime                      @db.Date
-  production  String?
-  rotten      Int?
-  viewer      EmbeddedMoviesTomatoesViewer
-  website     String?
+enum ReportStage {
+  data_gathering
+  unclaimed
+  claimed
+  archived
 }
 
-type EmbeddedMoviesTomatoesCritic {
-  meter      Int?
-  numReviews Int?
-  rating     Float?
+model Witness {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  phone_number         String
+  initial_contact_date DateTime
+  last_contact_date    DateTime
+  reports              Report[] @relation("WitnessReports")
+  @@map("witnesses")
 }
 
-type EmbeddedMoviesTomatoesViewer {
-  meter      Int?
-  numReviews Int?
-  rating     Float?
+model User {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  last_logged_in_at DateTime
+  created_at        DateTime
+  reports          Report[] @relation("UserReports")
+  @@map("users")
 }
 
-type MoviesAwards {
-  nominations Int
-  text        String
-  wins        Int
-}
+model Report {
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  incident_report_number String
+  report_origin          String
+  report_initiated_at    DateTime
+  report_stage           ReportStage
+  incident_type          String
+  description            String
+  location               String
+  report_last_updated_at DateTime
+  ppd_notified           Boolean
 
-type MoviesImdb {
-  id     Int
-  /// Multiple data types found: String: 0.4%, Float: 99.6% out of 1000 sampled entries
-  rating Json?
-  /// Multiple data types found: String: 0.4%, Int: 99.6% out of 1000 sampled entries
-  votes  Json
-}
+  // Fields for user-created reports
+  creator_user_id        String?  @db.ObjectId
+  creator_user           User?    @relation("UserReports", fields: [creator_user_id], references: [id])
 
-type MoviesTomatoes {
-  boxOffice   String?
-  consensus   String?
-  critic      MoviesTomatoesCritic?
-  dvd         DateTime?             @db.Date
-  fresh       Int?
-  lastUpdated DateTime              @db.Date
-  production  String?
-  rotten      Int?
-  viewer      MoviesTomatoesViewer?
-  website     String?
-}
+  // Fields for witness-texted reports
+  witness_id             String?  @db.ObjectId
+  witness                Witness? @relation("WitnessReports", fields: [witness_id], references: [id])
+  session_id             String?
+  chat_service_id        String?
+  last_message_at        DateTime?
+  unclaimed_at           DateTime?
+  claimed_at             DateTime?
 
-type MoviesTomatoesCritic {
-  meter      Int?
-  numReviews Int?
-  rating     Float?
-}
+  /// [Messages]
+  messages               Json?    // This will store the array of message objects
 
-type MoviesTomatoesViewer {
-  meter      Int?
-  numReviews Int?
-  rating     Float?
-}
-
-type TheatersLocation {
-  address TheatersLocationAddress
-  geo     TheatersLocationGeo
-}
-
-type TheatersLocationAddress {
-  city    String
-  state   String
-  street1 String
-  street2 String?
-  zipcode String
-}
-
-type TheatersLocationGeo {
-  coordinates Float[]
-  type        String
-}
-
-model comments {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  date     DateTime @db.Date
-  email    String
-  movie_id String   @db.ObjectId
-  name     String
-  text     String
-}
-
-model embedded_movies {
-  id                 String                  @id @default(auto()) @map("_id") @db.ObjectId
-  awards             EmbeddedMoviesAwards
-  cast               String[]
-  countries          String[]
-  directors          String[]
-  fullplot           String?
-  genres             String[]
-  imdb               EmbeddedMoviesImdb
-  languages          String[]
-  lastupdated        String
-  metacritic         Int?
-  num_mflix_comments Int
-  plot               String?
-  plot_embedding     Float[]
-  poster             String?
-  rated              String?
-  released           DateTime?               @db.Date
-  runtime            Int?
-  title              String
-  tomatoes           EmbeddedMoviesTomatoes?
-  type               String
-  writers            String[]
-  /// Multiple data types found: String: 0.6%, Int: 99.4% out of 1000 sampled entries
-  year               Json
-}
-
-model movies {
-  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
-  awards             MoviesAwards
-  cast               String[]
-  countries          String[]
-  directors          String[]
-  fullplot           String?
-  genres             String[]
-  imdb               MoviesImdb
-  languages          String[]
-  lastupdated        String
-  metacritic         Int?
-  num_mflix_comments Int
-  plot               String?
-  poster             String?
-  rated              String?
-  released           DateTime?       @db.Date
-  runtime            Int?
-  title              String
-  tomatoes           MoviesTomatoes?
-  type               String
-  writers            String[]
-  /// Multiple data types found: String: 0.2%, Int: 99.8% out of 1000 sampled entries
-  year               Json
-}
-
-model sessions {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  jwt     String
-  user_id String @unique(map: "user_id_1")
-}
-
-model theaters {
-  id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  location  TheatersLocation
-  theaterId Int
-
-  @@index([location.geo], map: "geo index")
-}
-
-model users {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  email       String @unique(map: "email_1")
-  name        String
-  password    String
-  /// Nested objects had no data in the sample dataset to introspect a nested type.
-  preferences Json?
+  // Common field for final stage
+  archived_at            DateTime?
+  @@map("reports")
 }

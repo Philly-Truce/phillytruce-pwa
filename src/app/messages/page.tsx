@@ -4,8 +4,8 @@ import {
   Client as ConversationsClient,
   Conversation,
 } from "@twilio/conversations";
-import ConversationsList from "@/components/messages/conversations-list";
-import ReportConversation from "@/components/messages/report-conversation";
+import ConversationsList from "@/src/components/messages/conversations-list";
+import ReportConversation from "@/src/components/messages/report-conversation";
 
 export default function Messages() {
   const [token, setToken] = useState<string | null>(null);
