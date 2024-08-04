@@ -9,24 +9,30 @@ export default function Menu() {
   const gap = "space-y-2";
   return (
     <div className="space-x-7 justify-center px-10 pt-3 pb-5 rounded-b-2xl shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px]">
-      <button className={gap}>
-        <MdHome className={center} />
-        <span>Home</span>
-      </button>
-      <button className={gap}>
-        <CgNotes className={center} />
-        Reports
-      </button>
+      <Link href="/">
+        <button className={gap}>
+          <MdHome className={center} />
+          <span>Home</span>
+        </button>
+      </Link>
+      <Link href="/reports">
+        <button className={gap}>
+          <CgNotes className={center} />
+          Reports
+        </button>
+      </Link>
       <Link href="/messages">
         <button className={gap}>
           <MdOutlineMessage className={center} />
           Message
         </button>
       </Link>
-      <button className={gap}>
-        <IoIosMore className={center} />
-        More
-      </button>
+      <Link href="/more">
+        <button className={gap}>
+          <IoIosMore className={center} />
+          More
+        </button>
+      </Link>
     </div>
   );
 }
