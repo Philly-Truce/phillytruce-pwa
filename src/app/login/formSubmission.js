@@ -40,7 +40,7 @@ export default function LoginForm() {
           className="pl-4 my-4 focus:outline-none"
         />
       </fieldset>
-      <Link href="#">
+      <Link href="/login/otp">
       {buttonDisabled == true ? (
         <button
           className="my-8 bg-accent px-6 py-3 w-full rounded-3xl text-sm font-medium text-primary text-opacity-40"

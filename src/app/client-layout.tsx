@@ -11,8 +11,8 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
 
-  const pathnamesForTopBanner = ["/login", "/more"];
-  const pathnamesForMenu = ["/login"];
+  const pathnamesForTopBanner = ["/login", "/login/otp", "/more"];
+  const pathnamesForMenu = ["/login","/login/otp"];
 
   const showTopBanner = !pathnamesForTopBanner.includes(pathname);
   const showMenu = !pathnamesForMenu.includes(pathname);
