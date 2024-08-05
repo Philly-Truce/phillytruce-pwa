@@ -1,13 +1,13 @@
 import withPWA from "next-pwa";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const isProd = process.env.NODE_ENV === "production";
 
-const pwaConfig = withPWA({
-  dest: "public",
-  disable: !isProd,
-});
+const nextConfig = {
+  reactStrictMode: true,
+  // Any other Next.js config options
+};
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default pwaConfig(nextConfig);
+export default isProd ? withPWA({ dest: "public" })(nextConfig) : nextConfig;
