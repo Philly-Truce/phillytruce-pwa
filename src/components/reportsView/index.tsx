@@ -34,7 +34,7 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
     unclaimed: {
       dialogTitle: "Would you like to claim this report?",
       dialogDescription:
-        "Claiming this report will make it attached t you as a Safe Path Monitor and you will be responsible for resolving it.",
+        "Claiming this report will make it attached to you as a Safe Path Monitor and you will be responsible for resolving it.",
       ctaButtonText: "Claim Report",
       buttonTWClasses: "bg-primary text-white",
     },
