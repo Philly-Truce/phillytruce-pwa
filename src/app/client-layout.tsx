@@ -1,5 +1,4 @@
 "use client";
-
 import Menu from "@/components/menu";
 import TopBanner from "@/components/top-banner";
 import { usePathname } from "next/navigation";
@@ -43,10 +42,12 @@ export default function ClientLayout({
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       {showTopBanner && <TopBanner page={getPage(pathname)} />}
-      <div className="overflow-y-scroll h-[70vh] px-4">{children}</div>
+      <main className="flex-grow flex flex-col">
+        <div className="flex-grow flex justify-start p-4">{children}</div>
+      </main>
       {showMenu && <Menu />}
-    </>
+    </div>
   );
 }

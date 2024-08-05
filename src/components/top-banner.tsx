@@ -42,14 +42,6 @@ export default function TopBanner({ page }: TopBannerProps) {
 
   return (
     <header>
-      <div className="bg-primary justify-between flex rounded-t-2xl p-3 px-10 text-white items-center">
-        <p>Time</p>
-        <div className="space-x-5 flex">
-          <MdOutlineSignalCellularAlt />
-          <FaWifi />
-          <FaBatteryFull />
-        </div>
-      </div>
       <div className="p-4 bg-primary font-normal text-center flex items-center justify-start px-4 space-x-32">
         <div className="rounded-full w-5 bg-slate-400">P</div>
         <h1 className="text-white">{getPageTitle()}</h1>
