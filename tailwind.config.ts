@@ -17,6 +17,8 @@ const config: Config = {
         default: "#334155",
         primary: "#1C4587",
         accent: "#F2F2F2",
+        accent2:"#727272",
+        link:"#2196F3",
       },
     },
   },
