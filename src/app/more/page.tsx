@@ -3,9 +3,10 @@ import ProfileIcon from "@/assets/icons/profile-icon";
 import PhoneIcon from "@/assets/icons/phone-icon";
 import ResourcesIcon from "@/assets/icons/resources-icon";
 import RightArrow from "@/assets/icons/right-arrow";
-import Divider from "@/assets/icons/Divider";
 import AnalyticsIcon from "@/assets/icons/analytics-icon";
 import SettingsIcon from "@/assets/icons/settings-icon";
+import HelpIcon from "@/assets/icons/help-icon";
+import Divider from "@/assets/icons/divider";
 
 
 interface Options {
@@ -38,7 +39,7 @@ export default function MenuDrawer() {
           <MenuOption icon={<ResourcesIcon />} option="Resources" />
           <MenuOption icon={<AnalyticsIcon />} option="Analytics" />
           <MenuOption icon={<SettingsIcon />} option="Settings" />
-          <MenuOption icon={<ProfileIcon />} option="Help Center" />
+          <MenuOption icon={<HelpIcon />} option="Help Center" />
         </ul>
         <button className="mt-32 items-center bg-[#1C4587] rounded-full  text-white w-full py-3">
         Log Out
