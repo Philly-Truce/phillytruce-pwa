@@ -1,4 +1,4 @@
-import textIcon from "@/assets/create-form-image/textIcon.svg";
+import textIcon from "../../assets/create-form-image/textIcon.svg";
 import dropdownIcon from "@/assets/create-form-image/dropdownIcon.svg";
 import Image from "next/image";
 import { useState, MouseEvent } from "react";
