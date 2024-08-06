@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from 'axios'
-import ReportView from '@/components/reportsView'
+import ReportView from '@/components/report-view'
 import reports from '@/data/reports.json'
-import type { Report } from '@/components/reportsView'
+import type { Report } from '@/components/report-view'
 
 /**
  * 
