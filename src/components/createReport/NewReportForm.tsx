@@ -3,6 +3,7 @@
 import OverviewField from "./OverviewField";
 import DetailField from "./DetailField";
 import ConnectedReportsField from "./ConnectedReportsField";
+import Continue from "./Continue";
 
 interface ReportData {
   incidentType: string[];
@@ -20,8 +21,10 @@ interface Report {
 const NewReportForm: React.FC<Report> = ({ report }) => {
   return (
     <div>
-       <p className="text-sm py-2">Please provide detailed information of the incident in this form</p>
-       <hr/>
+      <p className="text-sm py-2">
+        Please provide detailed information of the incident in this form
+      </p>
+      <hr />
       <form className="py-2">
         <h4 className="text-primary font-bold py-2 text-md">Overview</h4>
         {report ? (
@@ -47,7 +50,7 @@ const NewReportForm: React.FC<Report> = ({ report }) => {
             type="checkbox"
             name="PPD Notified"
             className="w-5 h-5 border-1 border-primary "
-            defaultChecked={report?.ppdNotified ? report.ppdNotified:false}
+            defaultChecked={report?.ppdNotified ? report.ppdNotified : false}
           />
           <label htmlFor="PPD Notified" className="pl-8">
             PPD Notified
@@ -57,9 +60,17 @@ const NewReportForm: React.FC<Report> = ({ report }) => {
           Connected Reports
         </h4>
         <ConnectedReportsField/> */}
-         <div className="flex flex-col gap-2 py-4 sticky">
-        <button className="bg-primary rounded-xl text-white text-sm py-2">SAVE</button>
-        <button className="rounded-xl text-primary text-sm py-2 p-1 border border-black">CANCEL</button>
+        <div className="flex flex-col gap-2 py-4 sticky">
+          {report ? (
+            <button className="bg-primary rounded-xl text-white text-sm py-2">
+              SAVE
+            </button>
+          ) : (
+            <button className="bg-gray-100 rounded-xl text-primary text-sm py-2" disabled>SAVE</button>
+          )}
+          <button className="rounded-xl text-primary text-sm py-2 p-1 border border-black">
+            CANCEL
+          </button>
         </div>
       </form>
     </div>
