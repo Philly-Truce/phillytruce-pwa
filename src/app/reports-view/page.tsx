@@ -3,17 +3,19 @@ import axios from 'axios'
 import ReportView from '@/components/reportsView'
 import reports from '@/data/reports.json'
 import type { Report } from '@/components/reportsView'
+
 /**
  * 
  * @param id the report id
  * @returns 
  */
-const fetchReportById = async (id: string): Promise<Report> => {
+const fetchReportById = async (id: number): Promise<Report> => {
     if (process.env.NODE_ENV === 'development') {
         const foundReport = reports.find(report => report.id === id);
         if (!foundReport) {
             throw new Error(`Report with id ${id} not found`);
         }
+
         return {
             ...foundReport,
             date: new Date(foundReport.date),
@@ -31,13 +33,12 @@ const fetchReportById = async (id: string): Promise<Report> => {
  * @returns Report view 
  */
 export default async function ReportsViewPage() {
-    const report = await fetchReportById("1805") ;
+    let id : number = 1805
+    const report = await fetchReportById(id) ;
 
     return (
-       <>
          <div className='pt-6 px-4'>
             <ReportView report={report} />
         </div>
-       </>
     )
 }
