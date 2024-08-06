@@ -6,23 +6,35 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma db push": "npx dotenv -e .env.local -- npx prisma db push"
+  },
+  "prisma": {
+    "schema": "./src/db/schema.prisma"
   },
   "dependencies": {
+    "@prisma/client": "^5.17.0",
     "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@twilio/conversations": "^2.5.0",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.12",
-    "lucide-react": "^0.417.0",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
+    "lucide-react": "^0.418.0",
     "next": "14.2.4",
+    "next-pwa": "^5.6.0",
+    "prisma-json-types-generator": "^3.0.4",
     "prop-types": "^15.8.1",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "twilio": "^5.2.2"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -31,7 +43,12 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
+    "prisma": "^5.17.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.4"
   }
 }
