@@ -44,9 +44,9 @@ export default function ClientLayout({
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-[95vh] my-5">
       {showTopBanner && <TopBanner page={getPage(pathname)} />}
-      <main className="flex-grow flex flex-col">
+      <main className="flex-grow flex flex-col overflow-y-scroll">
         <div className="flex-grow flex justify-start p-4">{children}</div>
       </main>
       {showMenu && <Menu />}
