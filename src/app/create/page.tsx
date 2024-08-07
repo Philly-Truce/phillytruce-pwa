@@ -1,9 +1,9 @@
-import NewReportForm from "@/components/createReport/NewReportForm";
+import ReportForm from "@/components/createReport/ReportForm";
 
 export default function createReport() {
   return (
     <div>
-      <NewReportForm />
+      <ReportForm/>
     </div>
   );
 }

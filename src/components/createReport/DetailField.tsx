@@ -119,11 +119,6 @@ const DetailField: React.FC<DetailFieldData> = ({
               {date ? (
                 <DatePicker reportedDate={new Date(date)} />
               ) : (
-                // <input
-                //   type="text"
-                //   value={date}
-                //   className="block w-1/2 appearance-none bg-white placeholder:text-black"
-                // />
                 <>
                 <Image src={dateIcon} alt="Date Icon" />
                 <DateInput />

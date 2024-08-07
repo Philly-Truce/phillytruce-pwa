@@ -1,6 +1,9 @@
-import NewReportForm from "@/components/createReport/NewReportForm";
+import ReportForm from "@/components/createReport/ReportForm";
 
 const report = {
+  id: "1805",
+  statusType: "unclaimed",
+  submittedType: "Text In",
   incidentType: ["Fight", "Bullying"],
   location: "xxx",
   date: "08/05/24",
@@ -12,7 +15,7 @@ const report = {
 export default function EditReport() {
   return (
     <div>
-      <NewReportForm report={report} />
+      <ReportForm report={report} />
     </div>
   );
 }
