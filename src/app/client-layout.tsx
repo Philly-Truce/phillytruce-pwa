@@ -44,6 +44,8 @@ export default function ClientLayout({
         return "resources";
       case "/settings":
         return "settings";
+        case "/contacts":
+          return "contacts";
       default:
         return "login";
     }

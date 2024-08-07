@@ -15,7 +15,9 @@ interface TopBannerProps {
     | "create"
     | "profile"
     | "resources"
-    | "settings";
+    | "settings"
+    | "contacts"
+    ;
 }
 
 export default function TopBanner({ page }: TopBannerProps) {
@@ -43,6 +45,8 @@ export default function TopBanner({ page }: TopBannerProps) {
         return "Resources";
       case "settings":
         return "Settings";
+        case "contacts":
+        return "Contacts";
       default:
         return "";
     }

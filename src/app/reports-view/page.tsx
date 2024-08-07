@@ -5,9 +5,9 @@ import reports from '@/data/reports.json'
 import type { Report } from '@/components/report-view'
 
 /**
- * 
+ *
  * @param id the report id
- * @returns 
+ * @returns
  */
 const fetchReportById = async (id: number): Promise<Report> => {
     if (process.env.NODE_ENV === 'development') {
@@ -28,9 +28,9 @@ const fetchReportById = async (id: number): Promise<Report> => {
 };
 
 /**
- * 
+ *
  * @param params - id of the report
- * @returns Report view 
+ * @returns Report view
  */
 export default async function ReportsViewPage() {
     let id : number = 1805
