@@ -1,27 +1,25 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import Chat from "@/components/messages/chat";
 import {
   Client as ConversationsClient,
   Conversation,
 } from "@twilio/conversations";
-import Cookies from "js-cookie";
-import ConversationsList from "@/components/messages/conversations-list";
-import SearchBar from "@/components/search-bar";
 
-export default function Messages() {
+export default function MessageInstance() {
+  const params = useParams<{ id: string }>();
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string>("testPineapple");
   const [statusString, setStatusString] = useState<String | null>(null);
   const [status, setStatus] = useState("default");
-  const [selectedConversationSid, setSelectedConversationSid] =
-    useState<String | null>(null);
+  const [selectedConversation, setSelectedConversation] =
+    useState<Conversation | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
-  // Upon render, if token is still less than an hour old retrieve from cookie
-  // otherwise fetch a new token and store token and date created in storage
-  // now token can be stored globally because of cookies and only needs be regenerated
-  // every hour instead of on every page load
+  // Fetch token
   useEffect(() => {
     const fetchOrRetrieveToken = async () => {
       const storedToken = Cookies.get("accessToken");
@@ -68,7 +66,7 @@ export default function Messages() {
     fetchOrRetrieveToken();
   }, []);
 
-  // Upon token retrieval, initilialize the conversations client
+  // Initialize conversation off token
   useEffect(() => {
     if (token) {
       initConversations();
@@ -109,26 +107,24 @@ export default function Messages() {
     });
 
     client.on("conversationJoined", (conversation) => {
-      setConversations((prevConversations) => [
-        ...prevConversations,
-        conversation,
-      ]);
+      conversation.sid === params.id
+        ? setSelectedConversation(conversation)
+        : "";
     });
 
-    client.on("conversationLeft", (thisConversation) => {
-      setConversations((prevConversations) =>
-        prevConversations.filter((it) => it !== thisConversation)
-      );
+    client.on("conversationLeft", (conversation) => {
+      conversation.sid === params.id ? setSelectedConversation(null) : "";
     });
   };
 
   return (
-    <main
-      id="messages-page"
-      className="flex flex-col gap-4 w-full items-center"
-    >
-      <SearchBar page="messages" />
-      <ConversationsList conversations={conversations} />
-    </main>
+    <div id="chat-container">
+      {selectedConversation && (
+        <Chat
+          conversationProxy={selectedConversation}
+          myIdentity="testPineapple"
+        />
+      )}
+    </div>
   );
 }

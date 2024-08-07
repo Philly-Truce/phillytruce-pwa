@@ -6,7 +6,7 @@ import {
   Message,
 } from "@twilio/conversations";
 
-export default function ReportConversation({
+export default function Chat({
   conversationProxy,
   myIdentity,
 }: {
@@ -17,6 +17,7 @@ export default function ReportConversation({
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingState, setLoadingState] = useState("initializing");
 
+  // retrieve the messages and add event listeners to the conversation
   useEffect(() => {
     if (conversationProxy) {
       const loadMessagesFor = (thisConversation: TwilioConversation) => {
@@ -62,22 +63,25 @@ export default function ReportConversation({
   };
 
   return (
-    <div id="message-input-container" className="flex flex-col h-full">
+    <div id="message-input-container" className="flex flex-col">
       <div id="message" className="flex-grow overflow-y-auto p-3">
-        {messages.map((message, index) => (
-          <div key={index} className="mb-3">
-            <strong>
-              {message.author === "+18333224149" ||
-              message.author?.startsWith("CH")
-                ? "Chatbot"
-                : message.author === "+18777804236"
-                ? "Reporter"
-                : message.author}
-              :{" "}
-            </strong>
-            {message.body}
-          </div>
-        ))}
+        {messages.map((message, index) => {
+          console.log(message.author, message.body);
+          return (
+            <div key={index} className="mb-3">
+              <strong>
+                {message.author?.startsWith("CH") ||
+                message.author === "+18333224149"
+                  ? "Chatbot"
+                  : message.author === "testPineapple"
+                  ? "You"
+                  : "Reporter"}
+                :{" "}
+              </strong>
+              {message.body}
+            </div>
+          );
+        })}
       </div>
       <form id="input" onSubmit={sendMessage} className="flex p-3">
         <input

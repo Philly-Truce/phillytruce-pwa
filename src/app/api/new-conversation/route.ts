@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         "configuration.filters": ["onMessageAdded"],
         "configuration.method": "POST",
         "configuration.url":
-          "https://department--learners-dynamic.trycloudflare.com/api/inbound-messages",
+          "https://painted-sides-quantities-rosa.trycloudflare.com/api/inbound-messages",
         "configuration.replayAfter": 0,
         target: "webhook",
       });
