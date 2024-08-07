@@ -9,7 +9,7 @@ export default function Menu() {
   const gap = "space-y-2";
   return (
     <div className="space-x-7 justify-center px-10 pt-3 pb-5 rounded-b-2xl shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px]">
-      <Link href="/">
+      <Link href="/home">
         <button className={gap}>
           <MdHome className={center} />
           <span>Home</span>

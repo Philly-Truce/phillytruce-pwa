@@ -7,7 +7,15 @@ const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
   reactStrictMode: true,
-  // Any other Next.js config options
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/login",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default isProd ? withPWA({ dest: "public" })(nextConfig) : nextConfig;

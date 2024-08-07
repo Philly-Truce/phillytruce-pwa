@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import reportData from "@/app/reports/report";
+import reportData from "@/data/report";
 import { SlArrowRight } from "react-icons/sl";
 import Link from "next/link";
 
-const ReportBrief: React.FC = () => {
+const ReportsBrief: React.FC = () => {
   const [clickedReports, setClickedReports] = useState<string[]>([]);
 
   const handleClick = (reportName: string) => {
@@ -42,4 +42,4 @@ const ReportBrief: React.FC = () => {
   );
 };
 
-export default ReportBrief;
+export default ReportsBrief;

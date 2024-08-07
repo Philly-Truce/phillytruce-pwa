@@ -1,6 +1,6 @@
 "use client";
-import Menu from "@/components/menu";
-import TopBanner from "@/components/top-banner";
+import Menu from "@/components/global/menu";
+import TopBanner from "@/components/global/top-banner";
 import { usePathname } from "next/navigation";
 
 export default function ClientLayout({
@@ -10,14 +10,22 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
 
-  const pathnamesForTopBanner = ["/login", "/more"];
-  const pathnamesForMenu = ["/login"];
+  const pathnamesForTopBanner = ["/more"];
+  const pathnamesForMenu = ["/login", "/login-otp"];
+  const pathnamesForRoundedXL = ["/login", "/login-otp"];
 
   const showTopBanner = !pathnamesForTopBanner.includes(pathname);
   const showMenu = !pathnamesForMenu.includes(pathname);
+  const applyRoundedXL = pathnamesForRoundedXL.includes(pathname);
 
   const getPage = (pathname: string) => {
     switch (pathname) {
+      case "/":
+        return "login";
+      case "/login-otp":
+        return "login-otp";
+      case "/home":
+        return "home";
       case "/more":
         return "more";
       case "/reports":
@@ -37,14 +45,18 @@ export default function ClientLayout({
       case "/settings":
         return "settings";
       default:
-        return "home";
+        return "login";
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div
+      className={`flex flex-col h-[95vh] my-5 ${
+        applyRoundedXL ? "rounded-xl" : ""
+      }`}
+    >
       {showTopBanner && <TopBanner page={getPage(pathname)} />}
-      <main className="flex-grow flex flex-col">
+      <main className="flex-grow flex flex-col overflow-y-scroll">
         <div className="flex-grow flex justify-start p-4">{children}</div>
       </main>
       {showMenu && <Menu />}
