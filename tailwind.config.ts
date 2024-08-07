@@ -33,6 +33,7 @@ const config = {
         },
         default: "#334155",
         accent: "#F2F2F2",
+        link: "#0D99FF",
         transparent: colors.transparent,
         white: colors.white,
         black: colors.black,
