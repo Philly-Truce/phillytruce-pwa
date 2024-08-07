@@ -17,7 +17,7 @@ export default function Main() {
   const buttonDisabled = !emailInputValue || !passwordInputValue;
 
   return (
-    <div className="my-36 w-full">
+    <div className="my-20 w-full">
       <section>
         <h1 className="text-3xl text-primary font-semibold mb-3">
           Welcome Back!
