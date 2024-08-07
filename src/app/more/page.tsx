@@ -21,7 +21,7 @@ export default function MenuDrawer() {
           <MenuOption icon={<PhoneIcon />} option="Contacts" />
           <MenuOption icon={<ResourcesIcon />} option="Resources" />
           <MenuOption icon={<AnalyticsIcon />} option="Analytics" />
-          <Link href="/messages"><MenuOption icon={<SettingsIcon />} option="Settings" /></Link>
+          <Link href="/settings"><MenuOption icon={<SettingsIcon />} option="Settings" /></Link>
           <MenuOption icon={<HelpIcon />} option="Help Center" />
         </ul>
         <button className=" items-center bg-[#1C4587] rounded-full  text-white w-full py-3">
