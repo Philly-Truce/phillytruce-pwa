@@ -5,6 +5,7 @@ import { FaBatteryFull } from "react-icons/fa6";
 interface TopBannerProps {
   page:
     | "home"
+    | "login"
     | "reports"
     | "reports-view"
     | "more"
@@ -19,6 +20,8 @@ interface TopBannerProps {
 export default function TopBanner({ page }: TopBannerProps) {
   const getPageTitle = () => {
     switch (page) {
+      case "login":
+        return "Welcome back!";
       case "reports":
         return "Reports";
       case "reports-view":

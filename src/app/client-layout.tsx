@@ -10,14 +10,16 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
 
-  const pathnamesForTopBanner = ["/login", "/more"];
-  const pathnamesForMenu = ["/login"];
+  const pathnamesForTopBanner = ["/login", "/more", "/login/otp"];
+  const pathnamesForMenu = ["/login", "/login/otp"];
 
   const showTopBanner = !pathnamesForTopBanner.includes(pathname);
   const showMenu = !pathnamesForMenu.includes(pathname);
 
   const getPage = (pathname: string) => {
     switch (pathname) {
+      case "/login":
+        return "login";
       case "/more":
         return "more";
       case "/reports":
