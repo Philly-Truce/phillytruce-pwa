@@ -35,8 +35,8 @@ export default function MenuDrawer() {
   
   return (
     <div className="bg-white text-black">
-      <div className="flex flex-col gap-44">
-        <ul>
+      <div className="flex flex-col h-full">
+          <ul className="flex-1">
           <MenuOption icon={<ProfileIcon />} option="Profile" />
           <MenuOption icon={<PhoneIcon />} option="Contacts" />
           <MenuOption icon={<ResourcesIcon />} option="Resources" />
@@ -44,13 +44,14 @@ export default function MenuDrawer() {
           <Link href="/messages"><MenuOption icon={<SettingsIcon />} option="Settings" /></Link>
           <MenuOption icon={<HelpIcon />} option="Help Center" />
         </ul>
-        <button className="items-center bg-[#1C4587] rounded-full  text-white w-full py-3">
+        <button className=" items-center bg-[#1C4587] rounded-full  text-white w-full py-3">
         Log Out
       </button>
+      
       </div>
-     
-     
       </div>
+    
+      
     
   );
 }
