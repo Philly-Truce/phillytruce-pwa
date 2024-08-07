@@ -3,8 +3,12 @@ import dropdownIcon from "../../assets/create-form-image/dropdownIcon.svg";
 import Image from "next/image";
 import { useState, MouseEvent } from "react";
 
-export default function OverviewField() {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+interface IncidentType {
+  incidentType ?: string[];
+}
+
+const OverviewField:React.FC<IncidentType> =({incidentType}) =>{
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(incidentType?incidentType:[]);
   const [showIncident, setShowIncident] = useState<boolean>(false);
   const incidents = [
     "Fight",
@@ -77,3 +81,6 @@ export default function OverviewField() {
     </>
   );
 }
+
+
+export default OverviewField;
