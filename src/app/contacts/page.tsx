@@ -1,6 +1,6 @@
 import Divider from "@/assets/icons/divider";
 import SearchIcon from "@/assets/icons/search-icon";
-import UserProfileIcon from "@/assets/icons/user-profile-icon";
+import UserProfileIcon from "@/assets/icons/contacts-user-icon";
 import { MenuOption } from "@/components/ui/menu-option";
 import React, { ReactNode } from 'react'
 

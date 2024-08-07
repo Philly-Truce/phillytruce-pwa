@@ -17,7 +17,7 @@ export default function MenuDrawer() {
     <div className="bg-white text-black">
       <div className="flex flex-col h-full">
           <ul className="flex-1">
-          <MenuOption icon={<ProfileIcon />} option="Profile" />
+          <Link href="/profile"><MenuOption icon={<ProfileIcon />} option="Profile" /></Link>
           <Link href="/contacts"><MenuOption icon={<PhoneIcon />} option="Contacts" /></Link>
           <Link href="/resources"><MenuOption icon={<ResourcesIcon />} option="Resources" /></Link>
           <MenuOption icon={<AnalyticsIcon />} option="Analytics" />
