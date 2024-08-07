@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "./formSubmission";
+import LoginForm from "./form-submission";
 
 export default function Main() {
   return (
@@ -16,9 +16,15 @@ export default function Main() {
       <form id="register" className="mb-10">
         <LoginForm />
       </form>
-      <a href="#" className="text-xs underline text-link mb-3">Need help loggin in?</a>
-      <p className="text-xs font-semibold text-accent2 pb-44">Don&apos;t have an account? <a href="#" className="text-xs underline text-link mb-3 font-normal">Sign up</a></p>
-      
+      <a href="#" className="text-xs underline text-link mb-3">
+        Need help loggin in?
+      </a>
+      <p className="text-xs font-semibold text-accent2 pb-44">
+        Don&apos;t have an account?{" "}
+        <a href="#" className="text-xs underline text-link mb-3 font-normal">
+          Sign up
+        </a>
+      </p>
     </div>
   );
 }

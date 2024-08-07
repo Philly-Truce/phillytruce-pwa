@@ -1,5 +1,5 @@
 import React from "react";
-import Otp from "./otpSubmission";
+import Otp from "./otp-submission";
 
 export default function Main() {
   return (
@@ -12,10 +12,15 @@ export default function Main() {
           Enter the code that we just texted you at<br></br>(215) 643-9802
         </p>
       </section>
-      
+
       <div className="mb-4">
         <Otp />
-        <p className="mt-4 mb-72 text-xs text-accent2 text-center">Didn&apos;t get the code? <a href="#" className="text-xs underline text-link mb-3 font-normal">Resend code</a></p>
+        <p className="mt-4 mb-72 text-xs text-accent2 text-center">
+          Didn&apos;t get the code?{" "}
+          <a href="#" className="text-xs underline text-link mb-3 font-normal">
+            Resend code
+          </a>
+        </p>
       </div>
     </div>
   );
