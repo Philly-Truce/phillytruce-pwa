@@ -1,7 +1,7 @@
 import { IoSearchSharp } from "react-icons/io5";
 import { IoMicOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
-import List from "./list";
+import List from "../../components/reports/list";
 import Link from "next/link";
 
 export default function Main() {

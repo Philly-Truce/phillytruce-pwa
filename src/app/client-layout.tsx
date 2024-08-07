@@ -1,6 +1,6 @@
 "use client";
-import Menu from "@/components/menu";
-import TopBanner from "@/components/top-banner";
+import Menu from "@/components/global/menu";
+import TopBanner from "@/components/global/top-banner";
 import { usePathname } from "next/navigation";
 
 export default function ClientLayout({
