@@ -5,6 +5,8 @@ import { FaBatteryFull } from "react-icons/fa6";
 interface TopBannerProps {
   page:
     | "home"
+    | "login"
+    | "login-otp"
     | "reports"
     | "reports-view"
     | "more"
@@ -21,6 +23,12 @@ interface TopBannerProps {
 export default function TopBanner({ page }: TopBannerProps) {
   const getPageTitle = () => {
     switch (page) {
+      case "home":
+        return "Welcome Alyssa!";
+      case "login":
+        return "";
+      case "login-otp":
+        return "";
       case "reports":
         return "Reports";
       case "reports-view":
@@ -40,14 +48,18 @@ export default function TopBanner({ page }: TopBannerProps) {
         case "contacts":
         return "Contacts";
       default:
-        return "Welcome Alyssa!";
+        return "";
     }
   };
+
+  const hideDivPaths = ["login", "login-otp"];
 
   return (
     <header>
       <div className="p-4 bg-primary font-normal text-center flex items-center justify-start px-4 space-x-32">
-        <div className="rounded-full w-5 bg-slate-400">P</div>
+        {!hideDivPaths.includes(page) && (
+          <div className="rounded-full w-5 bg-slate-400">P</div>
+        )}
         <h1 className="text-white">{getPageTitle()}</h1>
       </div>
     </header>

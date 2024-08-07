@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 body {
-  @apply max-w-96 justify-center items-center mx-auto my-2 shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px];
+  @apply max-w-96 justify-center items-center mx-auto shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px];
 }
 
 .placeholder-wrap::placeholder {
