@@ -5,9 +5,9 @@ export default function Contacts() {
   
   return (
     <div className="bg-white text-black">
-        <MenuOption option="Mental Health" />
-        <MenuOption option="Deescalation" />
-        <MenuOption option="Communication" />
+        
+        <input type="search" className="rounded-3xl bg-[#F3F3F3] w-full py-3 pl-10" placeholder="Search"  autoComplete="off" />
+    
       </div>   
   );
 }
