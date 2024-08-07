@@ -21,6 +21,8 @@ interface TopBannerProps {
 export default function TopBanner({ page }: TopBannerProps) {
   const getPageTitle = () => {
     switch (page) {
+      case "home":
+        return "Welcome Alyssa!";
       case "login":
         return "";
       case "login-otp":
@@ -42,7 +44,7 @@ export default function TopBanner({ page }: TopBannerProps) {
       case "settings":
         return "Settings";
       default:
-        return "Welcome Alyssa!";
+        return "";
     }
   };
 

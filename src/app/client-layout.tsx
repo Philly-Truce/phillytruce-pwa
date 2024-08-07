@@ -20,10 +20,12 @@ export default function ClientLayout({
 
   const getPage = (pathname: string) => {
     switch (pathname) {
-      case "/login":
+      case "/":
         return "login";
       case "/login-otp":
         return "login-otp";
+      case "/home":
+        return "home";
       case "/more":
         return "more";
       case "/reports":
@@ -43,7 +45,7 @@ export default function ClientLayout({
       case "/settings":
         return "settings";
       default:
-        return "home";
+        return "login";
     }
   };
 
