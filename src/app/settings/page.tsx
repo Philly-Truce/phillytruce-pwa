@@ -1,7 +1,7 @@
 import { MenuOption } from "@/components/ui/menu-option";
 
 
-export default function SettingsPage() {
+export default function Settings() {
   
   return (
     <div className="bg-white text-black">
