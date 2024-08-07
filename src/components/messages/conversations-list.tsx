@@ -52,7 +52,7 @@ export default function ConversationsList({
     <div id="placeholder-list-container" className="w-full">
       {conversations.length === 0 ? (
         <div className="p-3 text-center">
-          Loading...or You simply don't have any conversations
+          Loading...or You simply do not have any conversations
         </div>
       ) : (
         <div

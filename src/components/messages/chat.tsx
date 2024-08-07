@@ -6,7 +6,7 @@ import {
   Message,
 } from "@twilio/conversations";
 
-export default function Chat({
+export default function Home({
   conversationProxy,
   myIdentity,
 }: {
@@ -31,7 +31,7 @@ export default function Chat({
               }
             })
             .catch((err) => {
-              console.error("Couldn't fetch messages IMPLEMENT RETRY", err);
+              console.error("Could not fetch messages IMPLEMENT RETRY", err);
               setLoadingState("failed");
             });
         }
