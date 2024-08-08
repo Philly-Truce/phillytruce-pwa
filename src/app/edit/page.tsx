@@ -1,4 +1,4 @@
-import ReportForm from "@/components/create-report/ReportForm";
+import ReportForm from "@/components/create-report/report-form";
 
 const report = {
   id: "1805",
