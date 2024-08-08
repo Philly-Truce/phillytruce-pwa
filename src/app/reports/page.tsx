@@ -1,7 +1,8 @@
 import { IoSearchSharp } from "react-icons/io5";
 import { IoMicOutline } from "react-icons/io5";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ReportList from "@/app/reports/reportList.js";
+import { IoMdAdd } from "react-icons/io";
+import List from "../../components/reports/list";
+import Link from "next/link";
 
 export default function Main() {
   return (
@@ -19,23 +20,15 @@ export default function Main() {
           <IoMicOutline />
         </div>
       </section>
-      <section>
-        <Tabs defaultValue="unclaimed">
-          <TabsList>
-            <TabsTrigger value="unclaimed">Unclaimed</TabsTrigger>
-            <TabsTrigger value="progress">Progress</TabsTrigger>
-            <TabsTrigger value="closed">Closed</TabsTrigger>
-          </TabsList>
-          <TabsContent value="unclaimed">
-            <ReportList />
-          </TabsContent>
-          <TabsContent value="progress">
-            Here are cases that are in-progress.
-          </TabsContent>
-          <TabsContent value="closed">Here are closed cases.</TabsContent>
-        </Tabs>
-      </section>
-      <h1>This is the main page for reports.</h1>
+      <List />
+      <div className="bottom-4 right-4 float-end">
+        <Link href="/create">
+          <button className="flex items-center gap-2 p-4 bg-primary text-white rounded-xl shadow-[rgba(50,50,93,0.25)_0px_13px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_16px_-8px]">
+            <IoMdAdd />
+            New Report
+          </button>
+        </Link>
+      </div>
       {/*  */}
     </div>
   );

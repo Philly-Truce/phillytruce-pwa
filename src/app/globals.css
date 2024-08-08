@@ -1,9 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply max-w-96 justify-center items-center mx-auto my-2;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  @apply max-w-96 justify-center items-center mx-auto shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px];
+}
+
+.placeholder-wrap::placeholder {
+  white-space: pre-wrap; /* Allows the placeholder text to wrap */
+  text-overflow: ellipsis; /* Adds ellipsis if the text overflows */
+  overflow: hidden; /* Ensures that the text does not overflow the input field */
 }

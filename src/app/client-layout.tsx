@@ -1,7 +1,6 @@
 "use client";
-
-import TopBanner from "@/components/top-banner";
-import Menu from "@/components/menu";
+import Menu from "@/components/global/menu";
+import TopBanner from "@/components/global/top-banner";
 import { usePathname } from "next/navigation";
 
 export default function ClientLayout({
@@ -11,13 +10,28 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
 
-  const showTopBanner = pathname !== "/login";
-  const showMenu = pathname !== "/login";
+  const pathnamesForTopBanner = ["/more"];
+  const pathnamesForMenu = ["/login", "/login-otp"];
+  const pathnamesForRoundedXL = ["/login", "/login-otp"];
+
+  const showTopBanner = !pathnamesForTopBanner.includes(pathname);
+  const showMenu = !pathnamesForMenu.includes(pathname);
+  const applyRoundedXL = pathnamesForRoundedXL.includes(pathname);
 
   const getPage = (pathname: string) => {
     switch (pathname) {
+      case "/":
+        return "login";
+      case "/login-otp":
+        return "login-otp";
+      case "/home":
+        return "home";
+      case "/more":
+        return "more";
       case "/reports":
         return "reports";
+      case "/reports-view":
+        return "reports-view";
       case "/messages":
         return "messages";
       case "/edit":
@@ -30,16 +44,24 @@ export default function ClientLayout({
         return "resources";
       case "/settings":
         return "settings";
+        case "/contacts":
+          return "contacts";
       default:
-        return "home";
+        return "login";
     }
   };
 
   return (
-    <>
+    <div
+      className={`flex flex-col h-[95vh] my-5 ${
+        applyRoundedXL ? "rounded-xl" : ""
+      }`}
+    >
       {showTopBanner && <TopBanner page={getPage(pathname)} />}
-      <div className="px-4 overflow-y-scroll h-[70vh]">{children}</div>
+      <main className="flex-grow flex flex-col overflow-y-scroll">
+        <div className="flex-grow flex justify-start p-4">{children}</div>
+      </main>
       {showMenu && <Menu />}
-    </>
+    </div>
   );
 }

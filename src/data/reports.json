@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1805,
+        "statusType": "unclaimed",
+        "submittedType": "Text In",
+        "incidentType": "",
+        "location": "19019",
+        "date": "2024-07-31T05:47:09.608Z",
+        "details": "",
+        "connectedReports": []
+    },
+    {
+        "id": 1851,
+        "statusType": "in progress",
+        "submittedType": "SPM Alyssa",
+        "incidentType": "Fight",
+        "location": "123 Main St",
+        "date": "2024-07-21T05:47:09.608Z",
+        "details": "The incident involved two individuals, identified as John Doe and Jane Smith, both residents of the neighborhood. According to multiple eyewitness accounts, the altercation began as a verbal dispute, which quickly escalated into a physical confrontation. John Doe was observed shoving Jane Smith, who retaliated by striking Doe in the face. Bystanders attempted to intervene and separate the individuals. Both parties sustained minor injuries: Doe had a bleeding nose and Smith a bruise on her left arm. SPM arrived on the scene at 3:50 PM, diffused the situation, and provided first aid to the injured parties.",
+        "connectedReports": []
+    },
+    {
+        "id": 1839,
+        "statusType": "closed",
+        "submittedType": "SPM Alyssa",
+        "incidentType": "Fight",
+        "location": "123 Main St",
+        "date": "2024-07-25T05:47:09.608Z",
+        "details": "The incident involved two individuals, identified as",
+        "connectedReports": [1805, 1851]
+    }
+]
