@@ -1,11 +1,17 @@
+"use client";
+
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, CustomComponents } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+interface CustomDayPickerComponents extends CustomComponents {
+  IconLeft: React.FC;
+  IconRight: React.FC;
+}
 
 function Calendar({
   className,
@@ -51,37 +57,16 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      components={
+        {
+          IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
+          IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        } as CustomDayPickerComponents
+      }
       {...props}
     />
   );
 }
-
-function CalendarWithCustomNavigation(props: CalendarProps) {
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        className="absolute left-2 top-2"
-        onClick={() => {
-          // Custom previous button logic
-        }}
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-      <Calendar {...props} />
-      <button
-        type="button"
-        className="absolute right-2 top-2"
-        onClick={() => {
-          // Custom next button logic
-        }}
-      >
-        <ChevronRight className="h-6 w-6" />
-      </button>
-    </div>
-  );
-}
-
 Calendar.displayName = "Calendar";
 
-export { CalendarWithCustomNavigation as Calendar };
+export { Calendar };
