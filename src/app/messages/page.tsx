@@ -125,7 +125,7 @@ export default function Messages() {
   return (
     <main
       id="messages-page"
-      className="flex flex-col gap-4 w-full items-center"
+      className="flex flex-col gap-4 w-full items-center p-4 pt-14"
     >
       <SearchBar page="messages" />
       <ConversationsList conversations={conversations} />

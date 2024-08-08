@@ -43,10 +43,13 @@ export default function ClientLayout({
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div id="client-layout" className="flex flex-col max-h-screen h-screen">
       {showTopBanner && <TopBanner page={getPage(pathname)} />}
-      <main className="flex-grow flex flex-col">
-        <div className="flex-grow flex justify-start p-4">{children}</div>
+      {/* pt 10 below */}
+      <main id="client-layout-inner1" className="flex-grow flex flex-col ">
+        <div id="client-layout-inner2" className="flex-grow flex justify-start">
+          {children}
+        </div>
       </main>
       {showMenu && <Menu />}
     </div>

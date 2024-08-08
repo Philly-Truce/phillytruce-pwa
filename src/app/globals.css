@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply max-w-96 justify-center items-center mx-auto my-2 shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px];
-}
-
 .placeholder-wrap::placeholder {
   white-space: pre-wrap; /* Allows the placeholder text to wrap */
   text-overflow: ellipsis; /* Adds ellipsis if the text overflows */

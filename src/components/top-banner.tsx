@@ -41,11 +41,25 @@ export default function TopBanner({ page }: TopBannerProps) {
   };
 
   return (
-    <header>
-      <div className="p-4 bg-primary font-normal text-center flex items-center justify-start px-4 space-x-32">
-        <div className="rounded-full w-5 bg-slate-400">P</div>
-        <h1 className="text-white">{getPageTitle()}</h1>
+    // <header>
+    <div
+      id="top-banner"
+      className="px-4 py-2 bg-primary text-center items-center fixed w-full flex justify-between"
+    >
+      <div
+        id="circle-background"
+        className="rounded-full w-5 h-5 bg-slate-400 relative flex gap-1"
+      >
+        <div
+          id="initials"
+          className="absolute text-white text-center text-xs font-bold leading-[100%] tracking-[0.5px] top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4"
+        >
+          AV
+        </div>
       </div>
-    </header>
+      <h1 className="text-white">{getPageTitle()}</h1>
+      <div id="placeholder" className="w-5 h-5"></div>
+    </div>
+    // </header>
   );
 }

@@ -120,7 +120,10 @@ export default function MessageInstance({
   };
 
   return (
-    <div id="chat-container">
+    <div
+      id="chat-wrapper"
+      className="w-full bg-[#f3f3f3] max-h-screen pl-4 pt-10"
+    >
       {selectedConversation && (
         <Chat
           conversationProxy={selectedConversation}
