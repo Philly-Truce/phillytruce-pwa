@@ -5,10 +5,17 @@ import timeIcon from "../../assets/create-form-image/timeIcon.svg";
 import descriptionIcon from "../../assets/create-form-image/descriptionIcon.svg";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import DatePicker from "./DatePicker";
+
+interface DetailFieldData {
+  location?: string;
+  date?: string;
+  time?: string;
+  descriptionData?: string;
+}
 
 const DateInput: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  
 
   useEffect(() => {
     if (inputRef.current) {
@@ -66,20 +73,24 @@ const TimeInput: React.FC = () => {
   );
 };
 
-export default function DetailField() {
-    const [incidentLocation, setIncidentLocation] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setIncidentLocation(e.target.value)
+const DetailField: React.FC<DetailFieldData> = ({
+  location,
+  date,
+  time,
+  descriptionData,
+}) => {
+  const [incidentLocation, setIncidentLocation] = useState<string>(
+    location ? location : ""
+  );
+  const [description, setDescription] = useState<string>(
+    descriptionData ? descriptionData : ""
+  );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIncidentLocation(e.target.value);
   };
 
-
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setDescription(e.target.value)
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
   };
   return (
     <>
@@ -104,8 +115,15 @@ export default function DetailField() {
           <legend className="text-sm px-2">Date</legend>
           <div className="relative">
             <div className="flex flex-row">
-              <Image src={dateIcon} alt="Date Icon" />
-              <DateInput />
+             
+              {date ? (
+                <DatePicker reportedDate={new Date(date)} />
+              ) : (
+                <>
+                <Image src={dateIcon} alt="Date Icon" />
+                <DateInput />
+                </>
+              )}
             </div>
           </div>
         </fieldset>
@@ -114,7 +132,15 @@ export default function DetailField() {
           <div className="relative">
             <div className="flex flex-row">
               <Image src={timeIcon} alt="Time Icon" />
-              <TimeInput />
+              {time ? (
+                <input
+                  type="text"
+                  value={time}
+                  className="block w-1/2 appearance-none bg-white placeholder:text-black"
+                />
+              ) : (
+                <TimeInput />
+              )}
             </div>
           </div>
         </fieldset>
@@ -131,10 +157,12 @@ export default function DetailField() {
               value={description}
               onChange={handleDescriptionChange}
             />
-            <Image src={editIcon} alt="Icon"/>
+            <Image src={editIcon} alt="Icon" />
           </div>
         </div>
       </fieldset>
     </>
   );
-}
+};
+
+export default DetailField;
