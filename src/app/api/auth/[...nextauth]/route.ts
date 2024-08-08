@@ -1,9 +1,12 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import { NextApiHandler } from "next";
+import { NextAuthOptions } from "next-auth";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [],
 };
 
-const handler: NextApiHandler = (req, res) => NextAuth(req, res, authOptions);
-export { handler as GET, handler as POST };
+const authHandler: NextApiHandler = (req, res) =>
+  NextAuth(req, res, authOptions);
+
+export { authHandler as GET, authHandler as POST };
