@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         "configuration.filters": ["onMessageAdded"],
         "configuration.method": "POST",
         "configuration.url":
-          "https://painted-sides-quantities-rosa.trycloudflare.com/api/inbound-messages",
+          "https://newsletter-techrepublic-creativity-tier.trycloudflare.com/api/inbound-messages",
         "configuration.replayAfter": 0,
         target: "webhook",
       });

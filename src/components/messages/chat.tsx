@@ -5,6 +5,7 @@ import {
   Conversation as TwilioConversation,
   Message,
 } from "@twilio/conversations";
+import { generateFriendlyChatName } from "@/lib/utils";
 
 export default function Home({
   conversationProxy,
@@ -20,6 +21,9 @@ export default function Home({
   // retrieve the messages and add event listeners to the conversation
   useEffect(() => {
     if (conversationProxy) {
+      // Merely being on this page sets all messages to read
+      conversationProxy.setAllMessagesRead();
+
       const loadMessagesFor = (thisConversation: TwilioConversation) => {
         if (conversationProxy === thisConversation) {
           thisConversation
@@ -41,6 +45,7 @@ export default function Home({
 
       const messageAdded = (m: Message) => {
         setMessages((prevMessages) => [...prevMessages, m]);
+        conversationProxy.setAllMessagesRead();
       };
       conversationProxy.on("messageAdded", messageAdded);
 
@@ -64,25 +69,29 @@ export default function Home({
 
   return (
     <div id="message-input-container" className="flex flex-col">
-      <div id="message" className="flex-grow overflow-y-auto p-3">
+      {/* Message Bubble */}
+      <div
+        id="message-bubbles-container"
+        className="flex-grow overflow-y-auto p-3"
+      >
         {messages.map((message, index) => {
-          console.log(message.author, message.body);
+          const friendlyName = generateFriendlyChatName(message.author);
           return (
-            <div key={index} className="mb-3">
-              <strong>
-                {message.author?.startsWith("CH") ||
-                message.author === "+18333224149"
-                  ? "Chatbot"
-                  : message.author === "testPineapple"
-                  ? "You"
-                  : "Reporter"}
-                :{" "}
-              </strong>
-              {message.body}
+            <div
+              id="message-bubble"
+              key={index}
+              className={`mb-3 ${
+                friendlyName === "Chatbot" || friendlyName === "You"
+                  ? "bg-cyan-200"
+                  : "bg-white"
+              }`}
+            >
+              {`${friendlyName}: ${message.body}`}
             </div>
           );
         })}
       </div>
+      {/* Input */}
       <form id="input" onSubmit={sendMessage} className="flex p-3">
         <input
           type="text"

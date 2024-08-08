@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Chat from "@/components/messages/chat";
@@ -9,8 +8,11 @@ import {
   Conversation,
 } from "@twilio/conversations";
 
-export default function MessageInstance() {
-  const params = useParams<{ id: string }>();
+export default function MessageInstance({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string>("testPineapple");
   const [statusString, setStatusString] = useState<String | null>(null);

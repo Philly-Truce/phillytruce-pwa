@@ -20,7 +20,7 @@ const roboto = Roboto({
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={`${roboto.className} my-0`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
