@@ -5,7 +5,7 @@ import timeIcon from "../../assets/create-form-image/timeIcon.svg";
 import descriptionIcon from "../../assets/create-form-image/descriptionIcon.svg";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import DatePicker from "./DatePicker";
+import DatePicker from "./date-picker";
 
 interface DetailFieldData {
   location?: string;
@@ -115,13 +115,12 @@ const DetailField: React.FC<DetailFieldData> = ({
           <legend className="text-sm px-2">Date</legend>
           <div className="relative">
             <div className="flex flex-row">
-             
               {date ? (
                 <DatePicker reportedDate={new Date(date)} />
               ) : (
                 <>
-                <Image src={dateIcon} alt="Date Icon" />
-                <DateInput />
+                  <Image src={dateIcon} alt="Date Icon" />
+                  <DateInput />
                 </>
               )}
             </div>

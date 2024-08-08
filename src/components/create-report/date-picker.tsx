@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format } from "date-fns"
-import Image from "next/image"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import * as React from "react";
+import { format } from "date-fns";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/pop-over";
 import dateIcon from "../../assets/create-form-image/dateIcon.svg";
 
-interface ReportedDate{
-    reportedDate ?: Date;
+interface ReportedDate {
+  reportedDate?: Date;
 }
 
-const DatePicker:React.FC<ReportedDate> = ({reportedDate}) =>{
-  const [date, setDate] = React.useState<Date | undefined>(reportedDate)
+const DatePicker: React.FC<ReportedDate> = ({ reportedDate }) => {
+  const [date, setDate] = React.useState<Date | undefined>(reportedDate);
 
   return (
     <Popover>
@@ -30,8 +30,8 @@ const DatePicker:React.FC<ReportedDate> = ({reportedDate}) =>{
             !date && "text-muted-foreground"
           )}
         >
-          <Image src={dateIcon} alt="Date Icon"/>
-          {date ? format(date, "MM/dd/yy") : ''}
+          <Image src={dateIcon} alt="Date Icon" />
+          {date ? format(date, "MM/dd/yy") : ""}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -39,12 +39,11 @@ const DatePicker:React.FC<ReportedDate> = ({reportedDate}) =>{
           mode="single"
           selected={date}
           onSelect={setDate}
-          initialFocus
           className="bg-gray-200"
         />
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
 export default DatePicker;

@@ -1,7 +1,7 @@
 "use client";
 
-import OverviewField from "./OverviewField";
-import DetailField from "./DetailField";
+import OverviewField from "./overview-field";
+import DetailField from "./detail-field";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -20,8 +20,7 @@ interface Report {
 }
 
 const ReportForm: React.FC<Report> = ({ report }) => {
-  
-  const [saveEnable,setSaveEnable] = useState<boolean>(false)
+  const [saveEnable, setSaveEnable] = useState<boolean>(false);
 
   return (
     <div>
@@ -68,13 +67,16 @@ const ReportForm: React.FC<Report> = ({ report }) => {
         <div className="flex flex-col gap-2 py-4 sticky">
           {report ? (
             <Link href="/reports-view">
-              <button className="w-full bg-primary rounded-xl text-white text-sm py-2" >
+              <button className="w-full bg-primary rounded-xl text-white text-sm py-2">
                 SAVE
               </button>
             </Link>
           ) : (
             <Link href="/reports-view">
-              <button className="bg-gray-100 w-full rounded-xl text-primary text-sm py-2" disabled={saveEnable}>
+              <button
+                className="bg-gray-100 w-full rounded-xl text-primary text-sm py-2"
+                disabled={saveEnable}
+              >
                 SAVE
               </button>
             </Link>
