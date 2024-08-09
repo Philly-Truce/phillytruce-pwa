@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Conversation, Message } from "@twilio/conversations";
 import Link from "next/link";
 import { generateFriendlyChatName } from "@/lib/utils";
@@ -11,6 +11,16 @@ export default function ConversationsList({
   const [conversationToLatestMessage, setConversationToLatestMessage] =
     useState<Record<string, Message | null>>({});
 
+  const updateLatestMessage = useCallback(
+    (conversation: Conversation, message: Message) => {
+      setConversationToLatestMessage((prev) => ({
+        ...prev,
+        [conversation.sid]: message,
+      }));
+    },
+    []
+  );
+
   useEffect(() => {
     const fetchLatestMessages = async () => {
       const updatedConversationToLatestMessage: Record<string, Message | null> =
@@ -19,8 +29,7 @@ export default function ConversationsList({
         try {
           const messagePaginator = await conversation.getMessages(1);
           const latestMessage = messagePaginator.items[0] || null;
-          updatedConversationToLatestMessage[conversation.sid] =
-            latestMessage || null;
+          updatedConversationToLatestMessage[conversation.sid] = latestMessage;
         } catch (error) {
           console.error(
             `Error fetching message for conversation ${conversation.sid}:`,
@@ -31,22 +40,30 @@ export default function ConversationsList({
       }
       setConversationToLatestMessage(updatedConversationToLatestMessage);
     };
+
     fetchLatestMessages();
 
-    // Subscribe to new messages for each conversation
-    conversations.map((conversation) =>
-      conversation.on("messageAdded", (message) => {
-        fetchLatestMessages();
-      })
-    );
-  }, [conversations]);
+    // Set up listeners for new messages
+    const messageListeners = conversations.map((conversation) => {
+      const listener = (message: Message) =>
+        updateLatestMessage(conversation, message);
+      conversation.on("messageAdded", listener);
+      return { conversation, listener };
+    });
+
+    // Cleanup function to remove listeners
+    return () => {
+      messageListeners.forEach(({ conversation, listener }) => {
+        conversation.off("messageAdded", listener);
+      });
+    };
+  }, [conversations, updateLatestMessage]);
 
   return (
     <div id="placeholder-list-container" className="w-full">
       {conversations.length === 0 ? (
-        <div className="p-3 text-center">
-          Loading...or You simply do not have any conversations
-        </div>
+        // Note: if screen is in loading... there are either no conversations to show or the conversationsa re loading
+        <div className="p-3 text-center">Loading ...</div>
       ) : (
         <div
           id="conversations-list-container"
@@ -59,7 +76,7 @@ export default function ConversationsList({
                 key={conversation.sid}
                 href={`/messages/${conversation.sid}`}
               >
-                {conversation.lastReadMessageIndex && latestMessage?.index && (
+                {latestMessage?.index && (
                   <div
                     id="conversation-container"
                     className={`cursor-pointer transition-colors duration-300 hover:bg-gray-50 border-b-[var(#F2F2F2,#F2F2F2)] border-b border-solid flex ${

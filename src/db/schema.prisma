@@ -40,6 +40,7 @@ model User {
   name             String
   last_logged_in_at DateTime
   created_at        DateTime
+  is_messaging_onboarding_complete Boolean
   reports          Report[] @relation("UserReports")
   @@map("users")
 }

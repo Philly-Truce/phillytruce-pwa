@@ -44,7 +44,7 @@ export default function TopBanner({ page }: TopBannerProps) {
     // <header>
     <div
       id="top-banner"
-      className="px-4 py-2 bg-primary text-center items-center fixed w-full flex justify-between"
+      className="px-4 py-2 bg-primary text-center items-center fixed w-full flex justify-between min-h-16"
     >
       <div
         id="circle-background"
@@ -57,7 +57,9 @@ export default function TopBanner({ page }: TopBannerProps) {
           AV
         </div>
       </div>
-      <h1 className="text-white">{getPageTitle()}</h1>
+      <h1 className="text-white text-[22px] font-normal leading-7">
+        {getPageTitle()}
+      </h1>
       <div id="placeholder" className="w-5 h-5"></div>
     </div>
     // </header>

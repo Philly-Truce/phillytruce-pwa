@@ -17,6 +17,9 @@ export default function Messages() {
   const [selectedConversationSid, setSelectedConversationSid] =
     useState<String | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [filteredConversations, setFilteredConversations] = useState<
+    Conversation[]
+  >([]);
 
   // Upon render, if token is still less than an hour old retrieve from cookie
   // otherwise fetch a new token and store token and date created in storage
@@ -122,13 +125,40 @@ export default function Messages() {
     });
   };
 
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    if (!query) {
+      setFilteredConversations(conversations);
+      return;
+    }
+
+    const filtered = await Promise.all(
+      conversations.map(async (conversation) => {
+        const messagePaginator = await conversation.getMessages();
+        const messages = messagePaginator.items;
+        const matchingMessages = messages.filter((message) =>
+          message.body?.toLowerCase().includes(query.toLowerCase())
+        );
+        return matchingMessages.length > 0 ? conversation : null;
+      })
+    );
+
+    setFilteredConversations(
+      filtered.filter((conv): conv is Conversation => conv !== null)
+    );
+  };
+
+  useEffect(() => {
+    setFilteredConversations(conversations);
+  }, [conversations]);
+
   return (
     <main
       id="messages-page"
-      className="flex flex-col gap-4 w-full items-center p-4 pt-14"
+      className="flex flex-col gap-4 w-full items-center p-4 pt-20"
     >
-      <SearchBar page="messages" />
-      <ConversationsList conversations={conversations} />
+      <SearchBar page="messages" onSearch={handleSearch} />
+      <ConversationsList conversations={filteredConversations} />
     </main>
   );
 }

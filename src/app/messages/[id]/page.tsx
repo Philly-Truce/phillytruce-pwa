@@ -8,6 +8,70 @@ import {
   Conversation,
 } from "@twilio/conversations";
 
+const OnboardingModal = ({
+  step,
+  onNext,
+}: {
+  step: number;
+  onNext: React.Dispatch<React.SetStateAction<number>>;
+}) => {
+  const tutorialContent = [
+    "This is the chat interface for Report #3333:Would you like a tutorial on how to navigate this page:Yes",
+    "Above the dotted line:Everything above this dotted line represents the conversation between the reporter and Philly Truce bot.:Next",
+    "Below the dotted line:Everything below the line represents the conversation that YOU may have with the reporter.:Next",
+    "Accessing the Report:By clicking this icon, you will be brought to the Report associated with this Message.:Finish Tutorial",
+  ];
+
+  const handleNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onNext((prevStep) => prevStep + 1);
+  };
+
+  const [title, text, buttonName] = tutorialContent[step].split(":");
+
+  return (
+    <>
+      <div
+        id="modal"
+        className={`w-4/5 z-20 fixed top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-[28px] ${
+          step === 0
+            ? "modal-top"
+            : step === 1
+            ? "modal-bottom"
+            : "modal-top-right"
+        }`}
+      >
+        <div
+          id="modal-title-text-wrapper"
+          className="mx-6 mt-6 flex flex-col gap-4"
+        >
+          <div id="modal-title" className="text-xl font-medium leading-8">
+            {title}
+          </div>
+          <div
+            id="modal-text"
+            className="text-slate-700 text-sm font-normal leading-5 tracking-[0.1px];"
+          >
+            {text}
+          </div>
+        </div>
+        <div id="modal-button-wrapper" className="p-5 flex justify-end">
+          <button
+            id="modal-button"
+            className="text-[#1C4587] text-sm font-extrabold leading-5 tracking-[0.1px];"
+            onClick={handleNext}
+          >
+            {buttonName}
+          </button>
+        </div>
+      </div>
+      <div
+        id="overlay"
+        className="fixed w-screen h-screen z-10 bg-black inset-0 opacity-35"
+      />
+    </>
+  );
+};
+
 export default function MessageInstance({
   params,
 }: {
@@ -20,6 +84,7 @@ export default function MessageInstance({
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [onboardingStep, setOnboardingStep] = useState(0);
 
   // Fetch token
   useEffect(() => {
@@ -120,15 +185,25 @@ export default function MessageInstance({
   };
 
   return (
-    <div
-      id="chat-wrapper"
-      className="w-full bg-[#f3f3f3] max-h-screen pl-4 pt-10"
-    >
-      {selectedConversation && (
-        <Chat
-          conversationProxy={selectedConversation}
-          myIdentity="testPineapple"
-        />
+    <div id="chat-wrapper" className="w-full bg-[#f3f3f3] pt-16 max-h-screen">
+      {selectedConversation ? (
+        <div id="chat-onboarding-wrapper" className="h-full">
+          <Chat
+            conversationProxy={selectedConversation}
+            myIdentity="testPineapple"
+            onboardingStep={onboardingStep}
+          />
+          {onboardingStep < 4 && (
+            <OnboardingModal
+              step={onboardingStep}
+              onNext={() => setOnboardingStep(onboardingStep + 1)}
+            />
+          )}
+        </div>
+      ) : (
+        <div id="loading" className="text-center mt-72">
+          Loading ...
+        </div>
       )}
     </div>
   );

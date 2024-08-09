@@ -1,4 +1,10 @@
-export default function SearchBar({ page }: { page: string }) {
+export default function SearchBar({
+  page,
+  onSearch,
+}: {
+  page: string;
+  onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const placeholderText =
     page === "messages" ? "Search for messages" : "Search for reports";
 
@@ -31,13 +37,13 @@ export default function SearchBar({ page }: { page: string }) {
             </clipPath>
           </defs>
         </svg>
-
-        <input
-          type="text"
-          placeholder={placeholderText}
-          className="bg-transparent"
-        />
       </div>
+      <input
+        type="text"
+        placeholder={placeholderText}
+        className="bg-transparent focus:outline-none"
+        onChange={onSearch}
+      />
       {/* Mic SVG */}
       <svg
         width="48"
