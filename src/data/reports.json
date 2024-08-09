@@ -1,6 +1,6 @@
 [
     {
-        "id": "1805",
+        "id": 1805,
         "statusType": "unclaimed",
         "submittedType": "Text In",
         "incidentType": "",
@@ -10,7 +10,7 @@
         "connectedReports": []
     },
     {
-        "id": "1851",
+        "id": 1851,
         "statusType": "in progress",
         "submittedType": "SPM Alyssa",
         "incidentType": "Fight",
@@ -20,13 +20,13 @@
         "connectedReports": []
     },
     {
-        "id": "1839",
+        "id": 1839,
         "statusType": "closed",
         "submittedType": "SPM Alyssa",
         "incidentType": "Fight",
         "location": "123 Main St",
         "date": "2024-07-25T05:47:09.608Z",
         "details": "The incident involved two individuals, identified as",
-        "connectedReports": ["1805", "1851"]
+        "connectedReports": [1805, 1851]
     }
 ]

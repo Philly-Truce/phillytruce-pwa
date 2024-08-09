@@ -3,7 +3,7 @@ export default function SearchBar({
   onSearch,
 }: {
   page: string;
-  onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   const placeholderText =
     page === "messages" ? "Search for messages" : "Search for reports";

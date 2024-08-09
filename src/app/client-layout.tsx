@@ -1,5 +1,5 @@
-import Menu from "@/components/menu";
-import TopBanner from "@/components/top-banner";
+import Menu from "@/components/global/menu";
+import TopBanner from "@/components/global/top-banner";
 
 export default function ClientLayout({
   children,

@@ -17,15 +17,12 @@ yarn install
 
   - Next.js
   - TypeScript
-  - React
-  - Vite
   - Tailwind CSS
+  - Shadcn
 
 - Back-End
-  - AWS
-  - MongoDB (tentative)
-  - Mongoose
-  - Express.js
+  - MongoDB
+  - Twilio
 
 ### Working Tree
 
@@ -37,15 +34,6 @@ yarn install
         - page.tsx
 - configuration files
 ```
-
-### Working Branches
-
-- main
-- test
-- landing
-- login
-- home
-- reports
 
 ### Background
 

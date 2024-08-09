@@ -8,9 +8,9 @@ import React from 'react'
 export default function ReportsViewLayout({ children } : { children : React.ReactNode }) {
 
     return (
-        <div>
-            {children}
-        </div>
+        <>
+        {children}
+        </>
     )
 
 }

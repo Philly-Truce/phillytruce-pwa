@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
@@ -40,10 +42,6 @@ const config = {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -52,6 +50,12 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        default: "#334155",
+        accent: "#F2F2F2",
+        link: "#0D99FF",
+        transparent: colors.transparent,
+        white: colors.white,
+        black: colors.black,
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,6 +84,9 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         slide: "slide 750ms ease-in-out",
+      },
+      boxShadow: {
+        ...defaultTheme.boxShadow,
       },
     },
   },

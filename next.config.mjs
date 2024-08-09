@@ -1,13 +1,21 @@
 import withPWA from "next-pwa";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const isProd = process.env.NODE_ENV === "production";
 
-const pwaConfig = withPWA({
-  dest: "public",
-  disable: !isProd,
-});
+const nextConfig = {
+  reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/login",
+        permanent: true,
+      },
+    ];
+  },
+};
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default pwaConfig(nextConfig);
+export default isProd ? withPWA({ dest: "public" })(nextConfig) : nextConfig;
