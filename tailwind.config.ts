@@ -37,10 +37,14 @@ const config = {
         transparent: colors.transparent,
         white: colors.white,
         black: colors.black,
+        homelistbg: "#F3F3F3",
       },
       boxShadow: {
         ...defaultTheme.boxShadow,
       },
+      fontSize: {
+        '2xs': '0.625rem'
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
