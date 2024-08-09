@@ -32,7 +32,7 @@ const OnboardingModal = ({
     <>
       <div
         id="modal"
-        className={`w-4/5 z-20 fixed top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-[28px] ${
+        className={`w-4/5 z-30 fixed top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-[28px] ${
           step === 0
             ? "modal-top"
             : step === 1
@@ -66,17 +66,15 @@ const OnboardingModal = ({
       </div>
       <div
         id="overlay"
-        className="fixed w-screen h-screen z-10 bg-black inset-0 opacity-35"
+        className={`fixed w-screen h-screen z-10 ${
+          step < 3 && "bg-black inset-0 opacity-35"
+        }`}
       />
     </>
   );
 };
 
-export default function MessageInstance({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function Home({ params }: { params: { id: string } }) {
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string>("testPineapple");
   const [statusString, setStatusString] = useState<String | null>(null);
@@ -184,8 +182,19 @@ export default function MessageInstance({
     });
   };
 
+  // Debugging
+  useEffect(() => {
+    console.log("onboardingStep:", onboardingStep);
+  }, [onboardingStep]);
+
   return (
     <div id="chat-wrapper" className="w-full bg-[#f3f3f3] pt-16 max-h-screen">
+      <div
+        id="document-icon-spotlight"
+        className={`fixed w-14 h-14 z-20 top-2 right-3 ${
+          onboardingStep === 3 && "shadow-[0_0_0_9999px_rgba(0,0,0,0.35)]"
+        }`}
+      />
       {selectedConversation ? (
         <div id="chat-onboarding-wrapper" className="h-full">
           <Chat

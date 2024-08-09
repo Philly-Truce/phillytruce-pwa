@@ -133,7 +133,7 @@ export default function Home({
               {isLastChatbotMessage && (
                 <div id="divider-wrapper" className="relative z-30">
                   <div
-                    id="divider-overlay"
+                    id="divider-spotlight"
                     className={`absolute inset-0 ${
                       onboardingStep < 3 && onboardingStep > 0
                         ? "bg-white bg-opacity-80"
@@ -142,7 +142,7 @@ export default function Home({
                       onboardingStep === 1
                         ? "top-2"
                         : onboardingStep === 2
-                        ? "top-14"
+                        ? "!top-14"
                         : onboardingStep > 2
                         ? ""
                         : ""

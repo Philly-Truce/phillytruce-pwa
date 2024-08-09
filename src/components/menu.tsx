@@ -1,12 +1,23 @@
+"use client";
+
 import { MdHome } from "react-icons/md";
 import { MdOutlineMessage } from "react-icons/md";
 import { IoIosMore } from "react-icons/io";
 import { CgNotes } from "react-icons/cg";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Menu() {
   const center = "mx-auto";
   const gap = "space-y-2";
+  const pathname = usePathname();
+
+  const showMenu = !(
+    pathname === "/login" || pathname.startsWith("/messages/CH")
+  );
+
+  if (!showMenu) return null;
+
   return (
     <div className="space-x-7 justify-center px-10 pt-3 pb-5 rounded-b-2xl shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px]">
       <Link href="/">
