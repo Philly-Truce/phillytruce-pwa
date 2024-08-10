@@ -22,7 +22,7 @@ export default function Home({
   const [loadingState, setLoadingState] = useState("initializing");
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
-  // retrieve the messages and add event listeners to the conversation
+  // retrieve the messages and sprinkle in thhe event listeners
   useEffect(() => {
     if (conversationProxy) {
       // Merely being on this page sets all messages to read
