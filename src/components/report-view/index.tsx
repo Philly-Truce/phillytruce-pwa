@@ -80,125 +80,121 @@ export default async function ReportView({ report }: { report: Report }) {
     "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
 
   return (
-    <>
-      <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
-        <div>
-          {/* Overview: Status, Submitted By, Incident Type */}
-          <div className="overview w-full">
-            <h3 className="font-semibold text-base text-primary mb-2">
-              Overview
-            </h3>
-            <div className="w-full gap-y-4 flex flex-col">
-              <div className="flex flex-row w-full gap-x-2 justify-between">
-                <InputField
-                  name="status-type"
-                  placeholder=""
-                  icon={
-                    submittedType === "text-in"
-                      ? "/icons/textsms.svg"
-                      : "/icons/SPM_shield.svg"
-                  }
-                  label="Status Type"
-                  defaultValue={statusType}
-                  readOnly={true}
-                  width="1/2"
-                />
-                <InputField
-                  name="submitted-type"
-                  placeholder=""
-                  label="Submitted Type"
-                  defaultValue={submittedType}
-                  icon="/icons/textsms.svg"
-                  readOnly={true}
-                  width="1/2"
-                />
-              </div>
+    <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
+      <div>
+        {/* Overview: Status, Submitted By, Incident Type */}
+        <div className="overview w-full">
+          <h3 className="font-semibold text-base text-primary mb-2">
+            Overview
+          </h3>
+          <div className="w-full gap-y-4 flex flex-col">
+            <div className="flex flex-row w-full gap-x-2 justify-between">
               <InputField
-                name="incident-type"
+                name="status-type"
                 placeholder=""
-                label="Incident Type"
-                defaultValue={incidentType}
+                icon={
+                  submittedType === "text-in"
+                    ? "/icons/textsms.svg"
+                    : "/icons/SPM_shield.svg"
+                }
+                label="Status Type"
+                defaultValue={statusType}
                 readOnly={true}
-                status={statusType}
-                icon="/icons/flag.svg"
+                width="1/2"
+              />
+              <InputField
+                name="submitted-type"
+                placeholder=""
+                label="Submitted Type"
+                defaultValue={submittedType}
+                icon="/icons/textsms.svg"
+                readOnly={true}
+                width="1/2"
               />
             </div>
-          </div>
-          {/* Incident Details: Location, Date, Time, Details */}
-          <div className="incident-details w-full mt-4">
-            <h3 className="font-semibold text-base text-primary mb-2">
-              Details
-            </h3>
-            <div className="w-full gap-y-4 flex flex-col">
-              <InputField
-                name="location"
-                placeholder=""
-                label="Location"
-                defaultValue={location}
-                readOnly={true}
-                width="full"
-                icon="/icons/location.svg"
-              />
-              <div className="flex flex-row w-full gap-x-2">
-                <InputField
-                  name="date"
-                  placeholder=""
-                  label="Date"
-                  icon="/icons/calendar.svg"
-                  defaultValue={dayjs(date).format("MM/DD/YYYY")}
-                  width="1/2"
-                />
-                <InputField
-                  name="time"
-                  placeholder=""
-                  label="Time"
-                  icon="/icons/clock.svg"
-                  defaultValue={dayjs(date).format("hh:mm A")}
-                  width="1/2"
-                />
-              </div>
-              <TextAreaField
-                name="details"
-                placeholder=""
-                label="Details"
-                defaultValue={details}
-                icon="/icons/description.svg"
-                readOnly={true}
-                status={statusType}
-                maxRows={3}
-              />
-            </div>
+            <InputField
+              name="incident-type"
+              placeholder=""
+              label="Incident Type"
+              defaultValue={incidentType}
+              readOnly={true}
+              status={statusType}
+              icon="/icons/flag.svg"
+            />
           </div>
         </div>
-
-        {statusType !== "closed" && (
-          <div className="py-8 relative left-0 bottom-0 flex w-full flex-col items-center justify-center">
-            <Dialog>
-              <DialogTrigger asChild>
-                <button className={`${buttonTWClasses} ${buttonBaseClasses}`}>
-                  {ctaButtonText}
-                </button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{dialogTitle}</DialogTitle>
-                  <DialogDescription>{dialogDescription}</DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <div className="flex flex-row justify-end h-14 px-6">
-                      <div className="flex flex-row gap-x-4 h-full">
-                        <DialogClose asChild>
-                          <button className="text-primary font-medium">No</button>
-                        </DialogClose>
-                        <button className="text-primary font-medium">Yes</button>
-                      </div>
-                  </div>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+        {/* Incident Details: Location, Date, Time, Details */}
+        <div className="incident-details w-full mt-4">
+          <h3 className="font-semibold text-base text-primary mb-2">Details</h3>
+          <div className="w-full gap-y-4 flex flex-col">
+            <InputField
+              name="location"
+              placeholder=""
+              label="Location"
+              defaultValue={location}
+              readOnly={true}
+              width="full"
+              icon="/icons/location.svg"
+            />
+            <div className="flex flex-row w-full gap-x-2">
+              <InputField
+                name="date"
+                placeholder=""
+                label="Date"
+                icon="/icons/calendar.svg"
+                defaultValue={dayjs(date).format("MM/DD/YYYY")}
+                width="1/2"
+              />
+              <InputField
+                name="time"
+                placeholder=""
+                label="Time"
+                icon="/icons/clock.svg"
+                defaultValue={dayjs(date).format("hh:mm A")}
+                width="1/2"
+              />
+            </div>
+            <TextAreaField
+              name="details"
+              placeholder=""
+              label="Details"
+              defaultValue={details}
+              icon="/icons/description.svg"
+              readOnly={true}
+              status={statusType}
+              maxRows={3}
+            />
           </div>
-        )}
-      </form>
-    </>
+        </div>
+      </div>
+
+      {statusType !== "closed" && (
+        <div className="py-8 relative left-0 bottom-0 flex w-full flex-col items-center justify-center">
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className={`${buttonTWClasses} ${buttonBaseClasses}`}>
+                {ctaButtonText}
+              </button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{dialogTitle}</DialogTitle>
+                <DialogDescription>{dialogDescription}</DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <div className="flex flex-row justify-end h-14 px-6">
+                  <div className="flex flex-row gap-x-4 h-full">
+                    <DialogClose asChild>
+                      <button className="text-primary font-medium">No</button>
+                    </DialogClose>
+                    <button className="text-primary font-medium">Yes</button>
+                  </div>
+                </div>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
+    </form>
   );
 }

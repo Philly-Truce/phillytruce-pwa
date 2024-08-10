@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma db push": "npx dotenv -e .env.local -- npx prisma db push"
+    "prisma:push": "npx dotenv -e .env.local -- npx prisma db push",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "schema": "./src/db/schema.prisma"
@@ -26,6 +27,7 @@
     "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.418.0",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
@@ -37,10 +39,12 @@
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "tailwind-merge": "^2.4.0",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
     "twilio": "^5.2.2"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

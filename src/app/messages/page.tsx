@@ -1,11 +1,13 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import {
   Client as ConversationsClient,
   Conversation,
 } from "@twilio/conversations";
+import Cookies from "js-cookie";
 import ConversationsList from "@/components/messages/conversations-list";
-import ReportConversation from "@/components/messages/report-conversation";
+import SearchBar from "@/components/search-bar";
 
 export default function Messages() {
   const [token, setToken] = useState<string | null>(null);
@@ -15,12 +17,31 @@ export default function Messages() {
   const [selectedConversationSid, setSelectedConversationSid] =
     useState<String | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [filteredConversations, setFilteredConversations] = useState<
+    Conversation[]
+  >([]);
 
-  // Upon page render, fetch the access token
-  // this is temp, in the future will fetch once the user opens up the app again
-  // the token will need to be stored globally and then fetched when they go to conversation screens
+  // Upon render, if token is still less than an hour old retrieve from cookie
+  // otherwise fetch a new token and store token and date created in storage
+  // now token can be stored globally because of cookies and only needs be regenerated
+  // every hour instead of on every page load
   useEffect(() => {
-    const fetchAccessToken = async () => {
+    const fetchOrRetrieveToken = async () => {
+      const storedToken = Cookies.get("accessToken");
+      const storedTokenDate = Cookies.get("accessTokenDate");
+
+      if (storedToken && storedTokenDate) {
+        const tokenDate = new Date(storedTokenDate);
+        const now = new Date();
+        const diffInHours =
+          (now.getTime() - tokenDate.getTime()) / (1000 * 60 * 60);
+
+        if (diffInHours < 1) {
+          setToken(storedToken);
+          return;
+        }
+      }
+
       try {
         const response = await fetch("/api/generate-token", {
           method: "POST",
@@ -36,11 +57,18 @@ export default function Messages() {
 
         const data = await response.json();
         setToken(data.token);
+
+        // Store the new token and its creation date
+        Cookies.set("accessToken", data.token, { expires: 1 / 24 }); // Expires in 1 hour
+        Cookies.set("accessTokenDate", new Date().toISOString(), {
+          expires: 1 / 24,
+        });
       } catch (error) {
         console.error("Error generating token:", error);
       }
     };
-    fetchAccessToken();
+
+    fetchOrRetrieveToken();
   }, []);
 
   // Upon token retrieval, initilialize the conversations client
@@ -49,6 +77,7 @@ export default function Messages() {
       initConversations();
     }
   }, [token]);
+
   const initConversations = () => {
     if (!token) return; // Early return if token is null
     const client = new ConversationsClient(token);
@@ -82,7 +111,6 @@ export default function Messages() {
       }
     });
 
-    // does not seem to trigger once the converstate state is connected..
     client.on("conversationJoined", (conversation) => {
       setConversations((prevConversations) => [
         ...prevConversations,
@@ -97,37 +125,40 @@ export default function Messages() {
     });
   };
 
-  // select the current conversation
-  const selectedConversation = conversations.find(
-    (it) => it.sid === selectedConversationSid
-  );
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    if (!query) {
+      setFilteredConversations(conversations);
+      return;
+    }
 
-  let conversationContent;
-  if (selectedConversation) {
-    conversationContent = (
-      <ReportConversation
-        conversationProxy={selectedConversation}
-        myIdentity={name}
-      />
+    const filtered = await Promise.all(
+      conversations.map(async (conversation) => {
+        const messagePaginator = await conversation.getMessages();
+        const messages = messagePaginator.items;
+        const matchingMessages = messages.filter((message) =>
+          message.body?.toLowerCase().includes(query.toLowerCase())
+        );
+        return matchingMessages.length > 0 ? conversation : null;
+      })
     );
-  } else if (status !== "success") {
-    conversationContent = "Loading your conversation!";
-  } else {
-    conversationContent = "";
-  }
+
+    setFilteredConversations(
+      filtered.filter((conv): conv is Conversation => conv !== null)
+    );
+  };
+
+  useEffect(() => {
+    setFilteredConversations(conversations);
+  }, [conversations]);
 
   return (
-    <main className="w-full flex flex-col items-center my-2">
-      <div className="conversations-window-wrapper">
-        <ConversationsList
-          conversations={conversations}
-          selectedConversationSid={selectedConversationSid}
-          onConversationClick={(item: Conversation) => {
-            setSelectedConversationSid(item.sid);
-          }}
-        />
-        {conversationContent}
-      </div>
+    <main
+      id="messages-page"
+      className="flex flex-col gap-4 w-full items-center p-4 pt-20"
+    >
+      <SearchBar page="messages" onSearch={handleSearch} />
+      <ConversationsList conversations={filteredConversations} />
     </main>
   );
 }

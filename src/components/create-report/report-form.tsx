@@ -23,7 +23,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
   const [saveEnable, setSaveEnable] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className="pt-20 px-4">
       <p className="text-sm py-2">
         Please provide detailed information of the incident in this form
       </p>
