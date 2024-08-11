@@ -7,6 +7,7 @@ import {
   Client as ConversationsClient,
   Conversation,
 } from "@twilio/conversations";
+import { useTwilio } from "@/lib/twilio-provider";
 
 const OnboardingModal = ({
   step,
@@ -75,117 +76,40 @@ const OnboardingModal = ({
 };
 
 export default function Home({ params }: { params: { id: string } }) {
-  const [token, setToken] = useState<string | null>(null);
-  const [name, setName] = useState<string>("testPineapple");
-  const [statusString, setStatusString] = useState<String | null>(null);
-  const [status, setStatus] = useState("default");
+  const { client, statusString, status } = useTwilio(); // Use the Twilio context
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [onboardingStep, setOnboardingStep] = useState(0);
 
-  // Fetch token
+  // Initialize conversation when client is ready
   useEffect(() => {
-    const fetchOrRetrieveToken = async () => {
-      const storedToken = Cookies.get("accessToken");
-      const storedTokenDate = Cookies.get("accessTokenDate");
-
-      if (storedToken && storedTokenDate) {
-        const tokenDate = new Date(storedTokenDate);
-        const now = new Date();
-        const diffInHours =
-          (now.getTime() - tokenDate.getTime()) / (1000 * 60 * 60);
-
-        if (diffInHours < 1) {
-          setToken(storedToken);
-          return;
-        }
-      }
-
-      try {
-        const response = await fetch("/api/generate-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name }),
+    if (client && status === "success") {
+      client
+        .getConversationBySid(params.id)
+        .then((conversation) => {
+          setSelectedConversation(conversation);
+        })
+        .catch((error) => {
+          console.error("Error fetching conversation:", error);
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to generate token");
+      client.on("conversationJoined", (conversation) => {
+        if (conversation.sid === params.id) {
+          setSelectedConversation(conversation);
         }
+      });
 
-        const data = await response.json();
-        setToken(data.token);
+      client.on("conversationLeft", (conversation) => {
+        if (conversation.sid === params.id) {
+          setSelectedConversation(null);
+        }
+      });
 
-        // Store the new token and its creation date
-        Cookies.set("accessToken", data.token, { expires: 1 / 24 }); // Expires in 1 hour
-        Cookies.set("accessTokenDate", new Date().toISOString(), {
-          expires: 1 / 24,
-        });
-      } catch (error) {
-        console.error("Error generating token:", error);
-      }
-    };
-
-    fetchOrRetrieveToken();
-  }, []);
-
-  // Initialize conversation off token
-  useEffect(() => {
-    if (token) {
-      initConversations();
+      return () => {
+        client.removeAllListeners();
+      };
     }
-  }, [token]);
-
-  const initConversations = () => {
-    if (!token) return; // Early return if token is null
-    const client = new ConversationsClient(token);
-    setStatusString("Connecting to Twilio…");
-
-    client.on("connectionStateChanged", (state) => {
-      if (state === "connecting") {
-        setStatusString("Connecting to Twilio…");
-        setStatus("default");
-      }
-      if (state === "connected") {
-        setStatusString("You are connected.");
-        setStatus("success");
-
-        // Fetch and set all subscribed conversations
-        client.getSubscribedConversations().then((paginator) => {
-          setConversations(paginator.items);
-        });
-      }
-      if (state === "disconnecting") {
-        setStatusString("Disconnecting from Twilio…");
-        setStatus("default");
-      }
-      if (state === "disconnected") {
-        setStatusString("Disconnected.");
-        setStatus("warning");
-      }
-      if (state === "denied") {
-        setStatusString("Failed to connect.");
-        setStatus("error");
-      }
-    });
-
-    client.on("conversationJoined", (conversation) => {
-      conversation.sid === params.id
-        ? setSelectedConversation(conversation)
-        : "";
-    });
-
-    client.on("conversationLeft", (conversation) => {
-      conversation.sid === params.id ? setSelectedConversation(null) : "";
-    });
-  };
-
-  // Debugging
-  useEffect(() => {
-    console.log("onboardingStep:", onboardingStep);
-  }, [onboardingStep]);
+  }, [client, status, params.id]);
 
   return (
     <div id="chat-wrapper" className="w-full bg-[#f3f3f3] pt-16 max-h-screen">
