@@ -1,20 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Client as ConversationsClient,
-  Conversation,
-} from "@twilio/conversations";
-import Cookies from "js-cookie";
+import { Conversation } from "@twilio/conversations";
 import ConversationsList from "@/components/messages/conversations-list";
 import SearchBar from "@/components/search-bar";
 import { useTwilio } from "@/lib/twilio-provider"; // Update this import path as necessary
 
 export default function Messages() {
-  const { client, statusString, status } = useTwilio();
-  const [selectedConversationSid, setSelectedConversationSid] = useState<
-    string | null
-  >(null);
+  const { client, status } = useTwilio();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [filteredConversations, setFilteredConversations] = useState<
     Conversation[]

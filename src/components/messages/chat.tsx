@@ -10,11 +10,9 @@ import { generateFriendlyChatName } from "@/lib/utils";
 // TODO: Add emoji icon functionality => brings up emoji menu
 export default function Home({
   conversationProxy,
-  myIdentity,
   onboardingStep,
 }: {
   conversationProxy: TwilioConversation;
-  myIdentity: String;
   onboardingStep: number;
 }) {
   const [newMessage, setNewMessage] = useState("");
