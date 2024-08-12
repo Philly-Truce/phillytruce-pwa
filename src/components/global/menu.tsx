@@ -121,7 +121,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
 
   return (
     <div
-      className={`relative flex justify-between pb-3 px-2 ${
+      className={`relative flex justify-between pb-3 px-[7px] ${
         hasOverflow
           ? "shadow-[1px_-2px_15px_6px_rgba(0,0,0,0.16),0px_1px_4px_1px_rgba(0,0,0,0.11)]"
           : "shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
