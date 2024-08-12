@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useTwilio } from "@/lib/twilio-provider";
 
 const menuItems = [
   {
@@ -85,6 +86,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlightStyle, setHighlightStyle] = useState({});
   const menuRef = useRef<HTMLDivElement>(null);
+  const { unreadChatsCount } = useTwilio();
 
   // Set activeIndex
   useEffect(() => {
@@ -142,9 +144,26 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
               <div id="icon-double-wrap" className="z-20 px-[15.38px]">
                 <div
                   id="icon-wrapper"
-                  className={`px-5 py-1 rounded-2xl text-center`}
+                  className={`px-5 py-1 rounded-2xl text-center relative`}
                 >
+                  {/* Icon */}
                   {icon(isSelected)}
+                  {/* Notification Badge */}
+                  <div
+                    id="notification-badge"
+                    className={`absolute w-4 h-4 top-0 left-8 rounded-full ${
+                      href === "/messages" && unreadChatsCount
+                        ? "bg-[#F6893C]"
+                        : "invisible"
+                    }`}
+                  >
+                    <div
+                      id="notification-number"
+                      className="text-white text-center text-[11px] font-medium leading-4 tracking-[0.5px]"
+                    >
+                      {unreadChatsCount}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -161,13 +180,4 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
       })}
     </div>
   );
-}
-
-{
-  /* <div
-id="icon-wrapper"
-className={`px-5 py-1 rounded-2xl ${
-  isSelected && "bg-[#bbc7db]"
-}`}
-> */
 }

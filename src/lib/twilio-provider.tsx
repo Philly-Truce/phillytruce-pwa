@@ -1,14 +1,22 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  use,
+} from "react";
 import { Client as ConversationsClient } from "@twilio/conversations";
 import Cookies from "js-cookie";
+import { usePathname } from "next/navigation";
 
 type TwilioContextType = {
   client: ConversationsClient | null;
   token: string | null;
   statusString: string | null;
   status: string;
+  unreadChatsCount: number;
 };
 
 const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
@@ -20,6 +28,8 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [statusString, setStatusString] = useState<string | null>(null);
   const [status, setStatus] = useState("default");
+  const [unreadChatsCount, setUnreadChatsCount] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchOrRetrieveToken = async () => {
@@ -97,8 +107,76 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [token]);
 
+  // loop through all conversations and count which ones are unread
+  const fetchUnreadChatsCount = async () => {
+    if (client) {
+      try {
+        let temp = 0;
+
+        // Fetch and set all subscribed conversations
+        const paginator = await client.getSubscribedConversations();
+        const conversations = paginator.items;
+
+        // Use Promise.all to handle multiple async operations
+        await Promise.all(
+          conversations.map(async (conversation) => {
+            const messagePaginator = await conversation.getMessages(1);
+            const latestMessage = messagePaginator.items[0] || null;
+
+            if (conversation.lastReadMessageIndex !== latestMessage?.index) {
+              temp += 1;
+            }
+          })
+        );
+
+        setUnreadChatsCount(temp);
+      } catch (error) {
+        console.error("Error fetching unread chat count:", error);
+      }
+    }
+  };
+
+  // if user enters a conversation (AKA pathname changes) then refetch unread chat count
+  useEffect(() => {
+    fetchUnreadChatsCount();
+  }, [client, pathname]);
+
+  // when a new message comes in, update unread chat count
+  useEffect(() => {
+    // call fetchunreadchatscount evertime message is added for each conversation
+
+    const addCountFetchers = async () => {
+      if (client) {
+        try {
+          // Fetch and set all subscribed conversations
+          client.getSubscribedConversations().then((paginator) => {
+            const conversations = paginator.items;
+            conversations.map((conversation) => {
+              conversation.on("messageAdded", fetchUnreadChatsCount);
+            });
+          });
+        } catch (error) {
+          console.error("Error fetching unread chat count:", error);
+        }
+      }
+    };
+
+    addCountFetchers();
+
+    return () => {
+      client?.removeAllListeners();
+    };
+  }, [client]);
+
+  // debugging
+  useEffect(() => {
+    console.log("unreadChatsCount:", unreadChatsCount);
+  }, [unreadChatsCount]);
+
   return (
-    <TwilioContext.Provider value={{ client, token, statusString, status }}>
+    <TwilioContext.Provider
+      value={{ client, token, statusString, status, unreadChatsCount }}
+    >
       {children}
     </TwilioContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Conversation } from "@twilio/conversations";
 import ConversationsList from "@/components/messages/conversations-list";
 import SearchBar from "@/components/search-bar";
-import { useTwilio } from "@/lib/twilio-provider"; // Update this import path as necessary
+import { useTwilio } from "@/lib/twilio-provider";
 
 export default function Messages() {
   const { client, status } = useTwilio();
