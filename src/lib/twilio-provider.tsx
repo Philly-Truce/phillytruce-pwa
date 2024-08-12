@@ -141,10 +141,8 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchUnreadChatsCount();
   }, [client, pathname]);
 
-  // when a new message comes in, update unread chat count
   useEffect(() => {
     // call fetchunreadchatscount evertime message is added for each conversation
-
     const addCountFetchers = async () => {
       if (client) {
         try {
