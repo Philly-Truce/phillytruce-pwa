@@ -18,10 +18,13 @@ export async function POST(request: NextRequest) {
       creatorUserId,
     } = body;
 
-    // Create a new report
+    // Generate a unique report number
+    const reportNumber = await generateUniqueReportNumber();
+
+    // Create a new user-created report
     const newReport = await prisma.report.create({
       data: {
-        incident_report_number: generateReportNumber(), // You need to implement this function
+        incident_report_number: reportNumber,
         report_origin: "user_created",
         report_stage: "claimed",
         incident_type: incidentType,
@@ -49,18 +52,33 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Helper function to generate a unique report number
-function generateReportNumber(): string {
-  // Implement your logic to generate a unique report number
-  // For example, you could use a combination of date and random numbers
-  const date = new Date();
-  const randomPart = Math.floor(Math.random() * 10000)
-    .toString()
-    .padStart(4, "0");
-  return `REP-${date.getFullYear()}${(date.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}${date
-    .getDate()
-    .toString()
-    .padStart(2, "0")}-${randomPart}`;
+async function generateUniqueReportNumber(): Promise<number> {
+  let isUnique = false;
+  let reportNumber = Math.floor(1000 + Math.random() * 9000);
+
+  while (!isUnique) {
+    try {
+      // Try to find a report with this number
+      await prisma.$transaction(async (tx) => {
+        const existingReport = await tx.report.findUnique({
+          where: { incident_report_number: reportNumber },
+        });
+
+        if (existingReport) {
+          throw new Error("Report number already exists");
+        }
+
+        // If we reach here, the report number is unique
+        isUnique = true;
+      });
+    } catch (error) {
+      // If there's an error, it means the number already exists, so we'll try again
+      console.log(
+        `Report number ${reportNumber} already exists, generating a new one.`
+      );
+      reportNumber = Math.floor(1000 + Math.random() * 9000); // Generate a new random number
+    }
+  }
+
+  return reportNumber;
 }
