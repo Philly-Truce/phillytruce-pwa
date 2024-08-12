@@ -21,15 +21,24 @@ const config = {
     },
     extend: {
       colors: {
+        primary: {
+          DEFAULT: "#1C4587",
+          foreground: "#1C4587",
+        },
+        level: {
+          "1": "#FFFFFF",
+          "2": "#F3F3F3",
+        },
+        status: {
+          positive: "#4ECB71",
+          notification: "#F6893C",
+          negative: "#B3261E",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "#1C4587",
-          foreground: "#1C4587",
-        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

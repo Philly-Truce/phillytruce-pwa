@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ens">
       <body
-        className={`${roboto.className} my-0 w-full justify-center items-center mx-auto shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px]`}
+        className={`${roboto.className} my-5 w-full justify-center items-center mx-auto`}
       >
         <TwilioProvider>
           <ClientLayout>{children}</ClientLayout>

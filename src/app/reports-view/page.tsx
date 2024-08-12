@@ -1,8 +1,7 @@
 import React from "react";
-import axios from "axios";
-import ReportView from "@/components/report-view";
+import ReportView from "@/components/reports-view";
 import reports from "@/data/reports.json";
-import type { Report } from "@/components/report-view";
+import type { Report } from "@/components/reports-view";
 
 /**
  *
@@ -32,7 +31,7 @@ export default async function ReportsViewPage() {
   const report = await fetchReportById(id);
 
   return (
-    <div id="reports-view-page" className="pt-[88px] px-4">
+    <div id="reports-view-page" className="my-4 px-4">
       <ReportView report={report} />
     </div>
   );

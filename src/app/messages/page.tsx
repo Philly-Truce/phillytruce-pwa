@@ -67,10 +67,7 @@ export default function Messages() {
   }, [conversations]);
 
   return (
-    <main
-      id="messages-page"
-      className="flex flex-col gap-4 w-full items-center p-4 pt-20"
-    >
+    <main id="messages-page" className="items-center my-4 w-11/12 mx-auto">
       <SearchBar page="messages" onSearch={handleSearch} />
       <ConversationsList conversations={filteredConversations} />
     </main>

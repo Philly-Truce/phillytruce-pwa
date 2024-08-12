@@ -1,16 +1,8 @@
 import React from "react";
-import { InputField, TextAreaField } from "@/components/report-view/inputs";
+import { InputField, TextAreaField } from "@/components/reports-view/inputs";
 import dayjs from "dayjs";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/report-view/dialog";
+import Confirmation from "../../app/confirmation/page";
+import Link from "next/link";
 
 export type Report = {
   id: number;
@@ -21,40 +13,6 @@ export type Report = {
   date: Date;
   details: string;
   connectedReports: string[];
-};
-
-type StatusConfiguration = {
-  dialogTitle: string;
-  dialogDescription: string;
-  ctaButtonText: string;
-  buttonTWClasses: string;
-};
-
-const reportStatusState = (statusType: string): StatusConfiguration | null => {
-  const statusConfigurations: { [key: string]: StatusConfiguration } = {
-    unclaimed: {
-      dialogTitle: "Would you like to claim this report?",
-      dialogDescription:
-        "Claiming this report will make it attached to you as a Safe Path Monitor and you will be responsible for resolving it.",
-      ctaButtonText: "Claim Report",
-      buttonTWClasses: "bg-primary text-white",
-    },
-    "in progress": {
-      dialogTitle: "Would you like to close this report?",
-      dialogDescription:
-        "This report will be submitted for view and marked as closed.",
-      ctaButtonText: "Close Report",
-      buttonTWClasses: "bg-secondary text-black",
-    },
-    closed: {
-      dialogTitle: "",
-      dialogDescription: "",
-      ctaButtonText: "",
-      buttonTWClasses: "bg-primary text-white",
-    },
-  };
-
-  return statusConfigurations[statusType] || null;
 };
 
 /**
@@ -73,14 +31,8 @@ export default async function ReportView({ report }: { report: Report }) {
     details,
   }: Report = report;
 
-  const { dialogTitle, dialogDescription, ctaButtonText, buttonTWClasses } =
-    reportStatusState(statusType) || {};
-
-  const buttonBaseClasses =
-    "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
-
   return (
-    <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
+    <form className="relative w-full max-h-full flex flex-col justify-between gap-y-4 my-6">
       <div>
         {/* Overview: Status, Submitted By, Incident Type */}
         <div className="overview w-full">
@@ -167,34 +119,12 @@ export default async function ReportView({ report }: { report: Report }) {
           </div>
         </div>
       </div>
-
-      {statusType !== "closed" && (
-        <div className="py-8 relative left-0 bottom-0 flex w-full flex-col items-center justify-center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className={`${buttonTWClasses} ${buttonBaseClasses}`}>
-                {ctaButtonText}
-              </button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{dialogTitle}</DialogTitle>
-                <DialogDescription>{dialogDescription}</DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <div className="flex flex-row justify-end h-14 px-6">
-                  <div className="flex flex-row gap-x-4 h-full">
-                    <DialogClose asChild>
-                      <button className="text-primary font-medium">No</button>
-                    </DialogClose>
-                    <button className="text-primary font-medium">Yes</button>
-                  </div>
-                </div>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      )}
+      <Link href="/confirmation">
+        <button className="uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center bg-primary text-white">
+          Claim Report
+        </button>
+      </Link>
+      {/* {statusType !== "closed" && <Confirmation statusType={statusType} />} */}
     </form>
   );
 }

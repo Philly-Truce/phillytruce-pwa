@@ -30,7 +30,10 @@ export default function ClientLayout({
   }, [pathname]);
 
   return (
-    <div id="client-layout" className="flex flex-col max-h-screen h-screen">
+    <div
+      id="client-layout"
+      className="flex flex-col max-w-[390px] mx-auto h-[95vh] rounded-2xl overflow-y-scroll shadow-[rgba(0,0,0,0.24)_0px_3px_8px]"
+    >
       <TopBanner />
       <main
         id="client-layout-inner1"

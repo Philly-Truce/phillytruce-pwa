@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 const pageTitles: Record<string, string> = {
   "/reports": "Reports",
   "/reports-view": "Report",
+  "/confirmation": "Confirmation",
   "/messages": "Messages",
   "/edit": "Edit Report",
   "/create": "Create New Report",
@@ -93,21 +94,23 @@ export default function TopBanner() {
   };
 
   return (
-    <div
-      id="top-banner"
-      className="px-[18px] py-2 bg-primary text-center items-center fixed w-full flex justify-between min-h-16 gap-1"
-    >
-      {getLeftChild()}
-      <h1
-        className={`text-white text-[22px] font-normal leading-7 flex-grow ${
-          pathname.startsWith("/messages/") || pathname.startsWith("/profile")
-            ? "text-left"
-            : ""
-        }`}
+    <div className="sticky px-2 py-3 top-0 left-0 w-full flex justify-center bg-primary z-50">
+      <div
+        id="top-banner"
+        className="w-full max-w-96 text-center flex justify-between items-center"
       >
-        {getPageTitle()}
-      </h1>
-      {getRightChild()}
+        {getLeftChild()}
+        <h1
+          className={`text-white text-[22px] font-normal leading-7 flex-grow ${
+            pathname.startsWith("/messages/") || pathname.startsWith("/profile")
+              ? "text-left"
+              : ""
+          }`}
+        >
+          {getPageTitle()}
+        </h1>
+        {getRightChild()}
+      </div>
     </div>
   );
 }
