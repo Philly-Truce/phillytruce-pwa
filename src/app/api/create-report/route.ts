@@ -8,15 +8,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Extract data from the request body
-    const {
-      incidentType,
-      location,
-      date,
-      time,
-      description,
-      ppdNotified,
-      creatorUserId,
-    } = body;
+    const { incidentType, location, date, time, description, ppdNotified } =
+      body;
 
     // Generate a unique report number
     const reportNumber = await generateUniqueReportNumber();
@@ -32,7 +25,7 @@ export async function POST(request: NextRequest) {
         location,
         report_last_updated_at: new Date(),
         ppd_notified: ppdNotified,
-        creator_user_id: creatorUserId,
+        creator_user_id: "66ba6bfd81833a6900354b86",
         report_initiated_at: new Date(`${date}T${time}`),
       },
     });
