@@ -8,7 +8,7 @@ import ReportsBrief from "../../data/reports-brief";
 
 export default function List() {
   return (
-    <div>
+    <div id="shadcn-tabs-component" className="">
       <Tabs defaultValue="unclaimed">
         <TabsList>
           <TabsTrigger value="unclaimed">Unclaimed</TabsTrigger>

@@ -24,6 +24,26 @@ const reportData: Report[] = [
     reportName: "Report #1845",
     reportDate: "08/10/23",
   },
+  {
+    reportName: "Report #1845",
+    reportDate: "08/10/23",
+  },
+  {
+    reportName: "Report #1845",
+    reportDate: "08/10/23",
+  },
+  {
+    reportName: "Report #1845",
+    reportDate: "08/10/23",
+  },
+  {
+    reportName: "Report #1845",
+    reportDate: "08/10/23",
+  },
+  {
+    reportName: "Report #1845",
+    reportDate: "08/10/23",
+  },
 ];
 
 export default reportData;

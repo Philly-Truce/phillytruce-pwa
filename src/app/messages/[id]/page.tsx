@@ -32,26 +32,18 @@ export default function Home({ params }: { params: { id: string } }) {
 
   return (
     <div id="chat-wrapper" className="w-full bg-[#f3f3f3] pt-16 max-h-screen">
-      {/* Document Icon Spotlight */}
-      <div
-        id="document-icon-spotlight"
-        className={`fixed w-14 h-14 z-20 top-2 right-3 transition-shadow duration-300  ${
-          onboardingStep === 3 && "shadow-[0_0_0_9999px_rgba(0,0,0,0.35)]"
-        }`}
-      />
       {selectedConversation ? (
         <div id="chat-onboarding-wrapper" className="h-full">
           <Chat
             conversationProxy={selectedConversation}
             onboardingStep={onboardingStep}
           />
-          {onboardingStep < 4 && (
-            <OnboardingModal
-              step={onboardingStep}
-              onNext={() => setOnboardingStep(onboardingStep + 1)}
-              setOnboardingStep={setOnboardingStep}
-            />
-          )}
+          {/* {onboardingStep < 4 && ( */}
+          <OnboardingModal
+            step={onboardingStep}
+            setOnboardingStep={setOnboardingStep}
+          />
+          {/* )} */}
         </div>
       ) : (
         <div id="loading" className="text-center mt-72">
