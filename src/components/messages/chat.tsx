@@ -10,11 +10,9 @@ import { generateFriendlyChatName } from "@/lib/utils";
 // TODO: Add emoji icon functionality => brings up emoji menu
 export default function Home({
   conversationProxy,
-  myIdentity,
   onboardingStep,
 }: {
   conversationProxy: TwilioConversation;
-  myIdentity: String;
   onboardingStep: number;
 }) {
   const [newMessage, setNewMessage] = useState("");
@@ -172,7 +170,7 @@ export default function Home({
       <form
         id="input"
         onSubmit={sendMessage}
-        className="flex border py-4 pr-[27px] pl-[23px] items-center gap-[21px] rounded-[28px] bg-white mb-6 mr-4"
+        className="flex border py-4 pr-[27px] pl-[23px] items-center gap-[21px] rounded-[28px] bg-white mb-6 mx-[22px]"
       >
         {/* Emoji */}
         <svg

@@ -51,7 +51,7 @@ model User {
 
 model Report {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  incident_report_number String
+  incident_report_number String   @unique
   report_origin          ReportOrigin
   report_initiated_at    DateTime
   report_stage           ReportStage
