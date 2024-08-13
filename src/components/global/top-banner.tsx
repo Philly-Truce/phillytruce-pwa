@@ -95,7 +95,7 @@ export default function TopBanner() {
   return (
     <div
       id="top-banner"
-      className="px-[18px] py-2 bg-primary text-center items-center fixed w-full flex justify-between min-h-16 gap-1"
+      className="px-[18px] py-2 bg-primary text-center items-center fixed w-full flex justify-between min-h-16 gap-1 max-w-[640px]"
     >
       {getLeftChild()}
       <h1

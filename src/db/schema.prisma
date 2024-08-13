@@ -36,26 +36,25 @@ model Witness {
 }
 
 model User {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  // Change to First Name
-  name             String
-  // Last Name
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  phone_number      Int
+  first_name        String
+  last_name         String
   last_logged_in_at DateTime
   created_at        DateTime
   is_messaging_onboarding_complete Boolean
-  // Profile picture
-  // Phone number
+  // TODO: Profile picture field
   reports          Report[] @relation("UserReports")
   @@map("users")
 }
 
 model Report {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  incident_report_number String   @unique
+  incident_report_number Int   @unique
   report_origin          ReportOrigin
   report_initiated_at    DateTime
   report_stage           ReportStage
-  incident_type          String
+  incident_type          String[]
   description            String
   location               String
   report_last_updated_at DateTime
