@@ -37,16 +37,21 @@ model Witness {
 
 model User {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  // Change to First Name
   name             String
+  // Last Name
   last_logged_in_at DateTime
   created_at        DateTime
+  is_messaging_onboarding_complete Boolean
+  // Profile picture
+  // Phone number
   reports          Report[] @relation("UserReports")
   @@map("users")
 }
 
 model Report {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  incident_report_number String
+  incident_report_number String   @unique
   report_origin          ReportOrigin
   report_initiated_at    DateTime
   report_stage           ReportStage

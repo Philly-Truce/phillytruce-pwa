@@ -14,7 +14,7 @@ const ReportsBrief: React.FC = () => {
   };
 
   return (
-    <div>
+    <div id="reports-brief" className="">
       {reportData.map((report, index) => (
         <div
           key={index}

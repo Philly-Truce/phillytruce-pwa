@@ -1,133 +1,78 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import {
-  Client as ConversationsClient,
-  Conversation,
-} from "@twilio/conversations";
+import { Conversation } from "@twilio/conversations";
 import ConversationsList from "@/components/messages/conversations-list";
-import ReportConversation from "@/components/messages/report-conversation";
+import SearchBar from "@/components/search-bar";
+import { useTwilio } from "@/lib/twilio-provider";
 
 export default function Messages() {
-  const [token, setToken] = useState<string | null>(null);
-  const [name, setName] = useState<string>("testPineapple");
-  const [statusString, setStatusString] = useState<String | null>(null);
-  const [status, setStatus] = useState("default");
-  const [selectedConversationSid, setSelectedConversationSid] =
-    useState<String | null>(null);
+  const { client, status } = useTwilio();
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [filteredConversations, setFilteredConversations] = useState<
+    Conversation[]
+  >([]);
 
-  // Upon page render, fetch the access token
-  // this is temp, in the future will fetch once the user opens up the app again
-  // the token will need to be stored globally and then fetched when they go to conversation screens
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const response = await fetch("/api/generate-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name }),
-        });
+    if (client && status === "success") {
+      // Fetch and set all subscribed conversations
+      client.getSubscribedConversations().then((paginator) => {
+        setConversations(paginator.items);
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to generate token");
-        }
+      client.on("conversationJoined", (conversation) => {
+        setConversations((prevConversations) => [
+          ...prevConversations,
+          conversation,
+        ]);
+      });
 
-        const data = await response.json();
-        setToken(data.token);
-      } catch (error) {
-        console.error("Error generating token:", error);
-      }
-    };
-    fetchAccessToken();
-  }, []);
+      client.on("conversationLeft", (thisConversation) => {
+        setConversations((prevConversations) =>
+          prevConversations.filter((it) => it !== thisConversation)
+        );
+      });
 
-  // Upon token retrieval, initilialize the conversations client
-  useEffect(() => {
-    if (token) {
-      initConversations();
+      return () => {
+        client.removeAllListeners();
+      };
     }
-  }, [token]);
-  const initConversations = () => {
-    if (!token) return; // Early return if token is null
-    const client = new ConversationsClient(token);
-    setStatusString("Connecting to Twilio…");
+  }, [client, status]);
 
-    client.on("connectionStateChanged", (state) => {
-      if (state === "connecting") {
-        setStatusString("Connecting to Twilio…");
-        setStatus("default");
-      }
-      if (state === "connected") {
-        setStatusString("You are connected.");
-        setStatus("success");
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    if (!query) {
+      setFilteredConversations(conversations);
+      return;
+    }
 
-        // Fetch and set all subscribed conversations
-        client.getSubscribedConversations().then((paginator) => {
-          setConversations(paginator.items);
-        });
-      }
-      if (state === "disconnecting") {
-        setStatusString("Disconnecting from Twilio…");
-        setStatus("default");
-      }
-      if (state === "disconnected") {
-        setStatusString("Disconnected.");
-        setStatus("warning");
-      }
-      if (state === "denied") {
-        setStatusString("Failed to connect.");
-        setStatus("error");
-      }
-    });
+    const filtered = await Promise.all(
+      conversations.map(async (conversation) => {
+        const messagePaginator = await conversation.getMessages();
+        const messages = messagePaginator.items;
+        const matchingMessages = messages.filter((message) =>
+          message.body?.toLowerCase().includes(query.toLowerCase())
+        );
+        return matchingMessages.length > 0 ? conversation : null;
+      })
+    );
 
-    // does not seem to trigger once the converstate state is connected..
-    client.on("conversationJoined", (conversation) => {
-      setConversations((prevConversations) => [
-        ...prevConversations,
-        conversation,
-      ]);
-    });
-
-    client.on("conversationLeft", (thisConversation) => {
-      setConversations((prevConversations) =>
-        prevConversations.filter((it) => it !== thisConversation)
-      );
-    });
+    setFilteredConversations(
+      filtered.filter((conv): conv is Conversation => conv !== null)
+    );
   };
 
-  // select the current conversation
-  const selectedConversation = conversations.find(
-    (it) => it.sid === selectedConversationSid
-  );
-
-  let conversationContent;
-  if (selectedConversation) {
-    conversationContent = (
-      <ReportConversation
-        conversationProxy={selectedConversation}
-        myIdentity={name}
-      />
-    );
-  } else if (status !== "success") {
-    conversationContent = "Loading your conversation!";
-  } else {
-    conversationContent = "";
-  }
+  useEffect(() => {
+    setFilteredConversations(conversations);
+  }, [conversations]);
 
   return (
-    <main className="w-full flex flex-col items-center my-2">
-      <div className="conversations-window-wrapper">
-        <ConversationsList
-          conversations={conversations}
-          selectedConversationSid={selectedConversationSid}
-          onConversationClick={(item: Conversation) => {
-            setSelectedConversationSid(item.sid);
-          }}
-        />
-        {conversationContent}
-      </div>
+    <main
+      id="messages-page"
+      className="flex flex-col gap-4 w-full items-center p-4 pt-20"
+    >
+      <SearchBar page="messages" onSearch={handleSearch} />
+      <ConversationsList conversations={filteredConversations} />
     </main>
   );
 }

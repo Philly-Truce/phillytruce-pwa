@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma db push": "npx dotenv -e .env.local -- npx prisma db push"
+    "prisma:push": "npx dotenv -e .env.local -- npx prisma db push",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "schema": "./src/db/schema.prisma"
@@ -15,15 +16,18 @@
   "dependencies": {
     "@prisma/client": "^5.17.0",
     "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@twilio/conversations": "^2.5.0",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.418.0",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
@@ -31,17 +35,20 @@
     "prisma-json-types-generator": "^3.0.4",
     "prop-types": "^15.8.1",
     "react": "^18",
+    "react-day-picker": "^9.0.8",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "tailwind-merge": "^2.4.0",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
     "twilio": "^5.2.2"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "eslint": "^9.8.0",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
     "prisma": "^5.17.0",

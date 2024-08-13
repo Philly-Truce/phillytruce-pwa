@@ -3,7 +3,7 @@ import Otp from "./otp-submission";
 
 export default function Main() {
   return (
-    <div className="my-20 w-full">
+    <div id="otp-page" className="mt-36 w-full mx-4">
       <h3 className="text-xl text-primary font-semibold mb-2">
         Confirm your phone number
       </h3>

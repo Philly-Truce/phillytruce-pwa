@@ -1,6 +1,8 @@
 "use client";
+
 import Menu from "@/components/global/menu";
 import TopBanner from "@/components/global/top-banner";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function ClientLayout({
@@ -8,60 +10,38 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const containerRef: RefObject<HTMLDivElement> = useRef(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
   const pathname = usePathname();
 
-  const pathnamesForTopBanner = ["/more"];
-  const pathnamesForMenu = ["/login", "/login-otp"];
-  const pathnamesForRoundedXL = ["/login", "/login-otp"];
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (containerRef.current) {
+        const hasVerticalOverflow =
+          containerRef.current.scrollHeight > containerRef.current.clientHeight;
+        setHasOverflow(hasVerticalOverflow);
+      }
+    };
 
-  const showTopBanner = !pathnamesForTopBanner.includes(pathname);
-  const showMenu = !pathnamesForMenu.includes(pathname);
-  const applyRoundedXL = pathnamesForRoundedXL.includes(pathname);
+    checkOverflow();
+    window.addEventListener("resize", checkOverflow);
 
-  const getPage = (pathname: string) => {
-    switch (pathname) {
-      case "/":
-        return "login";
-      case "/login-otp":
-        return "login-otp";
-      case "/home":
-        return "home";
-      case "/more":
-        return "more";
-      case "/reports":
-        return "reports";
-      case "/reports-view":
-        return "reports-view";
-      case "/messages":
-        return "messages";
-      case "/edit":
-        return "edit";
-      case "/create":
-        return "create";
-      case "/profile":
-        return "profile";
-      case "/resources":
-        return "resources";
-      case "/settings":
-        return "settings";
-        case "/contacts":
-          return "contacts";
-      default:
-        return "login";
-    }
-  };
+    return () => window.removeEventListener("resize", checkOverflow);
+  }, [pathname]);
 
   return (
-    <div
-      className={`flex flex-col h-[95vh] my-5 ${
-        applyRoundedXL ? "rounded-xl" : ""
-      }`}
-    >
-      {showTopBanner && <TopBanner page={getPage(pathname)} />}
-      <main className="flex-grow flex flex-col overflow-y-scroll">
-        <div className="flex-grow flex justify-start p-4">{children}</div>
+    <div id="client-layout" className="flex flex-col max-h-screen h-screen">
+      <TopBanner />
+      <main
+        id="client-layout-inner1"
+        className="flex-grow flex flex-col overflow-scroll"
+        ref={containerRef}
+      >
+        <div id="client-layout-inner2" className="flex-grow flex justify-start">
+          {children}
+        </div>
       </main>
-      {showMenu && <Menu />}
+      <Menu hasOverflow={hasOverflow} />{" "}
     </div>
   );
 }

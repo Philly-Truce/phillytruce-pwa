@@ -3,8 +3,14 @@ import dropdownIcon from "../../assets/create-form-image/dropdownIcon.svg";
 import Image from "next/image";
 import { useState, MouseEvent } from "react";
 
-export default function OverviewField() {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+interface IncidentType {
+  incidentType?: string[];
+}
+
+const OverviewField: React.FC<IncidentType> = ({ incidentType }) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(
+    incidentType ? incidentType : []
+  );
   const [showIncident, setShowIncident] = useState<boolean>(false);
   const incidents = [
     "Fight",
@@ -37,22 +43,18 @@ export default function OverviewField() {
       <fieldset className="border p-1 rounded-md border-black">
         <legend className="text-sm px-2">Incident Type</legend>
         <button onClick={handleClick} className="w-full">
-        <div className="relative flex flex-row">
-          <Image src={flagIcon} alt="Flag Icon" />
-          <input
-            type="text"
-            placeholder="Select"
-            value={selectedOptions}
-            className="block w-full appearance-none bg-white placeholder-wrap"
-            readOnly
-          />
-         
-            <Image
-              src={dropdownIcon}
-              alt="dropdown Icon"
+          <div className="relative flex flex-row">
+            <Image src={flagIcon} alt="Flag Icon" />
+            <input
+              type="text"
+              placeholder="Select"
+              value={selectedOptions}
+              className="block w-full appearance-none bg-white placeholder-wrap"
+              readOnly
             />
-         
-        </div>
+
+            <Image src={dropdownIcon} alt="dropdown Icon" />
+          </div>
         </button>
       </fieldset>
       {showIncident ? (
@@ -76,4 +78,6 @@ export default function OverviewField() {
       )}
     </>
   );
-}
+};
+
+export default OverviewField;
