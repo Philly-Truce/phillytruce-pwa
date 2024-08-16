@@ -9,9 +9,21 @@ import {
 
 export default function SignUp() {
   const [emailInputValue, setEmailInputValue] = useState("");
+  const [emailError, setEmailError] = useState(false);
+
   const [nameInputValue, setNameInputValue] = useState("");
+  const [nameError, setNameError] = useState(false);
+
   const [passwordInputValue, setPasswordInputValue] = useState("");
+  const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(false);
+  const [hasSpecialChar, setHasSpecialChar] = useState(false);
+  const [hasNumber, setHasNumber] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   const [passwordInputValue2, setPasswordInputValue2] = useState("");
+  const [isRetypePasswordFocused, setIsRetypePasswordFocused] = useState(false);
+  const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
+
   const [isChecked, setIsChecked] = useState(false);
   const [signUpCompleted, setSignUpCompleted] = useState(false);
   const [countdown, setCountdown] = useState(3);
@@ -20,18 +32,54 @@ export default function SignUp() {
 
   const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmailInputValue(event.target.value);
+    setEmailError(false);
   };
 
   const handleNameInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNameInputValue(event.target.value);
+    setNameError(false);
+  };
+
+  const handleNameBlur = () => {
+    if (nameInputValue.length < 3) {
+      setNameError(true);
+    } else {
+      setNameError(false);
+    }
   };
 
   const handlePasswordInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPasswordInputValue(event.target.value);
+    const password = event.target.value;
+    setPasswordInputValue(password);
+    setIsPasswordLengthValid(password.length >= 6);
+    setHasSpecialChar(/[!@#$%^&*]/.test(password));
+    setHasNumber(/\d/.test(password));
+  };
+
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
+  };
+
+  const handlePasswordBlur = () => {
+    if (passwordInputValue === "") {
+      setIsPasswordFocused(false);
+    }
   };
 
   const handlePasswordInputChange2 = (event: ChangeEvent<HTMLInputElement>) => {
-    setPasswordInputValue2(event.target.value);
+    const retypedPassword = event.target.value;
+    setPasswordInputValue2(retypedPassword);
+    setDoPasswordsMatch(retypedPassword === passwordInputValue);
+  };
+
+  const handleRetypePasswordFocus = () => {
+    setIsRetypePasswordFocused(true);
+  };
+
+  const handleRetypePasswordBlur = () => {
+    if (passwordInputValue2 === "") {
+      setIsRetypePasswordFocused(false);
+    }
   };
 
   const handleCheckboxClick = () => {
@@ -39,17 +87,29 @@ export default function SignUp() {
   };
 
   const validateForm = () => {
-    if (!/^[A-Za-z]{2,} [A-Za-z]{2,}$/.test(nameInputValue)) {
+    if (nameInputValue.length < 3) {
+      setNameError(true);
       return false;
     }
 
-    if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInputValue)
-    ) {
+    const nameIsValid = /^[A-Za-z]{2,} [A-Za-z]{2,}$/.test(nameInputValue);
+    if (!nameIsValid) {
+      setNameError(true);
       return false;
     }
 
-    if (!/^(?=.*[!@#$%^&*]).{6,}$/.test(passwordInputValue)) {
+    const emailIsValid =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInputValue);
+    if (!emailIsValid) {
+      setEmailError(true);
+      return false;
+    }
+
+    if (!isPasswordLengthValid || !hasSpecialChar || !hasNumber) {
+      return false;
+    }
+
+    if (!doPasswordsMatch) {
       return false;
     }
 
@@ -75,6 +135,14 @@ export default function SignUp() {
     }
   };
 
+  const handleEmailBlur = () => {
+    if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInputValue)
+    ) {
+      setEmailError(true);
+    }
+  };
+
   useEffect(() => {
     if (signUpCompleted) {
       const countdownInterval = setInterval(() => {
@@ -90,7 +158,14 @@ export default function SignUp() {
   }, [signUpCompleted, countdown, router]);
 
   const buttonDisabled =
-    !emailInputValue || !nameInputValue || !passwordInputValue || !isChecked;
+    !emailInputValue ||
+    !nameInputValue ||
+    !passwordInputValue ||
+    !isPasswordLengthValid ||
+    !hasSpecialChar ||
+    !hasNumber ||
+    !doPasswordsMatch ||
+    !isChecked;
 
   return (
     <div id="sign-up-page" className="my-16 w-full px-4">
@@ -121,9 +196,16 @@ export default function SignUp() {
               placeholder="John Smith"
               value={nameInputValue}
               onChange={handleNameInputChange}
-              className="p-4 focus:outline-none w-full"
+              className={`p-4 focus:outline-none w-full ${
+                nameError ? "border-red-500" : ""
+              }`}
             />
           </fieldset>
+          {nameError && (
+            <p className="text-red-500 text-xs mt-1">
+              Please fill out your full name properly
+            </p>
+          )}
           <fieldset className="border-2 border-accent2 rounded">
             <legend className="text-xs mx-3 px-1">Email</legend>
             <input
@@ -133,8 +215,16 @@ export default function SignUp() {
               placeholder="abc@gmail.com"
               value={emailInputValue}
               onChange={handleEmailInputChange}
-              className="p-4 focus:outline-none w-full"
+              onBlur={handleEmailBlur}
+              className={`p-4 focus:outline-none w-full ${
+                emailError ? "border-red-500" : ""
+              }`}
             />
+            {emailError && (
+              <p className="text-red-500 text-xs mt-1">
+                A valid email address should have "@" and the domain name.
+              </p>
+            )}
           </fieldset>
           <fieldset className="border-2 border-accent2 rounded">
             <legend className="text-xs mx-3 px-1">Password</legend>
@@ -144,10 +234,30 @@ export default function SignUp() {
               name="password"
               value={passwordInputValue}
               onChange={handlePasswordInputChange}
+              onFocus={handlePasswordFocus}
+              onBlur={handlePasswordBlur}
               placeholder="Password"
-              className="p-4 focus:outline-none w-full"
+              className={`p-4 focus:outline-none w-full ${
+                passwordInputValue.length > 0 &&
+                (!isPasswordLengthValid || !hasSpecialChar || !hasNumber)
+                  ? "border-red-500"
+                  : ""
+              }`}
             />
           </fieldset>
+          {isPasswordFocused && (
+            <ul className="flex flex-col list-disc px-5">
+              <li className={isPasswordLengthValid ? "text-green-500" : ""}>
+                contains 6 characters
+              </li>
+              <li className={hasSpecialChar ? "text-green-500" : ""}>
+                contains at least 1 special character
+              </li>
+              <li className={hasNumber ? "text-green-500" : ""}>
+                contains at least 1 number
+              </li>
+            </ul>
+          )}
           <fieldset className="border-2 border-accent2 rounded">
             <legend className="text-xs mx-3 px-1">Retype Password</legend>
             <input
@@ -156,10 +266,27 @@ export default function SignUp() {
               name="password2"
               value={passwordInputValue2}
               onChange={handlePasswordInputChange2}
+              onFocus={handleRetypePasswordFocus}
+              onBlur={handleRetypePasswordBlur}
               placeholder="Password"
-              className="p-4 focus:outline-none w-full"
+              className={`p-4 focus:outline-none w-full ${
+                passwordInputValue2.length > 0 && !doPasswordsMatch
+                  ? "border-red-500"
+                  : ""
+              }`}
             />
           </fieldset>
+          {isRetypePasswordFocused && (
+            <ul className="px-5 list-disc">
+              <li
+                className={doPasswordsMatch ? "text-green-500" : "text-red-500"}
+              >
+                {doPasswordsMatch
+                  ? "passwords match"
+                  : "passwords do not match"}
+              </li>
+            </ul>
+          )}
           <div
             onClick={handleCheckboxClick}
             style={{ cursor: "pointer" }}
