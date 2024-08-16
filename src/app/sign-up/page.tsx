@@ -109,7 +109,9 @@ export default function SignUp() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <h1 className="my-5 text-center">Welcome to Philly Truce.</h1>
+          <h1 className="my-10 text-center text-2xl">
+            Welcome to Philly Truce.
+          </h1>
           <fieldset className="border-2 border-accent2 rounded">
             <legend className="text-xs mx-3 px-1">Name</legend>
             <input
@@ -171,12 +173,12 @@ export default function SignUp() {
             <p>
               I agree with{" "}
               <span className="text-blue-500 underline">
-                Terms and conditions
+                terms and conditions
               </span>{" "}
               at Philly Truce.
             </p>
           </div>
-          <div className="flex justify-center space-x-8 mt-16">
+          <div className="flex items-center justify-center space-x-8 mt-16">
             <Link href="/login">
               <button type="button" className="text-red-500">
                 Cancel
