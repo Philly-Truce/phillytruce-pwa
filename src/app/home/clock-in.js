@@ -1,9 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LuClock } from "react-icons/lu";
+import "./home.css";
+import { startProgressBar } from "./countdown";
 
 export default function ClockIn() {
   const [clockIn, setClockIn] = useState(false);
+  useEffect(() => {
+    if (clockIn) {
+      startProgressBar();
+    }
+  }, [clockIn]);
 
   return (
     <div className="mt-4">
@@ -20,6 +27,11 @@ export default function ClockIn() {
           <p className="text-xs text-center mb-6">
             Click here to end your shift
           </p>
+          <div className="flex mt-2 w-16">
+            <div className="time-remain bg-primary"></div>
+            <div className="time-served bg-accent"></div>
+          </div>
+
           <div className="mt-2">
             <p className="text-xs text-center mb-6">
               2 hours til your shift ends!
