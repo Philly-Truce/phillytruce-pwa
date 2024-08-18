@@ -1,146 +1,39 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState, ChangeEvent, useEffect } from "react";
-import {
-  MdOutlineCheckBoxOutlineBlank,
-  MdOutlineCheckBox,
-} from "react-icons/md";
+import React, { useState, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface IFormInput {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  terms: boolean;
+}
 
 export default function SignUp() {
-  const [emailInputValue, setEmailInputValue] = useState("");
-  const [emailError, setEmailError] = useState(false);
-
-  const [nameInputValue, setNameInputValue] = useState("");
-  const [nameError, setNameError] = useState(false);
-
-  const [passwordInputValue, setPasswordInputValue] = useState("");
-  const [isPasswordLengthValid, setIsPasswordLengthValid] = useState(false);
-  const [hasSpecialChar, setHasSpecialChar] = useState(false);
-  const [hasNumber, setHasNumber] = useState(false);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-
-  const [passwordInputValue2, setPasswordInputValue2] = useState("");
-  const [isRetypePasswordFocused, setIsRetypePasswordFocused] = useState(false);
-  const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
-
-  const [isChecked, setIsChecked] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<IFormInput>();
   const [signUpCompleted, setSignUpCompleted] = useState(false);
   const [countdown, setCountdown] = useState(3);
+  const [nameFieldTouched, setNameFieldTouched] = useState(false);
+  const [emailFieldTouched, setEmailFieldTouched] = useState(false);
+  const [phoneFieldTouched, setPhoneFieldTouched] = useState(false);
 
   const router = useRouter();
 
-  const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmailInputValue(event.target.value);
-    setEmailError(false);
-  };
+  const watchName = watch("name");
+  const watchEmail = watch("email");
+  const watchPhone = watch("phoneNumber");
+  const watchTerms = watch("terms");
 
-  const handleNameInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNameInputValue(event.target.value);
-    setNameError(false);
-  };
-
-  const handleNameBlur = () => {
-    if (nameInputValue.length < 3) {
-      setNameError(true);
-    } else {
-      setNameError(false);
-    }
-  };
-
-  const handlePasswordInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const password = event.target.value;
-    setPasswordInputValue(password);
-    setIsPasswordLengthValid(password.length >= 6);
-    setHasSpecialChar(/[!@#$%^&*]/.test(password));
-    setHasNumber(/\d/.test(password));
-  };
-
-  const handlePasswordFocus = () => {
-    setIsPasswordFocused(true);
-  };
-
-  const handlePasswordBlur = () => {
-    if (passwordInputValue === "") {
-      setIsPasswordFocused(false);
-    }
-  };
-
-  const handlePasswordInputChange2 = (event: ChangeEvent<HTMLInputElement>) => {
-    const retypedPassword = event.target.value;
-    setPasswordInputValue2(retypedPassword);
-    setDoPasswordsMatch(retypedPassword === passwordInputValue);
-  };
-
-  const handleRetypePasswordFocus = () => {
-    setIsRetypePasswordFocused(true);
-  };
-
-  const handleRetypePasswordBlur = () => {
-    if (passwordInputValue2 === "") {
-      setIsRetypePasswordFocused(false);
-    }
-  };
-
-  const handleCheckboxClick = () => {
-    setIsChecked(!isChecked);
-  };
-
-  const validateForm = () => {
-    if (nameInputValue.length < 3) {
-      setNameError(true);
-      return false;
-    }
-
-    const nameIsValid = /^[A-Za-z]{2,} [A-Za-z]{2,}$/.test(nameInputValue);
-    if (!nameIsValid) {
-      setNameError(true);
-      return false;
-    }
-
-    const emailIsValid =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInputValue);
-    if (!emailIsValid) {
-      setEmailError(true);
-      return false;
-    }
-
-    if (!isPasswordLengthValid || !hasSpecialChar || !hasNumber) {
-      return false;
-    }
-
-    if (!doPasswordsMatch) {
-      return false;
-    }
-
-    if (!isChecked) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (validateForm()) {
-      setSignUpCompleted(true);
-      console.log({
-        nameInputValue,
-        emailInputValue,
-        passwordInputValue,
-        terms: isChecked,
-      });
-    } else {
-      console.log("Validation failed");
-    }
-  };
-
-  const handleEmailBlur = () => {
-    if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInputValue)
-    ) {
-      setEmailError(true);
-    }
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+    setSignUpCompleted(true);
   };
 
   useEffect(() => {
@@ -157,15 +50,13 @@ export default function SignUp() {
     }
   }, [signUpCompleted, countdown, router]);
 
-  const buttonDisabled =
-    !emailInputValue ||
-    !nameInputValue ||
-    !passwordInputValue ||
-    !isPasswordLengthValid ||
-    !hasSpecialChar ||
-    !hasNumber ||
-    !doPasswordsMatch ||
-    !isChecked;
+  const isNameValid = /^[A-Za-z]{2,} [A-Za-z]{2,}$/.test(watchName);
+  const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+    watchEmail
+  );
+  const isPhoneValid = /^\d{10}$/.test(watchPhone);
+
+  const isFormValid = isNameValid && isEmailValid && isPhoneValid && watchTerms;
 
   return (
     <div id="sign-up-page" className="my-16 w-full px-4">
@@ -183,128 +74,114 @@ export default function SignUp() {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <h1 className="my-10 text-center text-2xl">
             Welcome to Philly Truce.
           </h1>
-          <fieldset className="border-2 border-accent2 rounded">
+          <fieldset
+            className={`border-2 ${
+              nameFieldTouched && !isNameValid
+                ? "border-red-500"
+                : "border-accent2"
+            } rounded`}
+          >
             <legend className="text-xs mx-3 px-1">Name</legend>
             <input
-              type="text"
-              id="name"
-              name="name"
+              {...register("name", {
+                required: "Name is required",
+                pattern: {
+                  value: /^[A-Za-z]{2,} [A-Za-z]{2,}$/,
+                  message: "Please enter your full name (First Last)",
+                },
+              })}
               placeholder="John Smith"
-              value={nameInputValue}
-              onChange={handleNameInputChange}
-              className={`p-4 focus:outline-none w-full ${
-                nameError ? "border-red-500" : ""
-              }`}
+              className="p-4 focus:outline-none w-full"
+              onFocus={() => setNameFieldTouched(false)}
+              onBlur={() => setNameFieldTouched(true)}
             />
           </fieldset>
-          {nameError && (
-            <p className="text-red-500 text-xs mt-1">
-              Please fill out your full name properly
-            </p>
+          {nameFieldTouched && !isNameValid && (
+            <span className="text-xs text-red-500">
+              Please fill out your full name
+            </span>
           )}
-          <fieldset className="border-2 border-accent2 rounded">
+
+          <fieldset
+            className={`border-2 ${
+              emailFieldTouched && !isEmailValid
+                ? "border-red-500"
+                : "border-accent2"
+            } rounded`}
+          >
             <legend className="text-xs mx-3 px-1">Email</legend>
             <input
-              type="email"
-              id="email"
-              name="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email address",
+                },
+              })}
               placeholder="abc@gmail.com"
-              value={emailInputValue}
-              onChange={handleEmailInputChange}
-              onBlur={handleEmailBlur}
-              className={`p-4 focus:outline-none w-full ${
-                emailError ? "border-red-500" : ""
-              }`}
-            />
-            {emailError && (
-              <p className="text-red-500 text-xs mt-1">
-                A valid email address should have "@" and the domain name.
-              </p>
-            )}
-          </fieldset>
-          <fieldset className="border-2 border-accent2 rounded">
-            <legend className="text-xs mx-3 px-1">Password</legend>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={passwordInputValue}
-              onChange={handlePasswordInputChange}
-              onFocus={handlePasswordFocus}
-              onBlur={handlePasswordBlur}
-              placeholder="Password"
-              className={`p-4 focus:outline-none w-full ${
-                passwordInputValue.length > 0 &&
-                (!isPasswordLengthValid || !hasSpecialChar || !hasNumber)
-                  ? "border-red-500"
-                  : ""
-              }`}
+              className="p-4 focus:outline-none w-full"
+              onFocus={() => setEmailFieldTouched(false)}
+              onBlur={() => setEmailFieldTouched(true)}
             />
           </fieldset>
-          {isPasswordFocused && (
-            <ul className="flex flex-col list-disc px-5">
-              <li className={isPasswordLengthValid ? "text-green-500" : ""}>
-                contains 6 characters
-              </li>
-              <li className={hasSpecialChar ? "text-green-500" : ""}>
-                contains at least 1 special character
-              </li>
-              <li className={hasNumber ? "text-green-500" : ""}>
-                contains at least 1 number
-              </li>
-            </ul>
+          {emailFieldTouched && !isEmailValid && (
+            <span className="text-xs text-red-500">
+              Please enter a valid email address with "@" and domain name
+            </span>
           )}
-          <fieldset className="border-2 border-accent2 rounded">
-            <legend className="text-xs mx-3 px-1">Retype Password</legend>
-            <input
-              type="password"
-              id="password2"
-              name="password2"
-              value={passwordInputValue2}
-              onChange={handlePasswordInputChange2}
-              onFocus={handleRetypePasswordFocus}
-              onBlur={handleRetypePasswordBlur}
-              placeholder="Password"
-              className={`p-4 focus:outline-none w-full ${
-                passwordInputValue2.length > 0 && !doPasswordsMatch
-                  ? "border-red-500"
-                  : ""
-              }`}
-            />
-          </fieldset>
-          {isRetypePasswordFocused && (
-            <ul className="px-5 list-disc">
-              <li
-                className={doPasswordsMatch ? "text-green-500" : "text-red-500"}
-              >
-                {doPasswordsMatch
-                  ? "passwords match"
-                  : "passwords do not match"}
-              </li>
-            </ul>
-          )}
-          <div
-            onClick={handleCheckboxClick}
-            style={{ cursor: "pointer" }}
-            className="flex items-center space-x-3 my-5 w-fit"
+
+          <fieldset
+            className={`border-2 ${
+              phoneFieldTouched && !isPhoneValid
+                ? "border-red-500"
+                : "border-accent2"
+            } rounded`}
           >
-            {isChecked ? (
-              <MdOutlineCheckBox />
-            ) : (
-              <MdOutlineCheckBoxOutlineBlank />
-            )}
-            <p>
+            <legend className="text-xs mx-3 px-1">Phone Number</legend>
+            <input
+              {...register("phoneNumber", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: "Phone number must be 10 digits",
+                },
+              })}
+              placeholder="1234567890"
+              className="p-4 focus:outline-none w-full"
+              onFocus={() => setPhoneFieldTouched(false)}
+              onBlur={() => setPhoneFieldTouched(true)}
+            />
+          </fieldset>
+          {phoneFieldTouched && !isPhoneValid && (
+            <span className="text-xs text-red-500">
+              Please enter a 10-digit phone number
+            </span>
+          )}
+
+          <div className="flex items-center space-x-3 my-5 w-fit">
+            <input
+              type="checkbox"
+              id="terms"
+              {...register("terms", {
+                required: "You must agree to the terms and conditions",
+              })}
+            />
+            <label htmlFor="terms">
               I agree with{" "}
               <span className="text-blue-500 underline">
                 terms and conditions
               </span>{" "}
               at Philly Truce.
-            </p>
+            </label>
           </div>
+          {errors.terms && (
+            <p className="text-red-500 text-xs mt-1">{errors.terms.message}</p>
+          )}
+
           <div className="flex items-center justify-center space-x-8 mt-16">
             <Link href="/login">
               <button type="button" className="text-red-500">
@@ -313,10 +190,12 @@ export default function SignUp() {
             </Link>
             <button
               type="submit"
-              className={`bg-primary rounded-2xl px-3 py-1 text-white ${
-                buttonDisabled ? "opacity-50 cursor-not-allowed" : ""
+              className={`rounded-2xl px-3 py-1 ${
+                isFormValid
+                  ? "bg-primary text-white"
+                  : "bg-gray-200 text-slate-400 cursor-not-allowed"
               }`}
-              disabled={buttonDisabled}
+              disabled={!isFormValid}
             >
               Sign Up
             </button>
