@@ -6,9 +6,11 @@ import { startProgressBar } from "./countdown";
 
 export default function ClockIn() {
   const [clockIn, setClockIn] = useState(false);
+  const hours = 2; // Hours to Serve
+  
   useEffect(() => {
     if (clockIn) {
-      startProgressBar();
+      startProgressBar(hours);
     }
   }, [clockIn]);
 
@@ -28,14 +30,13 @@ export default function ClockIn() {
             Click here to end your shift
           </p>
           <div className="flex mt-2 w-16">
-            <div className="time-remain bg-primary"></div>
-            <div className="time-served bg-accent"></div>
+            <div className="time-remain-bar bg-primary"></div>
+            <div className="time-served-bar bg-accent"></div>
           </div>
 
-          <div className="mt-2">
-            <p className="text-xs text-center mb-6">
-              2 hours til your shift ends!
-            </p>
+          <div className="mt-2 flex justify-center items-center">
+            <div id="timeRemainNumber" className="text-xs text-center mr-1">2</div>&nbsp;
+            <p className="text-xs mb-6 text-center">hours til your shift ends!</p>
           </div>
         </div>
       ) : (
