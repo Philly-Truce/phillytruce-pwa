@@ -46,7 +46,7 @@ const ReportIcon = () => (
 export default function TopBanner() {
   const pathname = usePathname();
 
-  if (["/login", "/login-otp", "/more"].includes(pathname)) return null;
+  if (["/login", "/login-otp", "/more", "/signin"].includes(pathname)) return null;
 
   const getPageTitle = () => {
     if (pathname.startsWith("/messages/")) {

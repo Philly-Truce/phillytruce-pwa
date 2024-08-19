@@ -1,16 +1,16 @@
 import type { NextAuthOptions } from "next-auth";
-import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from "next-auth/providers/credentials";
+import users from "../../../../data/users.json";
 
 export const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username:",
+        email: {
+          label: "Email:",
           type: "text",
-          placeholder: "Username"
+          placeholder: "example@gmail.com"
         },
         password: {
           label: "Password",
@@ -19,11 +19,14 @@ export const options: NextAuthOptions = {
         }
       },
       async authorize(credentials) {
-        // Retrieve user data to verify with credentials
-        // Docs: https://next-auth.js.org/configuration/providers/credentials
-        const user = {id: "42", name: "Dave", password: "phillytruce"}
+        if (!credentials) {
+          return null;
+        }
+        const user = users.find(
+          (user) => user.email === credentials?.email && user.password === credentials?.password
+        );
 
-        if (credentials?.username === user.name && credentials?.password === user.password) {
+        if (user) {
           return user;
         } else {
           return null;

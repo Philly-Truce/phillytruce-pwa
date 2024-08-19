@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import ClientLayout from "./client-layout";
 import type { Metadata } from "next";
 import { TwilioProvider } from "@/lib/twilio-provider";
+import { Providers } from "../components/auth/providers";
 
 export const metadata: Metadata = {
   title: "Philly Truce",
@@ -21,9 +22,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body
         className={`${roboto.className} my-0 max-w-[640px] justify-center items-center mx-auto shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px]`}
       >
-        <TwilioProvider>
-          <ClientLayout>{children}</ClientLayout>
-        </TwilioProvider>
+        <Providers>
+          <TwilioProvider>
+            <ClientLayout>{children}</ClientLayout>
+          </TwilioProvider>
+        </Providers>
       </body>
     </html>
   );
