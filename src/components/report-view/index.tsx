@@ -1,5 +1,6 @@
 import React from "react";
 import { InputField, TextAreaField } from "@/components/report-view/inputs";
+import type { ObjectId } from 'mongodb'
 import dayjs from "dayjs";
 import {
   Dialog,
@@ -13,14 +14,15 @@ import {
 } from "@/components/report-view/dialog";
 
 export type Report = {
-  id: number;
+  _id: ObjectId;
+  incidentReportNumber: number;
   statusType: string;
   submittedType: string;
-  incidentType: string;
+  incidentType: string[];
   location: string;
   date: Date;
   details: string;
-  connectedReports: string[];
+  connectedReports: number[];
 };
 
 type StatusConfiguration = {
@@ -78,6 +80,7 @@ export default async function ReportView({ report }: { report: Report }) {
 
   const buttonBaseClasses =
     "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
+    
 
   return (
     <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
@@ -116,7 +119,7 @@ export default async function ReportView({ report }: { report: Report }) {
               name="incident-type"
               placeholder=""
               label="Incident Type"
-              defaultValue={incidentType}
+              defaultValue={incidentType.join(", ")}
               readOnly={true}
               status={statusType}
               icon="/icons/flag.svg"
@@ -127,6 +130,7 @@ export default async function ReportView({ report }: { report: Report }) {
         <div className="incident-details w-full mt-4">
           <h3 className="font-semibold text-base text-primary mb-2">Details</h3>
           <div className="w-full gap-y-4 flex flex-col">
+            {/* Location Field */}
             <InputField
               name="location"
               placeholder=""
@@ -136,6 +140,7 @@ export default async function ReportView({ report }: { report: Report }) {
               width="full"
               icon="/icons/location.svg"
             />
+            {/* Date and Time Fields*/}
             <div className="flex flex-row w-full gap-x-2">
               <InputField
                 name="date"
@@ -154,6 +159,8 @@ export default async function ReportView({ report }: { report: Report }) {
                 width="1/2"
               />
             </div>
+
+            {/* Incident details field */}
             <TextAreaField
               name="details"
               placeholder=""

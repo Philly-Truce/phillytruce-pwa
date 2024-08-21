@@ -1,18 +1,19 @@
 import React from "react";
-import axios from "axios";
 import ReportView from "@/components/report-view";
 import reports from "@/data/reports.json";
 import type { Report } from "@/components/report-view";
 
 /**
- *
+ * Fetches the 
  * @param id the report id
- * @returns
+ * @returns report details
  */
-const fetchReportById = async (id: number): Promise<Report> => {
-  const foundReport = reports.find((report) => report.id === id);
+const fetchReportByReportNumber = async (incidentReportNumber : number): Promise<Report> => {
+  const foundReport : any = reports.find((report) => report.incident_report_number === incidentReportNumber);
+  
   if (!foundReport) {
-    throw new Error(`Report with id ${id} not found`);
+    // Redirect to 404 page
+    throw new Response("Not Found", { status: 404 });
   }
 
   return {
@@ -28,11 +29,11 @@ const fetchReportById = async (id: number): Promise<Report> => {
  * @returns Report view
  */
 export default async function ReportsViewPage() {
-  let id: number = 1805;
-  const report = await fetchReportById(id);
+  
+  const report : Report = await fetchReportByReportNumber(1805);
 
   return (
-    <div id="reports-view-page" className="pt-[88px] px-4">
+    <div id="reports-view-page" className="pt-[88px] px-4 w-full">
       <ReportView report={report} />
     </div>
   );
