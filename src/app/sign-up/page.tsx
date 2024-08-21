@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface IFormInput {
@@ -15,28 +15,22 @@ export default function SignUp() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<IFormInput>();
-  const [signUpCompleted, setSignUpCompleted] = useState(false);
-  const [countdown, setCountdown] = useState(3);
-  const [nameFieldTouched, setNameFieldTouched] = useState(false);
-  const [emailFieldTouched, setEmailFieldTouched] = useState(false);
-  const [phoneFieldTouched, setPhoneFieldTouched] = useState(false);
+    formState: { errors, isValid, touchedFields },
+  } = useForm<IFormInput>({
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
+  const [signUpCompleted, setSignUpCompleted] = React.useState(false);
+  const [countdown, setCountdown] = React.useState(3);
 
   const router = useRouter();
-
-  const watchName = watch("name");
-  const watchEmail = watch("email");
-  const watchPhone = watch("phoneNumber");
-  const watchTerms = watch("terms");
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
     setSignUpCompleted(true);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (signUpCompleted) {
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => prev - 1);
@@ -49,14 +43,6 @@ export default function SignUp() {
       return () => clearInterval(countdownInterval);
     }
   }, [signUpCompleted, countdown, router]);
-
-  const isNameValid = /^[A-Za-z]{2,} [A-Za-z]{2,}$/.test(watchName);
-  const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
-    watchEmail
-  );
-  const isPhoneValid = /^\d{10}$/.test(watchPhone);
-
-  const isFormValid = isNameValid && isEmailValid && isPhoneValid && watchTerms;
 
   return (
     <div id="sign-up-page" className="my-16 w-full px-4">
@@ -80,7 +66,7 @@ export default function SignUp() {
           </h1>
           <fieldset
             className={`border-2 ${
-              nameFieldTouched && !isNameValid
+              touchedFields.name && errors.name
                 ? "border-red-500"
                 : "border-accent2"
             } rounded`}
@@ -96,19 +82,15 @@ export default function SignUp() {
               })}
               placeholder="John Smith"
               className="p-4 focus:outline-none w-full"
-              onFocus={() => setNameFieldTouched(false)}
-              onBlur={() => setNameFieldTouched(true)}
             />
           </fieldset>
-          {nameFieldTouched && !isNameValid && (
-            <span className="text-xs text-red-500">
-              Please fill out your full name
-            </span>
+          {touchedFields.name && errors.name && (
+            <span className="text-xs text-red-500">{errors.name.message}</span>
           )}
 
           <fieldset
             className={`border-2 ${
-              emailFieldTouched && !isEmailValid
+              touchedFields.email && errors.email
                 ? "border-red-500"
                 : "border-accent2"
             } rounded`}
@@ -124,19 +106,15 @@ export default function SignUp() {
               })}
               placeholder="abc@gmail.com"
               className="p-4 focus:outline-none w-full"
-              onFocus={() => setEmailFieldTouched(false)}
-              onBlur={() => setEmailFieldTouched(true)}
             />
           </fieldset>
-          {emailFieldTouched && !isEmailValid && (
-            <span className="text-xs text-red-500">
-              Please enter a valid email address with "@" and domain name
-            </span>
+          {touchedFields.email && errors.email && (
+            <span className="text-xs text-red-500">{errors.email.message}</span>
           )}
 
           <fieldset
             className={`border-2 ${
-              phoneFieldTouched && !isPhoneValid
+              touchedFields.phoneNumber && errors.phoneNumber
                 ? "border-red-500"
                 : "border-accent2"
             } rounded`}
@@ -152,13 +130,11 @@ export default function SignUp() {
               })}
               placeholder="1234567890"
               className="p-4 focus:outline-none w-full"
-              onFocus={() => setPhoneFieldTouched(false)}
-              onBlur={() => setPhoneFieldTouched(true)}
             />
           </fieldset>
-          {phoneFieldTouched && !isPhoneValid && (
+          {touchedFields.phoneNumber && errors.phoneNumber && (
             <span className="text-xs text-red-500">
-              Please enter a 10-digit phone number
+              {errors.phoneNumber.message}
             </span>
           )}
 
@@ -191,11 +167,11 @@ export default function SignUp() {
             <button
               type="submit"
               className={`rounded-2xl px-3 py-1 ${
-                isFormValid
+                isValid
                   ? "bg-primary text-white"
                   : "bg-gray-200 text-slate-400 cursor-not-allowed"
               }`}
-              disabled={!isFormValid}
+              disabled={!isValid}
             >
               Sign Up
             </button>
