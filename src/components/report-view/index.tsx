@@ -14,15 +14,25 @@ import {
 } from "@/components/report-view/dialog";
 
 export type Report = {
-  _id: ObjectId;
-  incidentReportNumber: number;
-  statusType: string;
-  submittedType: string;
-  incidentType: string[];
-  location: string;
-  date: Date;
-  details: string;
-  connectedReports: number[];
+  id: string; 
+  incident_report_number: number; 
+  report_initiated_at: Date; 
+  report_stage?: string; 
+  report_origin: string;
+  incident_type: string[];
+  description: string; 
+  location: string; 
+  report_last_updated_at?: Date; 
+  ppd_notified: boolean; 
+  creator_user: any; 
+  witness_id?: string | null;
+  session_id?: string | null; 
+  chat_service_id?: string | null; 
+  last_message_at?: Date | null; 
+  unclaimed_at?: Date | null; 
+  claimed_at?: Date | null; 
+  messages?: any; 
+  archived_at?: Date | null; 
 };
 
 type StatusConfiguration = {
@@ -41,18 +51,18 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
       ctaButtonText: "Claim Report",
       buttonTWClasses: "bg-primary text-white",
     },
-    "in progress": {
+    claimed: {
       dialogTitle: "Would you like to close this report?",
       dialogDescription:
         "This report will be submitted for view and marked as closed.",
       ctaButtonText: "Close Report",
-      buttonTWClasses: "bg-secondary text-black",
+      buttonTWClasses: "bg-white text-black border-2 border-border",
     },
     closed: {
       dialogTitle: "",
       dialogDescription: "",
       ctaButtonText: "",
-      buttonTWClasses: "bg-primary text-white",
+      buttonTWClasses: "bg-secondary text-black",
     },
   };
 
@@ -61,27 +71,45 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
 
 /**
  * A read only view of a report
+ * All input fields for this form should be readOnly or disabled to ensure good UX
  * @param report - Report object
  * @returns
  */
+const ReportView: React.FC<{ report: Report }> = ({ report }) => {
+  
+  const reportStage = report?.report_stage || '';
 
-export default async function ReportView({ report }: { report: Report }) {
-  const {
-    statusType,
-    submittedType,
-    incidentType,
-    location,
-    date,
-    details,
-  }: Report = report;
+  const { 
+    dialogTitle, 
+    dialogDescription, 
+    ctaButtonText, 
+    buttonTWClasses 
+  } = reportStatusState(reportStage) || {};
 
-  const { dialogTitle, dialogDescription, ctaButtonText, buttonTWClasses } =
-    reportStatusState(statusType) || {};
+  const buttonBaseClasses = "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
 
-  const buttonBaseClasses =
-    "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
+  /**
+   * An object for the report stage label and icon
+   * @returns JS object with key-values for label and icon 
+   */  
+  const reportStageLabelAndIcon = () => {
     
+    switch(report?.report_stage) {
+      case 'claimed':
+        return {label: 'In Progress',
+          icon:'/icons/in-progress.svg'
+        }
+      case 'closed':
+        return {
+        label: 'Closed',
+        icon: '/icons/closed.svg'}
+      default:
+        return {label: 'Unclaimed',
+        icon:'/icons/warning_amber.svg'}
+    }
 
+  }
+  
   return (
     <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
       <div>
@@ -93,37 +121,37 @@ export default async function ReportView({ report }: { report: Report }) {
           <div className="w-full gap-y-4 flex flex-col">
             <div className="flex flex-row w-full gap-x-2 justify-between">
               <InputField
-                name="status-type"
+                name="report-stage"
                 placeholder=""
+                label="Report Stage"
+                defaultValue={reportStageLabelAndIcon().label}
+                readOnly={true}
+                width="1/2"
+                icon={reportStageLabelAndIcon().icon}
+              />
+              <InputField
+                name="report-origin"
+                placeholder=""
+                label="Report Origin"
+                defaultValue={report?.report_origin === "witness_text" ? "Text-In" : ("SPM " + report?.creator_user.first_name)}
+                readOnly={true}
+                width="1/2"
                 icon={
-                  submittedType === "text-in"
+                  report?.report_origin === "witness_text"
                     ? "/icons/textsms.svg"
                     : "/icons/SPM_shield.svg"
                 }
-                label="Status Type"
-                defaultValue={statusType}
-                readOnly={true}
-                width="1/2"
-              />
-              <InputField
-                name="submitted-type"
-                placeholder=""
-                label="Submitted Type"
-                defaultValue={submittedType}
-                icon="/icons/textsms.svg"
-                readOnly={true}
-                width="1/2"
               />
             </div>
             <InputField
-              name="incident-type"
-              placeholder=""
-              label="Incident Type"
-              defaultValue={incidentType.join(", ")}
-              readOnly={true}
-              status={statusType}
-              icon="/icons/flag.svg"
-            />
+                name="Incident Type"
+                placeholder=""
+                label="Incident Type"
+                defaultValue={report?.incident_type.join(', ')}
+                readOnly={true}
+                width="1/2"
+                icon="/icons/flag.svg"
+              />
           </div>
         </div>
         {/* Incident Details: Location, Date, Time, Details */}
@@ -135,7 +163,7 @@ export default async function ReportView({ report }: { report: Report }) {
               name="location"
               placeholder=""
               label="Location"
-              defaultValue={location}
+              defaultValue={report?.location}
               readOnly={true}
               width="full"
               icon="/icons/location.svg"
@@ -147,7 +175,7 @@ export default async function ReportView({ report }: { report: Report }) {
                 placeholder=""
                 label="Date"
                 icon="/icons/calendar.svg"
-                defaultValue={dayjs(date).format("MM/DD/YYYY")}
+                defaultValue={dayjs(report?.report_initiated_at).format("MM/DD/YYYY")}
                 width="1/2"
               />
               <InputField
@@ -155,27 +183,24 @@ export default async function ReportView({ report }: { report: Report }) {
                 placeholder=""
                 label="Time"
                 icon="/icons/clock.svg"
-                defaultValue={dayjs(date).format("hh:mm A")}
+                defaultValue={dayjs(report?.report_initiated_at).format("hh:mm A")}
                 width="1/2"
               />
             </div>
-
             {/* Incident details field */}
             <TextAreaField
-              name="details"
+              name="description"
               placeholder=""
-              label="Details"
-              defaultValue={details}
+              label="Description"
+              defaultValue={report?.description}
               icon="/icons/description.svg"
               readOnly={true}
-              status={statusType}
               maxRows={3}
             />
           </div>
         </div>
       </div>
-
-      {statusType !== "closed" && (
+      {report?.report_stage !== "closed" && (
         <div className="py-8 relative left-0 bottom-0 flex w-full flex-col items-center justify-center">
           <Dialog>
             <DialogTrigger asChild>
@@ -205,3 +230,5 @@ export default async function ReportView({ report }: { report: Report }) {
     </form>
   );
 }
+
+export default ReportView
