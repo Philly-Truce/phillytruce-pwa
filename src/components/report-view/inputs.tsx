@@ -136,6 +136,13 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
     if (onChange) {
       onChange(e);
     }
+    // Update rows based on content
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight);
+      const newRows = Math.floor(textarea.scrollHeight / lineHeight);
+      textarea.rows = newRows; // Dynamically set rows
+    }
   };
 
   const handleExpand = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -155,7 +162,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         <textarea
           ref={textareaRef}
           className={`
-          bg-transparent w-full capitalize resize-none
+          bg-transparent w-full resize-none
           py-0.5 leading-normal
           ${isExpanded ? "overflow-auto" : "overflow-hidden"}
         `}
