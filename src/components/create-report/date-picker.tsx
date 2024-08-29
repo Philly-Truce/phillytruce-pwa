@@ -24,7 +24,6 @@ const DatePicker: React.FC<ReportedDate> = ({ reportedDate }) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"destructive"}
           className={cn(
             "w-1/2 justify-start text-left font-normal text-md",
             !date && "text-muted-foreground"

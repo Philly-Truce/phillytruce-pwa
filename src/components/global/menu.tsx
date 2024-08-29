@@ -114,7 +114,8 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   if (
     pathname === "/login" ||
     pathname === "/login-otp" ||
-    pathname.startsWith("/messages/CH")
+    pathname.startsWith("/messages/CH") ||
+    pathname === "/sign-up"
   ) {
     return null;
   }

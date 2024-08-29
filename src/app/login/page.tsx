@@ -155,12 +155,16 @@ export default function Main() {
         <a href="#" className="text-xs underline text-link">
           Need help logging in?
         </a>
-        <p className="text-xs font-semibold text-accent2">
-          Don&apos;t have an account?{" "}
-          <a href="#" className="text-xs underline text-link font-normal">
-            Sign up
-          </a>
-        </p>
+        <div className="flex items-center space-x-2">
+          <p className="text-xs font-semibold text-accent2">
+            Don&apos;t have an account?{" "}
+          </p>
+          <Link href="/sign-up">
+            <span className="text-xs underline text-link font-normal">
+              Sign up
+            </span>
+          </Link>
+        </div>
       </section>
     </div>
   );
