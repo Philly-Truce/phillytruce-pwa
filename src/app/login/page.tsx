@@ -101,11 +101,11 @@ export default function Main() {
           )}
         </form>
       </section>
-      <section>
+      <section className="w-1/2 inline-flex pr-1">
         {mobileOption ? (
-          <div>
+          <div className="w-full">
             <button
-              className="my-8 bg-primary px-6 py-3 w-full rounded-3xl text-sm font-medium text-white"
+              className="my-8 bg-primary px-6 py-3 rounded-3xl text-sm font-medium text-white w-full"
               type="button"
               onClick={() => {
                 setMobileOption(!mobileOption);
@@ -117,9 +117,9 @@ export default function Main() {
             </button>
           </div>
         ) : (
-          <div>
+          <div className="w-full">
             <button
-              className="my-8 bg-primary px-6 py-3 w-full rounded-3xl text-sm font-medium text-white"
+              className="my-8 bg-primary px-6 py-3 rounded-3xl text-sm font-medium text-white w-full"
               type="button"
               onClick={() => {
                 setMobileOption(!mobileOption);
@@ -132,31 +132,23 @@ export default function Main() {
           </div>
         )}
       </section>
-      <Link href={mobileOption ? "/login-otp-mobile" : "/login-otp-email"}>
+      <Link href={mobileOption ? "/login-otp-mobile" : "/login-otp-email"}  className="w-1/2 inline-flex pl-1">
         <button
-          className={`my-8 ${
+          className={`my-8 px-6 py-3 rounded-3xl text-sm font-medium w-full ${
             mobileOption
               ? mobileContinueDisabled
-                ? "bg-accent"
-                : "bg-primary"
+                ? "bg-accent text-primary text-opacity-40"
+                : "bg-primary text-white"
               : emailContinueDisabled
-              ? "bg-accent"
-              : "bg-primary"
-          } px-6 py-3 w-full rounded-3xl text-sm font-medium ${
-            mobileOption
-              ? mobileContinueDisabled
-                ? "text-primary text-opacity-40"
-                : "text-white"
-              : emailContinueDisabled
-              ? "text-primary text-opacity-40"
-              : "text-white"
+              ? "bg-accent text-primary text-opacity-40"
+              : "bg-primary text-white"
           }`}
           type="button"
           disabled={
             mobileOption ? mobileContinueDisabled : emailContinueDisabled
           }
         >
-          CONTINUE
+          Continue
         </button>
       </Link>
       <section>
