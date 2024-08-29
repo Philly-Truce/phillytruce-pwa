@@ -1,67 +1,114 @@
-import { MdOutlineSignalCellularAlt } from "react-icons/md";
-import { FaWifi } from "react-icons/fa6";
-import { FaBatteryFull } from "react-icons/fa6";
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-interface TopBannerProps {
-  page:
-    | "home"
-    | "login"
-    | "login-otp"
-    | "reports"
-    | "reports-view"
-    | "more"
-    | "messages"
-    | "edit"
-    | "create"
-    | "profile"
-    | "resources"
-    | "settings"
-    | "contacts"
-    ;
-}
+const pageTitles: Record<string, string> = {
+  "/reports": "Reports",
+  "/reports-view": "Report",
+  "/sign-up": "Sign Up",
+  "/messages": "Messages",
+  "/edit": "Edit Report",
+  "/create": "Create New Report",
+  "/profile": "Profile",
+  "/resources": "Resources",
+  "/settings": "Settings",
+};
 
-export default function TopBanner({ page }: TopBannerProps) {
+const LeftArrow = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
+      fill="white"
+    />
+  </svg>
+);
+
+const ReportIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8 16H16V18H8V16ZM8 12H16V14H8V12ZM14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z"
+      fill="white"
+    />
+  </svg>
+);
+
+export default function TopBanner() {
+  const pathname = usePathname();
+
+  if (["/login", "/login-otp", "/more"].includes(pathname)) return null;
+
   const getPageTitle = () => {
-    switch (page) {
-      case "home":
-        return "Welcome Alyssa!";
-      case "login":
-        return "";
-      case "login-otp":
-        return "";
-      case "reports":
-        return "Reports";
-      case "reports-view":
-        return "Report";
-      case "messages":
-        return "Messages";
-      case "edit":
-        return "Edit Report";
-      case "create":
-        return "Create New Report";
-      case "profile":
-        return "Profile";
-      case "resources":
-        return "Resources";
-      case "settings":
-        return "Settings";
-        case "contacts":
-        return "Contacts";
-      default:
-        return "";
+    if (pathname.startsWith("/messages/")) {
+      const lastFourChars = pathname.slice(-4);
+      return `Message #${lastFourChars}`;
     }
+    return pageTitles[pathname] || "Welcome Alyssa!";
   };
 
-  const hideDivPaths = ["login", "login-otp"];
+  const getLeftChild = () => {
+    if (pathname.startsWith("/messages/") || pathname.startsWith("/profile")) {
+      return (
+        <Link href={pathname.startsWith("/messages/") ? "/messages" : "/more"}>
+          <div id="left-arrow-wrapper" className="m-3">
+            <LeftArrow />
+          </div>
+        </Link>
+      );
+    }
+    return (
+      <div
+        id="circle-background"
+        className="rounded-full w-[34px] h-[34px] bg-[#727272] relative flex gap-1"
+      >
+        <div
+          id="initials"
+          className="absolute text-white text-center text-xs font-bold leading-[100%] tracking-[0.5px] top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4"
+        >
+          AV
+        </div>
+      </div>
+    );
+  };
+
+  const getRightChild = () => {
+    if (pathname.startsWith("/messages/")) {
+      return (
+        <div id="report-icon-wrapper" className="m-3">
+          <ReportIcon />
+        </div>
+      );
+    }
+    return <div id="placeholder" className="w-5 h-5"></div>;
+  };
 
   return (
-    <header>
-      <div className="p-4 bg-primary font-normal text-center flex items-center justify-start px-4 space-x-32">
-        {!hideDivPaths.includes(page) && (
-          <div className="rounded-full w-5 bg-slate-400">P</div>
-        )}
-        <h1 className="text-white">{getPageTitle()}</h1>
-      </div>
-    </header>
+    <div
+      id="top-banner"
+      className="px-[18px] py-2 bg-primary text-center items-center fixed w-full flex justify-between min-h-16 gap-1 max-w-[640px]"
+    >
+      {getLeftChild()}
+      <h1
+        className={`text-white text-[22px] font-normal leading-7 flex-grow ${
+          pathname.startsWith("/messages/") || pathname.startsWith("/profile")
+            ? "text-left"
+            : ""
+        }`}
+      >
+        {getPageTitle()}
+      </h1>
+      {getRightChild()}
+    </div>
   );
 }
