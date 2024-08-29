@@ -6,7 +6,6 @@ We are the platform engineers who have gathered to build a platform called Phill
 
 1. Download the local file from (git@github.com:johnjang94/phillytruce-frontend.git)
 2. Install all the dependencies using the following command
-
 ```
 yarn install
 ```
