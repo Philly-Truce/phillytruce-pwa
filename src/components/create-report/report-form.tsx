@@ -4,6 +4,7 @@ import OverviewField from "./overview-field";
 import DetailField from "./detail-field";
 import Link from "next/link";
 import { useState } from "react";
+import Continue from "./continue-modal";
 
 interface ReportData {
   id: string;
@@ -23,7 +24,8 @@ const ReportForm: React.FC<Report> = ({ report }) => {
   const [saveEnable, setSaveEnable] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className="pt-20 px-4">
+      {report ?'': <Continue/>}
       <p className="text-sm py-2">
         Please provide detailed information of the incident in this form
       </p>
