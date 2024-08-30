@@ -22,12 +22,29 @@ export default function SignUp() {
   });
   const [signUpCompleted, setSignUpCompleted] = React.useState(false);
   const [countdown, setCountdown] = React.useState(3);
+  const [error, setError] = React.useState<string | null>(null);
 
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-    setSignUpCompleted(true);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSignUpCompleted(true);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "An error occurred during sign up");
+      }
+    } catch (err) {
+      setError("An error occurred during sign up");
+    }
   };
 
   React.useEffect(() => {
