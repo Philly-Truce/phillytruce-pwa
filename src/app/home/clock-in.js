@@ -15,12 +15,10 @@ export default function ClockIn() {
   }, [clockIn]);
 
   return (
-    <div className="mt-4">
+    <div>
       {clockIn ? (
         <div className="space-y-1">
-          <p className="text-xs text-center">
-            Click here to end your shift
-          </p>
+          <p className="text-xs text-center">Click here to end your shift</p>
           <button
             className="bg-white py-3 mb-2 w-full rounded-3xl text-sm font-medium text-primary border-default border-2 text-center align-middle inline-flex justify-center drop-shadow-lg"
             type="button"
