@@ -26,7 +26,7 @@ export default function Home() {
   const year = date.getFullYear();
   const currentDate = month + " " + day + ", " + year;
   return (
-    <div className="w-full">
+    <div className="w-full px-4">
       <header className="space-y-1 mt-20 mb-4">
         <p className="text-xs text-center">
           We appreciate everything you do to keep our community safe.
