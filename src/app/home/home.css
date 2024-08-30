@@ -1,0 +1,10 @@
+.time-remain-bar {
+    width: 70%;
+    height: 4px;
+    margin: auto;
+}
+.time-served-bar {
+    width: 30%;
+    height: 4px;
+    margin: auto;
+}
