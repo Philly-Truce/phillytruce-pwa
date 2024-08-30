@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { InputField, TextAreaField } from "@/components/report-view/inputs";
 import type { ObjectId } from 'mongodb'
@@ -58,7 +59,7 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
       ctaButtonText: "Close Report",
       buttonTWClasses: "bg-white text-black border-2 border-border",
     },
-    closed: {
+    archive: {
       dialogTitle: "",
       dialogDescription: "",
       ctaButtonText: "",
@@ -70,12 +71,12 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
 };
 
 /**
- * A read only view of a report
- * All input fields for this form should be readOnly or disabled to ensure good UX
+ * A read only view of a report allowing
+ * All input fields for this form should be readOnly or disabled to ensure good ux
  * @param report - Report object
  * @returns
  */
-const ReportView: React.FC<{ report: Report }> = ({ report }) => {
+const ReportView: React.FC<any> = ({ report, onStatusUpdate } : { report: Report, onStatusUpdate: () => void }) => {
   
   const reportStage = report?.report_stage || '';
 
@@ -87,7 +88,7 @@ const ReportView: React.FC<{ report: Report }> = ({ report }) => {
   } = reportStatusState(reportStage) || {};
 
   const buttonBaseClasses = "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
-
+   
   /**
    * An object for the report stage label and icon
    * @returns JS object with key-values for label and icon 
@@ -96,18 +97,21 @@ const ReportView: React.FC<{ report: Report }> = ({ report }) => {
     
     switch(report?.report_stage) {
       case 'claimed':
-        return {label: 'In Progress',
+        return {
+          label: 'In Progress',
           icon:'/icons/in-progress.svg'
         }
-      case 'closed':
+      case 'archived':
         return {
         label: 'Closed',
-        icon: '/icons/closed.svg'}
+        icon: '/icons/closed.svg'
+      }
       default:
-        return {label: 'Unclaimed',
-        icon:'/icons/warning_amber.svg'}
+        return {
+          label: 'Unclaimed',
+          icon:'/icons/warning_amber.svg'
+        }
     }
-
   }
   
   return (
@@ -219,7 +223,11 @@ const ReportView: React.FC<{ report: Report }> = ({ report }) => {
                     <DialogClose asChild>
                       <button className="text-primary font-medium">No</button>
                     </DialogClose>
-                    <button className="text-primary font-medium">Yes</button>
+                    <DialogClose asChild>
+                      <button onClick={onStatusUpdate} className="text-primary font-medium">
+                        Yes
+                      </button>
+                    </DialogClose>
                   </div>
                 </div>
               </DialogFooter>
