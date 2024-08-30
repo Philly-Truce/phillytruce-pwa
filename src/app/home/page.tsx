@@ -26,16 +26,16 @@ export default function Home() {
   const year = date.getFullYear();
   const currentDate = month + " " + day + ", " + year;
   return (
-    <div>
-      <section>
-        <p className="mt-3 text-xs text-center">
+    <div className="w-full">
+      <header className="space-y-1 mt-20 mb-4">
+        <p className="text-xs text-center">
           We appreciate everything you do to keep our community safe.
         </p>
-        <p className="text-2xs text-center mt-1">{currentDate}</p>
-      </section>
-      
+        <p className="text-[10px] text-center">{currentDate}</p>
+      </header>
+
       <ClockIn />
-      
+
       <section>
         <div className="flex text-sm my-3">
           <h1 className="font-bold">Pinned Announcements</h1>
@@ -44,7 +44,7 @@ export default function Home() {
           </a>
         </div>
         {ListItems.map((listItem, index) => (
-            <div key={index} className="mb-2 py-2 px-4 bg-homelistbg flex">
+          <div key={index} className="mb-2 py-2 px-4 bg-homelistbg flex">
             <Image
               src={Thumbnail}
               width={56}
@@ -58,8 +58,7 @@ export default function Home() {
             </div>
             <GoTriangleRight className="ml-auto self-center text-lg text-primary" />
           </div>
-          ))}
-        
+        ))}
       </section>
     </div>
   );
