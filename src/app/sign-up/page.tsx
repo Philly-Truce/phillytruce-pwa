@@ -28,7 +28,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await fetch("/api/signup", {
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,14 +36,15 @@ export default function SignUp() {
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         setSignUpCompleted(true);
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || "An error occurred during sign up");
+        console.error(result.message);
       }
-    } catch (err) {
-      setError("An error occurred during sign up");
+    } catch (error) {
+      console.error("An error occurred during sign up", error);
     }
   };
 
