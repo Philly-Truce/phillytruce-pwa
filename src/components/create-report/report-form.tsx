@@ -2,92 +2,83 @@
 
 import OverviewField from "./overview-field";
 import DetailField from "./detail-field";
-import Link from "next/link";
-import { useState } from "react";
 import Continue from "./continue-modal";
+import Link from "next/link";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 
-interface ReportData {
-  id: string;
-  incidentType: string[];
-  location: string;
-  date: string;
-  time: string;
+type ReportData = {
+  incident_report_number: number;
+  report_origin: string;
+  report_initiated_at: Date;
+  report_stage: string;
+  incident_type: string[];
   description: string;
-  ppdNotified: boolean;
-}
+  location: string;
+  report_last_updated_at: Date;
+  ppd_notified: boolean;
+};
 
-interface Report {
-  report?: ReportData;
-}
+type Report = {
+  report: ReportData;
+};
 
 const ReportForm: React.FC<Report> = ({ report }) => {
-  const [saveEnable, setSaveEnable] = useState<boolean>(false);
+  const methods = useForm<ReportData>({
+    mode: "onChange",
+    reValidateMode: "onChange",
+    defaultValues: {
+      location: report.location || "",
+      description: report.description || "",
+      incident_type: report.incident_type || [],
+      report_initiated_at: report.report_initiated_at,
+      ppd_notified: report.ppd_notified || false,
+    },
+  });
+
+  const onSubmit: SubmitHandler<ReportData> = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="pt-20 px-4">
-      {report ?'': <Continue/>}
+      {report ? "" : <Continue />}
       <p className="text-sm py-2">
         Please provide detailed information of the incident in this form
       </p>
       <hr />
-      <form className="py-2">
-        <h4 className="text-primary font-bold py-2 text-md">Overview</h4>
+      <FormProvider {...methods}>
+        <form className="py-2" onSubmit={methods.handleSubmit(onSubmit)}>
+          <h4 className="text-primary font-bold py-2 text-md">Overview</h4>
 
-        {report ? (
-          <OverviewField incidentType={report.incidentType} />
-        ) : (
-          <OverviewField />
-        )}
+          <OverviewField incident_type={report ? report.incident_type : []} />
 
-        <h4 className="text-primary font-bold text-md py-2">Details</h4>
-        {report ? (
+          <h4 className="text-primary font-bold text-md py-2">Details</h4>
+
           <DetailField
-            location={report.location}
-            date={report.date}
-            time={report.time}
-            descriptionData={report.description}
+            date={
+              report && report.report_initiated_at.toISOString().split("T")[0]
+            }
+            time={
+              report && report.report_initiated_at.toTimeString().split(" ")[0]
+            }
           />
-        ) : (
-          <DetailField />
-        )}
 
-        <div className="pt-6 pb-4 px-3 flex flex-row justify-start">
-          <input
-            type="checkbox"
-            name="PPD Notified"
-            className="w-5 h-5 border-1 border-primary "
-            defaultChecked={report?.ppdNotified ? report.ppdNotified : false}
-          />
-          <label htmlFor="PPD Notified" className="pl-8">
-            PPD Notified
-          </label>
-        </div>
-        {/* <h4 className="text-primary font-bold text-md py-2">
-          Connected Reports
-        </h4>
-        <ConnectedReportsField/> */}
-        <div className="flex flex-col gap-2 py-4 sticky">
-          {report ? (
-            <Link href="/reports-view">
-              <button className="w-full bg-primary rounded-xl text-white text-sm py-2">
-                SAVE
-              </button>
-            </Link>
-          ) : (
-            <Link href="/reports-view">
-              <button
-                className="bg-gray-100 w-full rounded-xl text-primary text-sm py-2"
-                disabled={saveEnable}
-              >
-                SAVE
-              </button>
-            </Link>
-          )}
-          <button className="rounded-xl text-primary text-sm py-2 p-1 border border-black">
-            CANCEL
+          {/* <h4 className="text-primary font-bold text-md py-2">
+             Connected Reports
+             </h4>
+             <ConnectedReportsField/> */}
+
+          <button className="w-full bg-primary rounded-xl text-white py-2 p-2 mb-4 text-md">
+            SAVE
           </button>
-        </div>
-      </form>
+          <Link href={"/home"}>
+            {" "}
+            <button className="w-full rounded-xl text-primary text-md py-2 p-1 border border-black">
+              CANCEL
+            </button>
+          </Link>
+        </form>
+      </FormProvider>
     </div>
   );
 };

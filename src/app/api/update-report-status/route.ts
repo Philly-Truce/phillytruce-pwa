@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import prisma from "@/db";
+import prisma from "@/db/prisma";
 
 // Updates the status. Is unidirectional 
 export async function POST(request: NextRequest) {
