@@ -22,12 +22,30 @@ export default function SignUp() {
   });
   const [signUpCompleted, setSignUpCompleted] = React.useState(false);
   const [countdown, setCountdown] = React.useState(3);
+  const [error, setError] = React.useState<string | null>(null);
 
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-    setSignUpCompleted(true);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSignUpCompleted(true);
+      } else {
+        console.error(result.message);
+      }
+    } catch (error) {
+      console.error("An error occurred during sign up", error);
+    }
   };
 
   React.useEffect(() => {

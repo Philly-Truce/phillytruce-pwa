@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { NextRequest, NextResponse } from "next/server";
+import { signUp } from "@/app/api/auth/sign-up/auth";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -12,6 +13,17 @@ const authOptions: NextAuthOptions = {
 };
 
 const handler = async (req: NextRequest) => {
+  if (req.method === "POST" && req.nextUrl.pathname === "/api/auth/signup") {
+    const body = await req.json();
+    const result = await signUp(body);
+
+    if (result.success) {
+      return NextResponse.json(result);
+    } else {
+      return NextResponse.json(result, { status: 400 });
+    }
+  }
+
   const { headers, body } = req;
   const nextAuthReq = {
     ...req,
