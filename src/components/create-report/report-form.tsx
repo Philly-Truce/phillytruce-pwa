@@ -16,6 +16,8 @@ type ReportData = {
   location: string;
   report_last_updated_at: Date;
   ppd_notified: boolean;
+  date:String;
+  time:String;
 };
 
 type Report = {
@@ -37,6 +39,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
 
   const onSubmit: SubmitHandler<ReportData> = (data) => {
     console.log(data);
+    
   };
 
   return (
