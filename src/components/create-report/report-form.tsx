@@ -41,10 +41,12 @@ const ReportForm: React.FC<Report> = ({ report }) => {
   const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
     try {
       const res: AxiosResponse<Report> = await axios.post<Report>(
-        `http:localhost:3000/api/create-report`,
+        `http://localhost:3000/api/create-report`,
         data
       );
       console.log(res);
+
+      methods.reset();
     } catch (error) {
       console.error("There was an error making the request:", error);
     }
