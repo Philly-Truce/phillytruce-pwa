@@ -58,13 +58,13 @@ const OverviewField: React.FC<ReportData> = ({ incident_type }) => {
       <fieldset className="border p-1 rounded-md border-black">
         <legend className="text-sm px-2">Incident Type</legend>
         <button onClick={handleClick} className="w-full">
-          <div className="relative flex flex-row">
+          <div className="flex flex-row">
             <Image src={flagIcon} alt="Flag Icon" />
             <input
               type="text"
               placeholder="Select"
               value={selectedOptions}
-              className="block w-full bg-white"
+              className="w-full bg-white"
               {...register("incident_type", { 
                 validate: () =>(getValues('incident_type')?.length>0) ||
                   "Please select atleast one incident option",

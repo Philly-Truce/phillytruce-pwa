@@ -5,7 +5,7 @@ import DetailField from "./detail-field";
 import Continue from "./continue-modal";
 import Link from "next/link";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse } from "axios";
 
 type ReportData = {
   incident_report_number: number;
@@ -51,7 +51,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
   };
 
   return (
-    <div className="pt-20 px-4">
+    <div className="pt-10 px-4">
       {report ? "" : <Continue />}
       <p className="text-sm py-2">
         Please provide detailed information of the incident in this form
