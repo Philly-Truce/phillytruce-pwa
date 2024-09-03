@@ -25,7 +25,7 @@ const menuItems = [
     label: "Home",
   },
   {
-    href: "/reports",
+    href: "/mock-reports",
     icon: (selected: boolean) => (
       <svg
         width="25"
@@ -123,7 +123,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
 
   return (
     <div className="relative">
-      {pathname === "/reports" && (
+      {pathname === "/mock-reports" && (
         <div id="new-report-button" className="absolute -top-16 right-4">
           <Link href="/create">
             <button className="flex items-center gap-2 p-4 bg-primary text-white rounded-xl shadow-[rgba(50,50,93,0.25)_0px_13px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_16px_-8px]">

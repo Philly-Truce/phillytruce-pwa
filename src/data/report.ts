@@ -1,4 +1,4 @@
-type Report = {
+export type Report = {
   reportName: string;
   reportDate: string;
 };

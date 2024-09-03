@@ -1,5 +1,6 @@
 import React from "react";
 import ReportView from "@/components/report-view";
+import type { Report } from "@/components/report-view";
 import axios from "axios";
 
 /**
@@ -27,7 +28,7 @@ export default async function ReportsViewPage({ params }: { params: { incident_r
   }
 
   const handleStatusUpdate = async () => {
-    const response = await axios.post('/api/update-report-status', {
+    const response = await axios.post(`${process.env.BASE_URL}/api/update-report-status`, {
       incident_report_number: fetchedReport.foundReport.incident_report_number,
       report_stage: fetchedReport.foundReport.report_stage
     });

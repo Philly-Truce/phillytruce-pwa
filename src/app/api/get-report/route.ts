@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 
 export async function GET(request: NextRequest) {
-
   try {
     const url = new URL(request.url);
     const incidentReportNumber = url.searchParams.get("incident_report_number");

@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import reportData from "@/data/report";
+import { mockReportData, MockReport } from "@/data/mock-report";
 import { SlArrowRight } from "react-icons/sl";
 import Link from "next/link";
 
-const ReportsBrief: React.FC = () => {
+const MockReportsBrief: React.FC = () => {
   const [clickedReports, setClickedReports] = useState<string[]>([]);
 
   const handleClick = (reportName: string) => {
@@ -14,8 +14,8 @@ const ReportsBrief: React.FC = () => {
   };
 
   return (
-    <div id="reports-brief" className="">
-      {reportData.map((report, index) => (
+    <div id="mock-reports-brief" className="">
+      {mockReportData.map((report: MockReport, index: number) => (
         <div
           key={index}
           className="border-b border-gray-200 py-4 flex justify-between items-center"
@@ -30,16 +30,23 @@ const ReportsBrief: React.FC = () => {
             <h2 className="text-md">{report.reportName}</h2>
             <p className="text-sm">{report.reportDate}</p>
           </div>
-          <Link href="/mock-reports/[mock_report_number]">
-            <button className="flex gap-5 items-center">
-              <p className="font-bold text-sm">New Message</p>
+          {report.reportNumber ? (
+            <Link href={`/mock-reports/${report.reportNumber}`}>
+              <button className="flex gap-5 items-center">
+                <p className="font-bold text-sm">View Report</p>
+                <SlArrowRight />
+              </button>
+            </Link>
+          ) : (
+            <button className="flex gap-5 items-center opacity-50" disabled>
+              <p className="font-bold text-sm">No Report Number</p>
               <SlArrowRight />
             </button>
-          </Link>
+          )}
         </div>
       ))}
     </div>
   );
 };
 
-export default ReportsBrief;
+export default MockReportsBrief;
