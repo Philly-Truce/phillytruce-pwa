@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import prisma from "@/db/prisma";
 
-// Updates the status. Is unidirectional 
+// Updates the stage based on current stage of a report
 export async function POST(request: NextRequest) {
     const body: any = await request.json();
     const { incident_report_number, report_stage } = body;
@@ -18,12 +18,7 @@ export async function POST(request: NextRequest) {
                 return report_stage; // No change if the stage is not recognized
         }
     }
-
-    /*
-        If a report was texted in, incident type will be left blank 
-        until the SPM that claimed the report is able to identify what type of incident it is. 
-    */
-
+    
     try {
         // Update current report to have the next report stage
         const updatedReport = await prisma.report.update({ 

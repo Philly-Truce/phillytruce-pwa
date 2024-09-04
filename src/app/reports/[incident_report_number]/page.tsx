@@ -26,23 +26,12 @@ export default async function ReportsViewPage({ params }: { params: { incident_r
   if (!fetchedReport) {
     return <div>Report Not Found</div>;
   }
-
-  const handleStatusUpdate = async () => {
-    const response = await axios.post(`${process.env.BASE_URL}/api/update-report-status`, {
-      incident_report_number: fetchedReport.foundReport.incident_report_number,
-      report_stage: fetchedReport.foundReport.report_stage
-    });
-
-    if (response.status === 200) {
-      return response.data; // Return the updated report data
-    }
-  };
+  
 
   return (
     <div id="reports-view-page" className="pt-[88px] px-4 w-full h-full">
       <ReportView 
-      report={fetchedReport.foundReport} 
-      onStatusUpdate={handleStatusUpdate} />
+      initialReport={fetchedReport.foundReport} />
     </div>
   );
 }

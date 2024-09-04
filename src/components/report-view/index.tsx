@@ -1,7 +1,7 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import { InputField, TextAreaField } from "@/components/report-view/inputs";
-import type { ObjectId } from "mongodb";
+import axios from "axios";
 import dayjs from "dayjs";
 import {
   Dialog,
@@ -13,7 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/report-view/dialog";
-import Link from "next/link";
 
 export type Report = {
   id: string; 
@@ -77,8 +76,10 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
  * @param report - Report object
  * @returns
  */
-const ReportView: React.FC<any> = ({ report, onStatusUpdate } : { report: Report, onStatusUpdate: () => void }) => {
+const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initialReport: Report, onStatusUpdate: () => void }) => {
   
+  const [ report, setReport ] = useState<Report>(initialReport)
+
   const reportStage = report?.report_stage || '';
 
   const { 
@@ -90,6 +91,17 @@ const ReportView: React.FC<any> = ({ report, onStatusUpdate } : { report: Report
 
   const buttonBaseClasses = "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
    
+  const handleStatusUpdate = async () => {
+    const response = await axios.post(`/api/update-report-status`, {
+      incident_report_number: report.incident_report_number,
+      report_stage: report.report_stage
+    });
+
+    if (response.status === 200) {
+      setReport(prev => ({ ...prev, ...response.data })); // Update the report state with the new data
+      return response.data; // Return the updated report data
+    }
+  };
   /**
    * An object for the report stage label and icon
    * @returns JS object with key-values for label and icon 
@@ -225,7 +237,7 @@ const ReportView: React.FC<any> = ({ report, onStatusUpdate } : { report: Report
                       <button className="text-primary font-medium">No</button>
                     </DialogClose>
                     <DialogClose asChild>
-                      <button onClick={onStatusUpdate} className="text-primary font-medium">
+                      <button onClick={handleStatusUpdate} className="text-primary font-medium">
                         Yes
                       </button>
                     </DialogClose>
