@@ -99,18 +99,32 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
 
   useEffect(() => {
     if (menuRef.current) {
-      const activeItem = menuRef.current.children[
-        activeIndex + 1
-      ].querySelector("#icon-wrapper") as HTMLElement;
+      const activeItem = menuRef.current.children[activeIndex + 1].querySelector("#icon-wrapper") as HTMLElement;
       if (activeItem) {
         const { offsetLeft, offsetWidth } = activeItem;
         setHighlightStyle({
           left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`,
+          width: `${offsetWidth}px`, // Set width based on the active item's width
         });
       }
     }
   }, [activeIndex]);
+
+  // Add this effect to set the initial position on mount
+  useEffect(() => {
+    const currentIndex = menuItems.findIndex((item) => item.href === pathname);
+    if (currentIndex !== -1) {
+      setActiveIndex(currentIndex);
+      const activeItem = menuRef.current?.children[currentIndex + 1].querySelector("#icon-wrapper") as HTMLElement;
+      if (activeItem) {
+        const { offsetLeft, offsetWidth } = activeItem;
+        setHighlightStyle({
+          left: `${offsetLeft}px`,
+          width: `${offsetWidth}px`, // Set width based on the active item's width
+        });
+      }
+    }
+  }, []);
 
   if (
     pathname === "/login" ||
@@ -141,10 +155,14 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         }`}
         ref={menuRef}
       >
+        {/* get width of one of the menu items so the initial width of the blob has no wonky effects on page reload */}
         <div
           id="selector-blob"
-          className="absolute top-3 h-8 bg-[#bbc7db] w-2 rounded-2xl transition-all duration-300 ease-in-out z-10"
-          style={highlightStyle}
+          className="absolute top-3 h-8 bg-[#bbc7db] rounded-2xl transition-all duration-300 ease-in-out z-10"
+          style={{
+            ...highlightStyle,
+            width: highlightStyle.width || '65px', // Fallback width
+          }}
         />
         {menuItems.map(({ href, icon, label }) => {
           const isSelected = pathname === href;
