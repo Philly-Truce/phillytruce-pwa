@@ -11,7 +11,12 @@ interface IFormInput {
   terms: boolean;
 }
 
-export default function SignUp() {
+export default function SignUp(p0: {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  terms: boolean;
+}) {
   const {
     register,
     handleSubmit,
@@ -28,7 +33,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await fetch("/api/auth/signup", {
+      const response = await fetch("/api/auth/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,11 +45,13 @@ export default function SignUp() {
 
       if (result.success) {
         setSignUpCompleted(true);
+        localStorage.setItem("token", result.token);
       } else {
-        console.error(result.message);
+        setError(result.message);
       }
     } catch (error) {
       console.error("An error occurred during sign up", error);
+      setError("An error occurred during sign up");
     }
   };
 

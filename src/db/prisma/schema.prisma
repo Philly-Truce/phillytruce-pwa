@@ -37,15 +37,38 @@ model Witness {
 
 model User {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  phone_number      Int
+  email             String?  @unique
+  phone_number      Int?
   first_name        String
   last_name         String
   last_logged_in_at DateTime
   created_at        DateTime
   is_messaging_onboarding_complete Boolean
-  // TODO: Profile picture field
-  reports          Report[] @relation("UserReports")
+  terms             Boolean
+  sessions          Session[]
+  reports           Report[] @relation("UserReports")
+
   @@map("users")
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
 }
 
 model Report {

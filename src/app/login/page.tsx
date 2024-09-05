@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, ChangeEvent } from "react";
 import Link from "next/link";
 
@@ -132,7 +132,10 @@ export default function Main() {
           </div>
         )}
       </section>
-      <Link href={mobileOption ? "/login-otp-mobile" : "/login-otp-email"}  className="w-1/2 inline-flex pl-1">
+      <Link
+        href={mobileOption ? "/login-otp-mobile" : "/login-otp-email"}
+        className="w-1/2 inline-flex pl-1"
+      >
         <button
           className={`my-8 px-6 py-3 rounded-3xl text-sm font-medium w-full ${
             mobileOption
