@@ -14,7 +14,7 @@ const report = {
 
 export default function EditReport() {
   return (
-    <div>
+    <div className="w-full">
       <ReportForm report={report} />
     </div>
   );

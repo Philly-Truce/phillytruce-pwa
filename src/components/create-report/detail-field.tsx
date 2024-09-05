@@ -17,7 +17,8 @@ type ReportData = {
   description: string;
   location: string;
   ppd_notified: boolean;
-  report_initiated_at: string;
+  date: string;
+  time:string;
 };
 
 const DateInput: React.FC = () => {
@@ -33,7 +34,7 @@ const DateInput: React.FC = () => {
     <input
       type="text"
       ref={inputRef}
-      className="block w-1/2 p-1 appearance-none bg-white placeholder:text-black"
+      className="block w-1/2 bg-white placeholder:text-black text-sm"
       readOnly
     />
   );
@@ -43,21 +44,18 @@ function getCurrentDate(): string {
   const today = new Date();
   const mm = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
   const dd = String(today.getDate()).padStart(2, "0");
-  const yy = String(today.getFullYear()).slice(-2); // Get the last two digits of the year
+  const yy = String(today.getFullYear()); // Get the last two digits of the year
 
-  return `${mm}/${dd}/${yy}`;
+  return `${yy}-${mm}-${dd}`;
 }
 
 const getCurrentTime = (): string => {
   const now = new Date();
   let hh = now.getHours();
   const mm = String(now.getMinutes()).padStart(2, "0");
-  const ampm = hh >= 12 ? "PM" : "AM";
-  hh = hh % 12;
-  hh = hh ? hh : 12; // the hour '0' should be '12'
   const hours = String(hh).padStart(2, "0");
 
-  return `${hours}:${mm} ${ampm}`;
+  return `${hours}:${mm}`;
 };
 
 const TimeInput: React.FC = () => {
@@ -85,7 +83,8 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
     formState: { errors },
   } = useFormContext<ReportData>();
 
-  const today = new Date().toLocaleString();
+  const todayDate = getCurrentDate();
+  const todayTime = getCurrentTime(); 
 
   return (
     <>
@@ -111,8 +110,8 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
       <div className="flex flex-row gap-4 py-2">
         <input
           type="hidden"
-          value={today}
-          {...register("report_initiated_at", {
+          value={todayDate}
+          {...register("date", {
             required: "Report Date and Time is Required",
           })}
         />
@@ -131,6 +130,13 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
             </div>
           </div>
         </fieldset>
+        <input
+          type="hidden"
+          value={todayTime}
+          {...register("time", {
+            required: "Report Date and Time is Required",
+          })}
+        />
         <fieldset className="border p-1 rounded-md w-1/2 border-black">
           <legend className="text-sm px-2">Time</legend>
           <div className="relative">
@@ -141,6 +147,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
                   type="text"
                   value={time}
                   className="block w-1/2 appearance-none bg-white placeholder:text-black"
+            
                 />
               ) : (
                 <TimeInput />

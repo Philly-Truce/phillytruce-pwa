@@ -1,3 +1,4 @@
+"use client";
 // pages/index.js
 import React, { useState, useEffect } from "react";
 import warning from "../../assets/create-form-image/warning-amber.svg";
