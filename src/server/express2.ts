@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { signUp, SignUpResult } from "../app/api/auth/sign-up"; // We'll create this file
+import { signUp } from "../auth/sign-up/auth";
 import dbConnect from "../db/mongoDB/db-connect";
 
 const app = express();
