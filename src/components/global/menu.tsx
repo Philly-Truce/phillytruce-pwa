@@ -86,44 +86,37 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   const pathname = usePathname();
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlightStyle, setHighlightStyle] = useState({});
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const { unreadChatsCount } = useTwilio();
 
-  // Set activeIndex
+  const updateHighlightStyle = (index: number) => {
+    if (menuRef.current) {
+      const activeItem = menuRef.current.children[index + 1].querySelector("#icon-wrapper") as HTMLElement;
+      if (activeItem) {
+        const { offsetLeft, offsetWidth } = activeItem;
+        setHighlightStyle({
+          left: `${offsetLeft}px`,
+          width: `${offsetWidth}px`,
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     const currentIndex = menuItems.findIndex((item) => item.href === pathname);
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex);
+      updateHighlightStyle(currentIndex);
+      
+      // Set isInitialRender to false after a short delay
+      const timer = setTimeout(() => {
+        setIsInitialRender(false);
+      }, 50);
+  
+      return () => clearTimeout(timer);
     }
   }, [pathname]);
-
-  useEffect(() => {
-    if (menuRef.current) {
-      const activeItem = menuRef.current.children[activeIndex + 1].querySelector("#icon-wrapper") as HTMLElement;
-      if (activeItem) {
-        const { offsetLeft, offsetWidth } = activeItem;
-        setHighlightStyle({
-          left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`,
-        });
-      }
-    }
-  }, [activeIndex]);
-
-  useEffect(() => {
-    const currentIndex = menuItems.findIndex((item) => item.href === pathname);
-    if (currentIndex !== -1) {
-      setActiveIndex(currentIndex);
-      const activeItem = menuRef.current?.children[currentIndex + 1].querySelector("#icon-wrapper") as HTMLElement;
-      if (activeItem) {
-        const { offsetLeft, offsetWidth } = activeItem;
-        setHighlightStyle({
-          left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`,
-        });
-      }
-    }
-  }, []);
 
   if (
     pathname === "/login" ||
@@ -156,12 +149,10 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
       >
         <div
           id="selector-blob"
-          className="absolute top-3 h-8 bg-[#bbc7db] rounded-2xl transition-all duration-300 ease-in-out z-10"
-          style={{
-            ...highlightStyle,
-            left: highlightStyle?.left || '22px',
-            width: highlightStyle?.width || '65px', // Fallback width
-          }}
+          className={`absolute top-3 h-8 bg-[#bbc7db] rounded-2xl z-10 ${
+            isInitialRender ? '' : 'transition-all duration-300 ease-in-out'
+          }`}
+          style={highlightStyle}
         />
         {menuItems.map(({ href, icon, label }) => {
           const isSelected = pathname === href;
