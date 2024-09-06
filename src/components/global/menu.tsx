@@ -104,13 +104,12 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         const { offsetLeft, offsetWidth } = activeItem;
         setHighlightStyle({
           left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`, // Set width based on the active item's width
+          width: `${offsetWidth}px`,
         });
       }
     }
   }, [activeIndex]);
 
-  // Add this effect to set the initial position on mount
   useEffect(() => {
     const currentIndex = menuItems.findIndex((item) => item.href === pathname);
     if (currentIndex !== -1) {
@@ -120,7 +119,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         const { offsetLeft, offsetWidth } = activeItem;
         setHighlightStyle({
           left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`, // Set width based on the active item's width
+          width: `${offsetWidth}px`,
         });
       }
     }
@@ -136,7 +135,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   }
 
   return (
-    <div className="relative">
+    <div id="bottom-navigation-menu" className="relative">
       {pathname === "/mock-reports" && (
         <div id="new-report-button" className="absolute -top-16 right-4">
           <Link href="/create">
@@ -155,13 +154,13 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         }`}
         ref={menuRef}
       >
-        {/* get width of one of the menu items so the initial width of the blob has no wonky effects on page reload */}
         <div
           id="selector-blob"
           className="absolute top-3 h-8 bg-[#bbc7db] rounded-2xl transition-all duration-300 ease-in-out z-10"
           style={{
             ...highlightStyle,
-            width: highlightStyle.width || '65px', // Fallback width
+            left: highlightStyle?.left || '22px',
+            width: highlightStyle?.width || '65px', // Fallback width
           }}
         />
         {menuItems.map(({ href, icon, label }) => {
