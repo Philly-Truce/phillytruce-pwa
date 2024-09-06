@@ -26,11 +26,11 @@ export default function Main() {
         </h1>
         {mobileOption ? (
           <p className="text-sm text-default font-normal mb-10">
-            Enter your mobile phone number and password
+            Enter your mobile phone number
           </p>
         ) : (
           <p className="text-sm text-default font-normal mb-10">
-            Enter your email and password
+            Enter your email
           </p>
         )}
       </section>
@@ -44,7 +44,7 @@ export default function Main() {
                   type="mobile"
                   id="mobile"
                   name="mobile"
-                  placeholder="Mobile Phone"
+                  placeholder="Mobile"
                   value={mobileInputValue}
                   onChange={handleMobileInputChange}
                   className="p-4 focus:outline-none w-full"
