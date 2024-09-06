@@ -1,6 +1,6 @@
 import React from "react";
 import { InputField, TextAreaField } from "@/components/report-view/inputs";
-import type { ObjectId } from 'mongodb'
+import type { ObjectId } from "mongodb";
 import dayjs from "dayjs";
 import {
   Dialog,
@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/report-view/dialog";
+import Link from "next/link";
 
 export type Report = {
   _id: ObjectId;
@@ -80,7 +81,6 @@ export default async function ReportView({ report }: { report: Report }) {
 
   const buttonBaseClasses =
     "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
-    
 
   return (
     <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
@@ -190,11 +190,13 @@ export default async function ReportView({ report }: { report: Report }) {
               </DialogHeader>
               <DialogFooter>
                 <div className="flex flex-row justify-end h-14 px-6">
-                  <div className="flex flex-row gap-x-4 h-full">
+                  <div className="flex flex-row gap-x-4 h-full items-center">
                     <DialogClose asChild>
                       <button className="text-primary font-medium">No</button>
                     </DialogClose>
-                    <button className="text-primary font-medium">Yes</button>
+                    <Link href="/reports">
+                      <button className="text-primary font-medium">Yes</button>
+                    </Link>
                   </div>
                 </div>
               </DialogFooter>
