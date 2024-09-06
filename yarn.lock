@@ -1144,43 +1144,43 @@
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
 "@prisma/client@^5.19.0":
-  version "5.19.0"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.19.0.tgz"
-  integrity sha512-CzOpau+q1kEWQyoQMvlnXIHqPvwmWbh48xZ4n8KWbAql0p8PC0BIgSTYW5ncxXa4JSEff0tcoxSZB874wDstdg==
+  version "5.19.1"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.19.1.tgz"
+  integrity sha512-x30GFguInsgt+4z5I4WbkZP2CGpotJMUXy+Gl/aaUjHn2o1DnLYNTA+q9XdYmAQZM8fIIkvUiA2NpgosM3fneg==
 
-"@prisma/debug@5.19.0":
-  version "5.19.0"
-  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-5.19.0.tgz"
-  integrity sha512-+b/G0ubAZlrS+JSiDhXnYV5DF/aTJ3pinktkiV/L4TtLRLZO6SVGyFELgxBsicCTWJ2ZMu5vEV/jTtYCdjFTRA==
+"@prisma/debug@5.19.1":
+  version "5.19.1"
+  resolved "https://registry.npmjs.org/@prisma/debug/-/debug-5.19.1.tgz"
+  integrity sha512-lAG6A6QnG2AskAukIEucYJZxxcSqKsMK74ZFVfCTOM/7UiyJQi48v6TQ47d6qKG3LbMslqOvnTX25dj/qvclGg==
 
 "@prisma/debug@5.9.1":
   version "5.9.1"
   resolved "https://registry.npmjs.org/@prisma/debug/-/debug-5.9.1.tgz"
   integrity sha512-yAHFSFCg8KVoL0oRUno3m60GAjsUKYUDkQ+9BA2X2JfVR3kRVSJFc/GpQ2fSORi4pSHZR9orfM4UC9OVXIFFTA==
 
-"@prisma/engines-version@5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f":
-  version "5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f.tgz"
-  integrity sha512-GimI9aZIFy/yvvR11KfXRn3pliFn1QAkdebVlsXlnoh5uk0YhLblVmeYiHfsu+wDA7BeKqYT4sFfzg8mutzuWw==
+"@prisma/engines-version@5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3":
+  version "5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3"
+  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3.tgz"
+  integrity sha512-xR6rt+z5LnNqTP5BBc+8+ySgf4WNMimOKXRn6xfNRDSpHvbOEmd7+qAOmzCrddEc4Cp8nFC0txU14dstjH7FXA==
 
-"@prisma/engines@5.19.0":
-  version "5.19.0"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-5.19.0.tgz"
-  integrity sha512-UtW+0m4HYoRSSR3LoDGKF3Ud4BSMWYlLEt4slTnuP1mI+vrV3zaDoiAPmejdAT76vCN5UqnWURbkXxf66nSylQ==
+"@prisma/engines@5.19.1":
+  version "5.19.1"
+  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-5.19.1.tgz"
+  integrity sha512-kR/PoxZDrfUmbbXqqb8SlBBgCjvGaJYMCOe189PEYzq9rKqitQ2fvT/VJ8PDSe8tTNxhc2KzsCfCAL+Iwm/7Cg==
   dependencies:
-    "@prisma/debug" "5.19.0"
-    "@prisma/engines-version" "5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f"
-    "@prisma/fetch-engine" "5.19.0"
-    "@prisma/get-platform" "5.19.0"
+    "@prisma/debug" "5.19.1"
+    "@prisma/engines-version" "5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3"
+    "@prisma/fetch-engine" "5.19.1"
+    "@prisma/get-platform" "5.19.1"
 
-"@prisma/fetch-engine@5.19.0":
-  version "5.19.0"
-  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-5.19.0.tgz"
-  integrity sha512-oOiPNtmJX0cP/ebu7BBEouJvCw8T84/MFD/Hf2zlqjxkK4ojl38bB9i9J5LAxotL6WlYVThKdxc7HqoWnPOhqQ==
+"@prisma/fetch-engine@5.19.1":
+  version "5.19.1"
+  resolved "https://registry.npmjs.org/@prisma/fetch-engine/-/fetch-engine-5.19.1.tgz"
+  integrity sha512-pCq74rtlOVJfn4pLmdJj+eI4P7w2dugOnnTXpRilP/6n5b2aZiA4ulJlE0ddCbTPkfHmOL9BfaRgA8o+1rfdHw==
   dependencies:
-    "@prisma/debug" "5.19.0"
-    "@prisma/engines-version" "5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f"
-    "@prisma/get-platform" "5.19.0"
+    "@prisma/debug" "5.19.1"
+    "@prisma/engines-version" "5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3"
+    "@prisma/get-platform" "5.19.1"
 
 "@prisma/generator-helper@5.9.1":
   version "5.9.1"
@@ -1189,12 +1189,12 @@
   dependencies:
     "@prisma/debug" "5.9.1"
 
-"@prisma/get-platform@5.19.0":
-  version "5.19.0"
-  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-5.19.0.tgz"
-  integrity sha512-s9DWkZKnuP4Y8uy6yZfvqQ/9X3/+2KYf3IZUVZz5OstJdGBJrBlbmIuMl81917wp5TuK/1k2TpHNCEdpYLPKmg==
+"@prisma/get-platform@5.19.1":
+  version "5.19.1"
+  resolved "https://registry.npmjs.org/@prisma/get-platform/-/get-platform-5.19.1.tgz"
+  integrity sha512-sCeoJ+7yt0UjnR+AXZL7vXlg5eNxaFOwC23h0KvW1YIXUoa7+W2ZcAUhoEQBmJTW4GrFqCuZ8YSP0mkDa4k3Zg==
   dependencies:
-    "@prisma/debug" "5.19.0"
+    "@prisma/debug" "5.19.1"
 
 "@radix-ui/primitive@1.1.0":
   version "1.1.0"
@@ -1683,7 +1683,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^20.16.5":
+"@types/node@*", "@types/node@^20":
   version "20.16.5"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.16.5.tgz"
   integrity sha512-VwYCweNo3ERajwy0IUlqqcyZ8/A7Zwa9ZP3MnENWcB11AejO+tLy3pu850goUW2FC/IJMdZUfKpX/yxL1gymCA==
@@ -4525,10 +4525,10 @@ mongodb@^6.8.0, mongodb@6.8.0:
     bson "^6.7.0"
     mongodb-connection-string-url "^3.0.0"
 
-mongoose@^8.6.0:
-  version "8.6.0"
-  resolved "https://registry.npmjs.org/mongoose/-/mongoose-8.6.0.tgz"
-  integrity sha512-p6VSbYKvD4ZIabqo8C0kS5eKX1Xpji+opTAIJ9wyuPJ8Y/FblgXSMnFRXnB40bYZLKPQT089K5KU8+bqIXtFdw==
+mongoose@^8.6.1:
+  version "8.6.1"
+  resolved "https://registry.npmjs.org/mongoose/-/mongoose-8.6.1.tgz"
+  integrity sha512-dppGcYqvsdg+VcnqXR5b467V4a+iNhmvkfYNpEPi6AjaUxnz6ioEDmrMLOi+sOWjvoHapuwPOigV4f2l7HC6ag==
   dependencies:
     bson "^6.7.0"
     kareem "2.6.3"
@@ -5040,11 +5040,11 @@ prisma-json-types-generator@^3.0.4:
     tslib "2.6.2"
 
 prisma@*, prisma@^5.1, prisma@^5.19.0:
-  version "5.19.0"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-5.19.0.tgz"
-  integrity sha512-Pu7lUKpVyTx8cVwM26dYh8NdvMOkMnJXzE8L6cikFuR4JwyMU5NKofQkWyxJKlTT4fNjmcnibTvklV8oVMrn+g==
+  version "5.19.1"
+  resolved "https://registry.npmjs.org/prisma/-/prisma-5.19.1.tgz"
+  integrity sha512-c5K9MiDaa+VAAyh1OiYk76PXOme9s3E992D7kvvIOhCrNsBQfy2mP2QAQtX0WNj140IgG++12kwZpYB9iIydNQ==
   dependencies:
-    "@prisma/engines" "5.19.0"
+    "@prisma/engines" "5.19.1"
   optionalDependencies:
     fsevents "2.3.3"
 
@@ -6048,7 +6048,7 @@ typed-array-length@^1.0.6:
     is-typed-array "^1.1.13"
     possible-typed-array-names "^1.0.0"
 
-typescript@^5.1, typescript@^5.5.4, typescript@>=3.3.1, typescript@>=4.2.0:
+typescript@^5, typescript@^5.1, typescript@>=3.3.1, typescript@>=4.2.0:
   version "5.5.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz"
   integrity sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==

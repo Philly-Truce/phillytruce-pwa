@@ -1,7 +1,7 @@
 import withPWA from "next-pwa";
 import dotenv from "dotenv";
 
-dotenv.config();
+require("dotenv").config();
 
 const isProd = process.env.NODE_ENV === "production";
 

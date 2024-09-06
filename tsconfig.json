@@ -4,9 +4,10 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -18,24 +19,14 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "target": "es6",
-    "noEmit": false
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/home/clock-in.js",
-    "src/server/**/*.ts"
+    "src/app/home/clock-in.js"
   ],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  }
+  "exclude": ["node_modules"]
 }
