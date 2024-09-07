@@ -18,20 +18,24 @@ const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        phoneNumber: { label: "Phone Number", type: "text" },
+        identifier: { label: "Email or Phone Number", type: "text" },
       },
       async authorize(credentials) {
-        if (!credentials || !credentials.phoneNumber) {
+        if (!credentials || !credentials.identifier) {
           return null;
         }
 
         try {
           const user = await User.findOne({
-            phoneNumber: credentials.phoneNumber,
+            $or: [
+              { email: credentials.identifier },
+              { phoneNumber: credentials.identifier },
+            ],
           });
           if (user) {
             return {
               id: user._id.toString(),
+              email: user.email,
               phoneNumber: user.phoneNumber,
             };
           }
@@ -63,6 +67,43 @@ const authOptions: AuthOptions = {
       }
       return token;
     },
+  },
+
+  pages: {
+    signIn: "/auth/signin",
+    signOut: "/auth/signout",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify-request",
+    newUser: "/auth/new-user",
+  },
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
+  events: {
+    async signIn({ user, account, profile, isNewUser }) {
+      console.log("User signed in:", user);
+    },
+    async signOut({ session, token }) {
+      console.log("User signed out");
+    },
+    async createUser({ user }) {
+      console.log("New user created:", user);
+    },
+    async linkAccount({ user, account, profile }) {
+      console.log("Account linked to user:", user);
+    },
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    maxAge: 60 * 60 * 24 * 30,
   },
 };
 

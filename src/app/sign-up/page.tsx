@@ -11,12 +11,7 @@ interface IFormInput {
   terms: boolean;
 }
 
-export default function SignUp(p0: {
-  name: string;
-  email: string;
-  phoneNumber: string;
-  terms: boolean;
-}) {
+export default function SignUp() {
   const {
     register,
     handleSubmit,
@@ -203,6 +198,7 @@ export default function SignUp(p0: {
           </div>
         </form>
       )}
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </div>
   );
 }

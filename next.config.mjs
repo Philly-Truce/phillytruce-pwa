@@ -1,12 +1,15 @@
 import withPWA from "next-pwa";
 import dotenv from "dotenv";
 
-require("dotenv").config();
+dotenv.config();
 
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    DATABASE_URL: process.env.DATABASE_URL,
+  },
   async redirects() {
     return [
       {
