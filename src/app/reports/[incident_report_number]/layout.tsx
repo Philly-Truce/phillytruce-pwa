@@ -12,5 +12,4 @@ export default function ReportsViewLayout({ children } : { children : React.Reac
         {children}
         </>
     )
-
 }

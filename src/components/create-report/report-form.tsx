@@ -5,6 +5,7 @@ import DetailField from "./detail-field";
 import Continue from "./continue-modal";
 import Link from "next/link";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import axios, { AxiosResponse } from "axios";
 
 type ReportData = {
   incident_report_number: number;
@@ -16,6 +17,8 @@ type ReportData = {
   location: string;
   report_last_updated_at: Date;
   ppd_notified: boolean;
+  date: String;
+  time: String;
 };
 
 type Report = {
@@ -35,19 +38,32 @@ const ReportForm: React.FC<Report> = ({ report }) => {
     },
   });
 
-  const onSubmit: SubmitHandler<ReportData> = (data) => {
-    console.log(data);
+  const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
+    try {
+      const res: AxiosResponse<Report> = await axios.post<Report>(
+        `http://localhost:3000/api/create-report`,
+        data
+      );
+      console.log(res);
+
+      methods.reset();
+    } catch (error) {
+      console.error("There was an error making the request:", error);
+    }
   };
 
   return (
-    <div className="pt-20 px-4">
+    <div className="pt-10 px-4">
       {report ? "" : <Continue />}
       <p className="text-sm py-2">
         Please provide detailed information of the incident in this form
       </p>
       <hr />
       <FormProvider {...methods}>
-        <form className="py-2" onSubmit={methods.handleSubmit(onSubmit)}>
+        <form
+          className="py-2"
+          onSubmit={methods.handleSubmit(handleCreateForm)}
+        >
           <h4 className="text-primary font-bold py-2 text-md">Overview</h4>
 
           <OverviewField incident_type={report ? report.incident_type : []} />
