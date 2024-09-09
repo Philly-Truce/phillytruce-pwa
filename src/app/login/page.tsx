@@ -99,7 +99,7 @@ export default function Main() {
         )}
       </section>
       <Link
-        href={mobileOption ? "/login-otp-mobile" : "/login-otp-email"}
+        href={mobileOption ? "/home" : "/login-otp-email"}
         className="w-1/2 inline-flex pl-1"
       >
         <button
