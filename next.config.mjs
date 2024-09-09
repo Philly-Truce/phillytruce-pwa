@@ -6,6 +6,9 @@ dotenv.config();
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
   reactStrictMode: true,
   env: {
     DATABASE_URL: process.env.DATABASE_URL,

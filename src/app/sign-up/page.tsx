@@ -28,7 +28,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await fetch("/api/auth/sign-up", {
+      const response = await fetch("/page/api/auth/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
