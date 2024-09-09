@@ -28,7 +28,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await fetch("/page/api/auth/sign-up", {
+      const response = await fetch("/api/auth/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,6 @@ export default function SignUp() {
         setError(result.message);
       }
     } catch (error) {
-      console.error("An error occurred during sign up", error);
       setError("An error occurred during sign up");
     }
   };
