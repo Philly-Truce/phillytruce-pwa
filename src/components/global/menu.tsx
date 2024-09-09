@@ -86,22 +86,13 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   const pathname = usePathname();
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlightStyle, setHighlightStyle] = useState({});
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const { unreadChatsCount } = useTwilio();
 
-  // Set activeIndex
-  useEffect(() => {
-    const currentIndex = menuItems.findIndex((item) => item.href === pathname);
-    if (currentIndex !== -1) {
-      setActiveIndex(currentIndex);
-    }
-  }, [pathname]);
-
-  useEffect(() => {
+  const updateHighlightStyle = (index: number) => {
     if (menuRef.current) {
-      const activeItem = menuRef.current.children[
-        activeIndex + 1
-      ].querySelector("#icon-wrapper") as HTMLElement;
+      const activeItem = menuRef.current.children[index + 1].querySelector("#icon-wrapper") as HTMLElement;
       if (activeItem) {
         const { offsetLeft, offsetWidth } = activeItem;
         setHighlightStyle({
@@ -110,7 +101,22 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         });
       }
     }
-  }, [activeIndex]);
+  };
+
+  useEffect(() => {
+    const currentIndex = menuItems.findIndex((item) => item.href === pathname);
+    if (currentIndex !== -1) {
+      setActiveIndex(currentIndex);
+      updateHighlightStyle(currentIndex);
+      
+      // Set isInitialRender to false after a short delay
+      const timer = setTimeout(() => {
+        setIsInitialRender(false);
+      }, 50);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [pathname]);
 
   if (
     pathname === "/login" ||
@@ -122,7 +128,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   }
 
   return (
-    <div className="relative">
+    <div id="bottom-navigation-menu" className="relative">
       {pathname === "/mock-reports" && (
         <div id="new-report-button" className="absolute -top-16 right-4">
           <Link href="/create">
@@ -143,7 +149,9 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
       >
         <div
           id="selector-blob"
-          className="absolute top-3 h-8 bg-[#bbc7db] w-2 rounded-2xl transition-all duration-300 ease-in-out z-10"
+          className={`absolute top-3 h-8 bg-[#bbc7db] rounded-2xl z-10 ${
+            isInitialRender ? '' : 'transition-all duration-300 ease-in-out'
+          }`}
           style={highlightStyle}
         />
         {menuItems.map(({ href, icon, label }) => {
