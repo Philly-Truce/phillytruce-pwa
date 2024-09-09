@@ -5,8 +5,6 @@ import Link from "next/link";
 export default function Main() {
   const [mobileInputValue, setMobileInputValue] = useState("");
   const [emailInputValue, setEmailInputValue] = useState("");
-  const [mobilePwdInputValue, setMobilePwdInputValue] = useState("");
-  const [emailPwdInputValue, setEmailPwdInputValue] = useState("");
 
   const handleMobileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMobileInputValue(event.target.value);
@@ -14,17 +12,11 @@ export default function Main() {
   const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmailInputValue(event.target.value);
   };
-  const handleMobilePwdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setMobilePwdInputValue(event.target.value);
-  };
-  const handleEmailPwdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmailPwdInputValue(event.target.value);
-  };
 
   const [mobileOption, setMobileOption] = useState(true);
 
-  var emailContinueDisabled = !emailInputValue || !emailPwdInputValue;
-  var mobileContinueDisabled = !mobileInputValue || !mobilePwdInputValue;
+  var emailContinueDisabled = !emailInputValue;
+  var mobileContinueDisabled = !mobileInputValue;
 
   return (
     <div id="login-page" className="mt-36 w-full px-4">
@@ -34,11 +26,11 @@ export default function Main() {
         </h1>
         {mobileOption ? (
           <p className="text-sm text-default font-normal mb-10">
-            Enter your mobile phone number and password
+            Enter your mobile phone number
           </p>
         ) : (
           <p className="text-sm text-default font-normal mb-10">
-            Enter your email and password
+            Enter your email
           </p>
         )}
       </section>
@@ -52,21 +44,9 @@ export default function Main() {
                   type="mobile"
                   id="mobile"
                   name="mobile"
-                  placeholder="Mobile Phone"
+                  placeholder="Mobile"
                   value={mobileInputValue}
                   onChange={handleMobileInputChange}
-                  className="p-4 focus:outline-none w-full"
-                />
-              </fieldset>
-              <fieldset className="border-2 border-accent2 rounded">
-                <legend className="text-xs mx-3 px-1">Password</legend>
-                <input
-                  type="password"
-                  id="mobilePwd"
-                  name="mobilePwd"
-                  value={mobilePwdInputValue}
-                  onChange={handleMobilePwdInputChange}
-                  placeholder="Password"
                   className="p-4 focus:outline-none w-full"
                 />
               </fieldset>
@@ -85,18 +65,6 @@ export default function Main() {
                   className="p-4 focus:outline-none w-full"
                 />
               </fieldset>
-              <fieldset className="border-2 border-accent2 rounded">
-                <legend className="text-xs mx-3 px-1">Password</legend>
-                <input
-                  type="password"
-                  id="emailPwd"
-                  name="emailPwd"
-                  value={emailPwdInputValue}
-                  onChange={handleEmailPwdInputChange}
-                  placeholder="Password"
-                  className="p-4 focus:outline-none w-full"
-                />
-              </fieldset>
             </div>
           )}
         </form>
@@ -110,7 +78,6 @@ export default function Main() {
               onClick={() => {
                 setMobileOption(!mobileOption);
                 setMobileInputValue("");
-                setMobilePwdInputValue("");
               }}
             >
               Use Email
@@ -124,7 +91,6 @@ export default function Main() {
               onClick={() => {
                 setMobileOption(!mobileOption);
                 setEmailInputValue("");
-                setEmailPwdInputValue("");
               }}
             >
               Use Mobile
