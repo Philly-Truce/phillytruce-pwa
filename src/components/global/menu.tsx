@@ -92,7 +92,9 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
 
   const updateHighlightStyle = (index: number) => {
     if (menuRef.current) {
-      const activeItem = menuRef.current.children[index + 1].querySelector("#icon-wrapper") as HTMLElement;
+      const activeItem = menuRef.current.children[index + 1].querySelector(
+        "#icon-wrapper"
+      ) as HTMLElement;
       if (activeItem) {
         const { offsetLeft, offsetWidth } = activeItem;
         setHighlightStyle({
@@ -108,19 +110,18 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex);
       updateHighlightStyle(currentIndex);
-      
-      // Set isInitialRender to false after a short delay
+
       const timer = setTimeout(() => {
         setIsInitialRender(false);
       }, 50);
-  
+
       return () => clearTimeout(timer);
     }
   }, [pathname]);
 
   if (
     pathname === "/login" ||
-    pathname === "/login-otp" ||
+    pathname === "/sign-up-otp-mobile" ||
     pathname.startsWith("/messages/CH") ||
     pathname === "/sign-up"
   ) {
@@ -150,7 +151,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         <div
           id="selector-blob"
           className={`absolute top-3 h-8 bg-[#bbc7db] rounded-2xl z-10 ${
-            isInitialRender ? '' : 'transition-all duration-300 ease-in-out'
+            isInitialRender ? "" : "transition-all duration-300 ease-in-out"
           }`}
           style={highlightStyle}
         />
