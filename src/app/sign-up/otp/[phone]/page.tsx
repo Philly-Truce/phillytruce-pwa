@@ -1,7 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Otp from "./otp-submission";
 
 interface PageProps {
@@ -9,41 +8,61 @@ interface PageProps {
 }
 
 export default function SignUpOtp({ params }: PageProps) {
-  const [signUpCompleted, setSignUpCompleted] = useState(false);
-  const [countdown, setCountdown] = useState(3);
+  const [error, setError] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
   const phoneNumber = decodeURIComponent(params.phone);
 
-  const handleOtpCompletion = () => {
-    setSignUpCompleted(true);
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown <= 1) {
-          clearInterval(timer);
-          router.push("/login");
-          return 0;
-        }
-        return prevCountdown - 1;
+  const sendVerificationCode = useCallback(async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/send-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber }),
       });
-    }, 1000);
-  };
+      const data = await response.json();
+      if (data.status !== "pending") {
+        setError("Failed to send verification code");
+      }
+    } catch (error) {
+      setError("Failed to send verification code");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [phoneNumber]);
 
-  if (signUpCompleted) {
-    return (
-      <div className="bg-primary rounded-2xl py-40 my-10 shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px]">
-        <p className="text-center text-green-500 text-lg p-5">
-          Sign up completed successfully! You can now log in.
-          <br />
-          Redirecting in {countdown} seconds...
-        </p>
-        <div className="mx-auto text-center my-5">
-          <Link href="/login">
-            <button className="bg-white p-2 w-4/6 rounded-2xl">Login</button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    sendVerificationCode();
+  }, [sendVerificationCode]);
+
+  const handleOtpCompletion = async (otp: string) => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/check-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber, code: otp }),
+      });
+      const data = await response.json();
+      if (data.status === "approved") {
+        // You can set a flag in localStorage or context to indicate verified status if needed
+        localStorage.setItem("phoneVerified", "true");
+      } else {
+        // Even if verification fails, we're still redirecting to login
+        localStorage.setItem("phoneVerified", "false");
+      }
+    } catch (error) {
+      console.error("Failed to verify code:", error);
+      localStorage.setItem("phoneVerified", "false");
+    } finally {
+      setIsLoading(false);
+      // Always redirect to login, regardless of verification outcome
+      router.push("/login");
+    }
+  };
 
   return (
     <div id="otp-page" className="mt-36 w-full mx-4">
@@ -55,7 +74,8 @@ export default function SignUpOtp({ params }: PageProps) {
         <br />
         {phoneNumber}
       </p>
-      <Otp onComplete={handleOtpCompletion} />
+      <Otp onComplete={handleOtpCompletion} onResend={sendVerificationCode} />
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }
