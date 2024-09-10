@@ -1,12 +1,12 @@
 import React from "react"
 import { GoArrowLeft } from "react-icons/go"
 
-type CurrentScreenNavProps = {
+type ReportDetailsProps = {
     title: string,
     children?: React.ReactNode
 }
 
-export const CurrentScreenNav = ({ title, children }: CurrentScreenNavProps) => {
+export const ReportDetailsNav = ({ title, children }: ReportDetailsProps) => {
 
     const handleBack = () => {
         // TODO:Implement back button functionality

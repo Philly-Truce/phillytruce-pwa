@@ -6,7 +6,7 @@ export default async function SessionControl() {
   const session = await getServerSession(options);
 
   if (!session) {
-    redirect("/api/auth/signin");
+    redirect("/login");
   }
 
   return session; 

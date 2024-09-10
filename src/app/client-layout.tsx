@@ -37,7 +37,10 @@ export default function ClientLayout({
         className="flex-grow flex flex-col overflow-scroll"
         ref={containerRef}
       >
-        <div id="client-layout-inner2" className="flex-grow flex justify-start">
+        <div
+          id="client-layout-inner2"
+          className="flex-grow flex justify-start px-4"
+        >
           {children}
         </div>
       </main>

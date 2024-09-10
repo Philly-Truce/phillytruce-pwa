@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from 'next/image'
 
 const pageTitles: Record<string, string> = {
   "/reports": "Reports",
   "/reports-view": "Report",
+  "/sign-up": "Sign Up",
   "/messages": "Messages",
   "/edit": "Edit Report",
   "/create": "Create New Report",
@@ -56,16 +58,29 @@ export default function TopBanner() {
     return pageTitles[pathname] || "Welcome Alyssa!";
   };
 
+  /**
+   * Renders different icons depending on the pathname
+   */
   const getLeftChild = () => {
-    if (pathname.startsWith("/messages/") || pathname.startsWith("/profile")) {
-      return (
-        <Link href={pathname.startsWith("/messages/") ? "/messages" : "/more"}>
-          <div id="left-arrow-wrapper" className="m-3">
-            <LeftArrow />
-          </div>
-        </Link>
-      );
-    }
+    if (pathname.startsWith("/messages/") || pathname.startsWith("/profile") || 
+        pathname.startsWith("/reports/") || pathname.startsWith("/create") || 
+        pathname.startsWith("/edit") || pathname.startsWith("/reports-view")) {
+
+        // Determine the href based on the pathname
+        const href = pathname.startsWith("/messages/") ? "/messages" :
+        pathname.startsWith("/reports-view") || pathname.startsWith("/reports/") ? "/reports" :
+        pathname.startsWith("/create") ? "/reports" : 
+        "/reports";
+
+        return (
+          <Link href={href}>
+            <div id="left-arrow-wrapper" className="m-3">
+              <LeftArrow />
+            </div>
+          </Link>
+        );
+    } 
+
     return (
       <div
         id="circle-background"
@@ -89,6 +104,20 @@ export default function TopBanner() {
         </div>
       );
     }
+    
+    if(pathname.startsWith("/reports/") || pathname.startsWith("/reports-view")) {
+     return (
+      <div id="report-icon-wrapper" className="flex flex-row justify-center items-center">
+        <Link href="/edit" className="h-12 w-12 p-3 flex flex-col items-center justify-center"  title="Edit report">
+          <Image src='/icons/edit.svg' width={48} height={48} alt="Edit icon" />
+        </Link>
+        <Link href="/messages" className="h-12 w-12 p-3 flex flex-col items-center justify-center" title="Go to messages for this report">
+          <Image src='/icons/message.svg' width={48} height={48} alt="Message Icon" />
+        </Link>
+      </div>
+     )
+    }
+
     return <div id="placeholder" className="w-5 h-5"></div>;
   };
 

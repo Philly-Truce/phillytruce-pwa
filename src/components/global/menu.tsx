@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { IoMdAdd } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTwilio } from "@/lib/twilio-provider";
@@ -24,7 +25,7 @@ const menuItems = [
     label: "Home",
   },
   {
-    href: "/reports",
+    href: "/mock-reports",
     icon: (selected: boolean) => (
       <svg
         width="25"
@@ -85,22 +86,13 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   const pathname = usePathname();
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlightStyle, setHighlightStyle] = useState({});
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const { unreadChatsCount } = useTwilio();
 
-  // Set activeIndex
-  useEffect(() => {
-    const currentIndex = menuItems.findIndex((item) => item.href === pathname);
-    if (currentIndex !== -1) {
-      setActiveIndex(currentIndex);
-    }
-  }, [pathname]);
-
-  useEffect(() => {
+  const updateHighlightStyle = (index: number) => {
     if (menuRef.current) {
-      const activeItem = menuRef.current.children[
-        activeIndex + 1
-      ].querySelector("#icon-wrapper") as HTMLElement;
+      const activeItem = menuRef.current.children[index + 1].querySelector("#icon-wrapper") as HTMLElement;
       if (activeItem) {
         const { offsetLeft, offsetWidth } = activeItem;
         setHighlightStyle({
@@ -109,75 +101,105 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
         });
       }
     }
-  }, [activeIndex]);
+  };
+
+  useEffect(() => {
+    const currentIndex = menuItems.findIndex((item) => item.href === pathname);
+    if (currentIndex !== -1) {
+      setActiveIndex(currentIndex);
+      updateHighlightStyle(currentIndex);
+      
+      // Set isInitialRender to false after a short delay
+      const timer = setTimeout(() => {
+        setIsInitialRender(false);
+      }, 50);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [pathname]);
 
   if (
     pathname === "/login" ||
     pathname === "/login-otp" ||
-    pathname.startsWith("/messages/CH")
+    pathname.startsWith("/messages/CH") ||
+    pathname === "/sign-up"
   ) {
     return null;
   }
 
   return (
-    <div
-      className={`relative flex justify-between pb-3 px-[7px] ${
-        hasOverflow
-          ? "shadow-[1px_-2px_15px_6px_rgba(0,0,0,0.16),0px_1px_4px_1px_rgba(0,0,0,0.11)]"
-          : "shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
-      }`}
-      ref={menuRef}
-    >
+    <div id="bottom-navigation-menu" className="relative">
+      {pathname === "/mock-reports" && (
+        <div id="new-report-button" className="absolute -top-16 right-4">
+          <Link href="/create">
+            <button className="flex items-center gap-2 p-4 bg-primary text-white rounded-xl shadow-[rgba(50,50,93,0.25)_0px_13px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_16px_-8px]">
+              <IoMdAdd />
+              New Report
+            </button>
+          </Link>
+        </div>
+      )}
       <div
-        id="selector-blob"
-        className="absolute top-3 h-8 bg-[#bbc7db] w-2 rounded-2xl transition-all duration-300 ease-in-out z-10"
-        style={highlightStyle}
-      />
-      {menuItems.map(({ href, icon, label }) => {
-        const isSelected = pathname === href;
-        return (
-          <Link href={href} key={href}>
-            <div
-              id="icon-label-wrapper"
-              className="pt-3 pb-4 flex flex-col items-center gap-1"
-            >
-              <div id="icon-double-wrap" className="z-20 px-[15.38px]">
-                <div
-                  id="icon-wrapper"
-                  className={`px-5 py-1 rounded-2xl text-center relative`}
-                >
-                  {/* Icon */}
-                  {icon(isSelected)}
-                  {/* Notification Badge */}
+        className={`relative flex justify-between pb-3 px-[7px] ${
+          hasOverflow
+            ? "shadow-[1px_-2px_15px_6px_rgba(0,0,0,0.16),0px_1px_4px_1px_rgba(0,0,0,0.11)]"
+            : "shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+        }`}
+        ref={menuRef}
+      >
+        <div
+          id="selector-blob"
+          className={`absolute top-3 h-8 bg-[#bbc7db] rounded-2xl z-10 ${
+            isInitialRender ? '' : 'transition-all duration-300 ease-in-out'
+          }`}
+          style={highlightStyle}
+        />
+        {menuItems.map(({ href, icon, label }) => {
+          const isSelected = pathname === href;
+          return (
+            <Link href={href} key={href}>
+              <div
+                id="icon-label-wrapper"
+                className="pt-3 pb-4 flex flex-col items-center gap-1"
+              >
+                <div id="icon-double-wrap" className="z-20 px-[15.38px]">
                   <div
-                    id="notification-badge"
-                    className={`absolute w-4 h-4 top-0 left-8 rounded-full ${
-                      href === "/messages" && unreadChatsCount
-                        ? "bg-[#F6893C]"
-                        : "invisible"
-                    }`}
+                    id="icon-wrapper"
+                    className={`px-5 py-1 rounded-2xl text-center relative`}
                   >
+                    {/* Icon */}
+                    {icon(isSelected)}
+                    {/* Notification Badge */}
                     <div
-                      id="notification-number"
-                      className="text-white text-center text-[11px] font-medium leading-4 tracking-[0.5px]"
+                      id="notification-badge"
+                      className={`absolute w-4 h-4 top-0 left-8 rounded-full ${
+                        href === "/messages" && unreadChatsCount
+                          ? "bg-[#F6893C]"
+                          : "invisible"
+                      }`}
                     >
-                      {unreadChatsCount}
+                      <div
+                        id="notification-number"
+                        className="text-white text-center text-[11px] font-medium leading-4 tracking-[0.5px]"
+                      >
+                        {unreadChatsCount}
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div
+                  id="menu-label"
+                  className={`text-center text-xs font-medium leading-4 tracking-[0.5px] ${
+                    isSelected ? "text-[#1C4587]" : "text-[#334155]"
+                  }`}
+                >
+                  {label}
+                </div>
               </div>
-              <div
-                id="menu-label"
-                className={`text-center text-xs font-medium leading-4 tracking-[0.5px] ${
-                  isSelected ? "text-[#1C4587]" : "text-[#334155]"
-                }`}
-              >
-                {label}
-              </div>
-            </div>
-          </Link>
-        );
-      })}
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }
