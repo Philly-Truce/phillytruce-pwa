@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     const { incident_type, location, date, time, description, ppd_notified } =
       body;
 
-      let incidentType = incident_type.split(',')
     // Generate a unique report number
     const reportNumber = await generateUniqueReportNumber();
 
@@ -21,7 +20,7 @@ export async function POST(request: NextRequest) {
         incident_report_number: reportNumber,
         report_origin: "user_created",
         report_stage: "claimed",
-        incident_type:incidentType,
+        incident_type,
         description,
         location,
         report_last_updated_at: new Date(),
