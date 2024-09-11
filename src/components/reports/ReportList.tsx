@@ -36,7 +36,7 @@ import {
           </TabsContent>
           <TabsContent value="progress">
            
-            {reports?.closed.length === 0 ? ('There are no reports that have been claimed.') : reports?.claimed.map((report : ReportSummaryType) => (
+            {reports?.claimed.length === 0 ? ('There are no reports that have been claimed.') : reports?.claimed.map((report : ReportSummaryType) => (
                 <ReportSummary clickedReports={clickedReports} onClick={handleClick} key={report.id} report={report} />
             ))}
           </TabsContent>
