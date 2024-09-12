@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node", "express"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
