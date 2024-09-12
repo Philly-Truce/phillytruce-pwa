@@ -19,6 +19,7 @@ const fetchAllReports = async () => {
     },
   });
 
+  console.log("Fetched reports:", reports);
   return reports;
 };
 

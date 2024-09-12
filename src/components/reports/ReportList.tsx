@@ -11,6 +11,7 @@ import { ReportSummary } from "./ReportSummary";
 import { NotificationContext } from "@/lib/notification-provider";
 
 export default function ReportList({ reports }: { reports: any }) {
+  console.log("Reports received in ReportList:", reports);
   const [clickedReports, setClickedReports] = useState<string[]>([]);
   const { unreadReportsCount, unreadReports } = useContext(NotificationContext);
 
