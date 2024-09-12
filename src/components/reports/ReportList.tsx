@@ -1,32 +1,51 @@
 "use client";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/shadcn-ui/tabs";
-import { ReportSummaryType } from "@/app/reports/page";
 import { ReportSummary } from "./ReportSummary";
 import { NotificationContext } from "@/lib/notification-provider";
 
-export default function ReportList({ reports }: { reports: any }) {
-  console.log("Reports received in ReportList:", reports);
-  const [clickedReports, setClickedReports] = useState<string[]>([]);
-  const { unreadReportsCount, unreadReports } = useContext(NotificationContext);
+export type ReportSummaryType = {
+  id: string;
+  report_stage: string;
+  report_initiated_at: Date;
+  incident_report_number: number;
+};
 
-  const handleClick = (reportName: string) => {
-    if (!clickedReports.includes(reportName)) {
-      setClickedReports([...clickedReports, reportName]);
+export default function ReportList({
+  reports,
+}: {
+  reports: ReportSummaryType[];
+}) {
+  console.log("Reports received in ReportList:", reports);
+  const { unreadReports } = useContext(NotificationContext);
+  const [clickedReports, setClickedReports] = useState<string[]>([]);
+
+  const handleClick = (reportId: string) => {
+    if (!clickedReports.includes(reportId)) {
+      setClickedReports([...clickedReports, reportId]);
     }
   };
+
+  const unclaimed = reports.filter(
+    (report) => report.report_stage === "unclaimed"
+  );
+  const claimed = reports.filter((report) => report.report_stage === "claimed");
+  const closed = reports.filter(
+    (report) =>
+      report.report_stage === "closed" || report.report_stage === "archived"
+  );
 
   return (
     <div id="shadcn-tabs-component" className="">
       <Tabs defaultValue="unclaimed">
         <TabsList>
           <TabsTrigger value="unclaimed" className="relative">
-            Unclaimed
+            Unclaimed ({unclaimed.length})
             {unreadReports.some(
               (report) => report.report_stage === "unclaimed"
             ) && (
@@ -34,51 +53,54 @@ export default function ReportList({ reports }: { reports: any }) {
             )}
           </TabsTrigger>
           <TabsTrigger value="progress" className="relative">
-            Progress
+            In Progress ({claimed.length})
           </TabsTrigger>
-          <TabsTrigger value="closed">Closed</TabsTrigger>
+          <TabsTrigger value="closed">Closed ({closed.length})</TabsTrigger>
         </TabsList>
 
-        {/* Unclaimed Reports */}
         <TabsContent value="unclaimed">
-          {reports?.unclaimed?.length === 0
-            ? "There are no reports that are ready to be claimed."
-            : reports?.unclaimed?.map((report: ReportSummaryType) => (
-                <ReportSummary
-                  clickedReports={clickedReports}
-                  onClick={handleClick}
-                  key={report.id}
-                  report={report}
-                />
-              ))}
+          {unclaimed.length === 0 ? (
+            <p>There are no reports that are ready to be claimed.</p>
+          ) : (
+            unclaimed.map((report) => (
+              <ReportSummary
+                key={report.id}
+                report={report}
+                onClick={handleClick}
+                clickedReports={clickedReports}
+              />
+            ))
+          )}
         </TabsContent>
 
-        {/* Claimed Reports */}
         <TabsContent value="progress">
-          {reports?.claimed?.length === 0
-            ? "There are no reports that have been claimed."
-            : reports?.claimed?.map((report: ReportSummaryType) => (
-                <ReportSummary
-                  clickedReports={clickedReports}
-                  onClick={handleClick}
-                  key={report.id}
-                  report={report}
-                />
-              ))}
+          {claimed.length === 0 ? (
+            <p>There are no reports that have been claimed.</p>
+          ) : (
+            claimed.map((report) => (
+              <ReportSummary
+                key={report.id}
+                report={report}
+                onClick={handleClick}
+                clickedReports={clickedReports}
+              />
+            ))
+          )}
         </TabsContent>
 
-        {/* Closed Reports */}
         <TabsContent value="closed">
-          {reports?.closed?.length === 0
-            ? "There are no reports that have been closed."
-            : reports?.closed?.map((report: ReportSummaryType) => (
-                <ReportSummary
-                  clickedReports={clickedReports}
-                  onClick={handleClick}
-                  key={report.id}
-                  report={report}
-                />
-              ))}
+          {closed.length === 0 ? (
+            <p>There are no reports that have been closed.</p>
+          ) : (
+            closed.map((report) => (
+              <ReportSummary
+                key={report.id}
+                report={report}
+                onClick={handleClick}
+                clickedReports={clickedReports}
+              />
+            ))
+          )}
         </TabsContent>
       </Tabs>
     </div>

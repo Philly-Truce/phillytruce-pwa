@@ -34,6 +34,11 @@ export const NotificationProvider = ({
     const fetchUnreadReports = async () => {
       const response = await axios.get(`/api/get-reports-list`);
       const reports = await response.data;
+      console.log("Raw reports data:", reports);
+
+      console.log("Unclaimed reports:", reports.unclaimed);
+      console.log("Claimed reports:", reports.claimed);
+      console.log("Closed reports:", reports.closed);
 
       // filter through unclaimed reports that have not been read by the current user
       const unreadUnclaimedReports = reports.unclaimed.filter(

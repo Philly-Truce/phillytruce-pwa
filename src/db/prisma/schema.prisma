@@ -32,14 +32,17 @@ model Witness {
   initial_contact_date DateTime
   last_contact_date    DateTime
   reports              Report[] @relation("WitnessReports")
+
   @@map("witnesses")
 }
 
 model User {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  phone     String @unique
-  password  String
-  verified  Boolean @default(false)
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  phone          String    @unique
+  password       String
+  verified       Boolean   @default(false)
+  sessions       Session[]
+  createdReports Report[]  @relation("UserReports")
 }
 
 model Session {
@@ -63,8 +66,8 @@ model VerificationToken {
 }
 
 model Report {
-  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  incident_report_number  Int      @unique
+  id                     String       @id @default(auto()) @map("_id") @db.ObjectId
+  incident_report_number  Int          @unique
   report_origin           ReportOrigin
   report_initiated_at     DateTime
   report_stage            ReportStage
@@ -75,26 +78,25 @@ model Report {
   ppd_notified            Boolean
 
   // Fields for user-created reports
-  creator_user_id         String?  @db.ObjectId
-  creator_user            User?    @relation("UserReports", fields: [creator_user_id], references: [id])
+  creator_user_id String? @db.ObjectId
+  creator_user    User?   @relation("UserReports", fields: [creator_user_id], references: [id])
 
   // Fields for witness-texted reports
-  witness_id              String?  @db.ObjectId
-  witness                 Witness? @relation("WitnessReports", fields: [witness_id], references: [id])
-  session_id              String?
-  chat_service_id         String?
-  last_message_at         DateTime?
-  unclaimed_at            DateTime?
-  claimed_at              DateTime?
+  witness_id      String?   @db.ObjectId
+  witness         Witness?  @relation("WitnessReports", fields: [witness_id], references: [id])
+  session_id      String?
+  chat_service_id String?
+  last_message_at DateTime?
+  unclaimed_at    DateTime?
+  claimed_at      DateTime?
 
   /// [Messages]
-  messages                Json?    // This will store the array of message objects
+  messages Json? // This will store the array of message objects
 
   // Common field for final stage
-  archived_at             DateTime?
-  @@map("reports")
+  archived_at DateTime?
 
-  read_by               String[]
+  @@map("reports")
 }
 
 // prisma does not support the migrate command for MongoDB so just use the command 
