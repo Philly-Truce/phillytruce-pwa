@@ -26,9 +26,9 @@ const menuItems = [
     label: "Home",
   },
   {
-    href: "/mock-reports",
+    href: "/reports",
     icon: (selected: boolean) => (
-      <svg 
+      <svg
         width="25"
         height="24"
         viewBox="0 0 25 24"
@@ -90,7 +90,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   const [isInitialRender, setIsInitialRender] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const { unreadChatsCount } = useTwilio();
-  const { unreadReportsCount } = useContext(NotificationContext)
+  const { unreadReportsCount } = useContext(NotificationContext);
 
   const updateHighlightStyle = (index: number) => {
     if (menuRef.current) {
@@ -132,7 +132,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
 
   return (
     <div id="bottom-navigation-menu" className="relative">
-      {pathname === "/mock-reports" && (
+      {pathname === "/reports" && (
         <div id="new-report-button" className="absolute -top-16 right-4">
           <Link href="/create">
             <button className="flex items-center gap-2 p-4 bg-primary text-white rounded-xl shadow-[rgba(50,50,93,0.25)_0px_13px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_16px_-8px]">
@@ -176,8 +176,8 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
                     <div
                       id="notification-badge"
                       className={`absolute w-4 h-4 top-0 left-8 rounded-full ${
-                        (href === "/mock-reports" && unreadReportsCount > 0 || 
-                          href === "/messages" && unreadChatsCount > 0)
+                        (href === "/mock-reports" && unreadReportsCount > 0) ||
+                        (href === "/messages" && unreadChatsCount > 0)
                           ? "bg-[#F6893C]"
                           : "invisible"
                       }`}
