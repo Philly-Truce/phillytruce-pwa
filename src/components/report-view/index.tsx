@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { InputField, TextAreaField } from "@/components/report-view/inputs";
 import axios from "axios";
@@ -15,26 +15,26 @@ import {
 } from "@/components/report-view/dialog";
 
 export type Report = {
-  id: string; 
-  incident_report_number: number; 
-  report_initiated_at: Date; 
-  report_stage?: string; 
+  id: string;
+  incident_report_number: number;
+  report_initiated_at: Date;
+  report_stage?: string;
   report_origin: string;
   incident_type: string[];
-  description: string; 
-  location: string; 
-  report_last_updated_at?: Date; 
-  ppd_notified: boolean; 
-  creator_user: any; 
+  description: string;
+  location: string;
+  report_last_updated_at?: Date;
+  ppd_notified: boolean;
+  creator_user: any;
   witness_id?: string | null;
-  session_id?: string | null; 
-  chat_service_id?: string | null; 
-  last_message_at?: Date | null; 
-  unclaimed_at?: Date | null; 
-  claimed_at?: Date | null; 
-  messages?: any; 
-  archived_at?: Date | null; 
-  read_by?: String[]
+  session_id?: string | null;
+  chat_service_id?: string | null;
+  last_message_at?: Date | null;
+  unclaimed_at?: Date | null;
+  claimed_at?: Date | null;
+  messages?: any;
+  archived_at?: Date | null;
+  read_by?: String[];
 };
 
 type StatusConfiguration = {
@@ -77,57 +77,58 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
  * @param report - Report object
  * @returns
  */
-const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initialReport: Report, onStatusUpdate: () => void }) => {
-  
-  const [ report, setReport ] = useState<Report>(initialReport)
+const ReportView: React.FC<any> = ({
+  initialReport,
+  onStatusUpdate,
+}: {
+  initialReport: Report;
+  onStatusUpdate: () => void;
+}) => {
+  const [report, setReport] = useState<Report>(initialReport);
 
-  const reportStage = report?.report_stage || '';
+  const reportStage = report?.report_stage || "";
 
-  const { 
-    dialogTitle, 
-    dialogDescription, 
-    ctaButtonText, 
-    buttonTWClasses 
-  } = reportStatusState(reportStage) || {};
+  const { dialogTitle, dialogDescription, ctaButtonText, buttonTWClasses } =
+    reportStatusState(reportStage) || {};
 
-  const buttonBaseClasses = "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
-   
+  const buttonBaseClasses =
+    "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
+
   const handleStatusUpdate = async () => {
     const response = await axios.post(`/api/update-report-status`, {
       incident_report_number: report.incident_report_number,
-      report_stage: report.report_stage
+      report_stage: report.report_stage,
     });
 
     if (response.status === 200) {
-      setReport(prev => ({ ...prev, ...response.data })); // Update the report state with the new data
+      setReport((prev) => ({ ...prev, ...response.data })); // Update the report state with the new data
       return response.data; // Return the updated report data
     }
   };
   /**
    * An object for the report stage label and icon
-   * @returns JS object with key-values for label and icon 
-   */  
+   * @returns JS object with key-values for label and icon
+   */
   const reportStageLabelAndIcon = () => {
-    
-    switch(report?.report_stage) {
-      case 'claimed':
+    switch (report?.report_stage) {
+      case "claimed":
         return {
-          label: 'In Progress',
-          icon:'/icons/in-progress.svg'
-        }
-      case 'archived':
+          label: "In Progress",
+          icon: "/icons/in-progress.svg",
+        };
+      case "archived":
         return {
-        label: 'Closed',
-        icon: '/icons/closed.svg'
-      }
+          label: "Closed",
+          icon: "/icons/closed.svg",
+        };
       default:
         return {
-          label: 'Unclaimed',
-          icon:'/icons/warning_amber.svg'
-        }
+          label: "Unclaimed",
+          icon: "/icons/warning_amber.svg",
+        };
     }
-  }
-  
+  };
+
   return (
     <form className="relative w-full flex flex-col justify-between gap-y-4 min-h-full">
       <div>
@@ -151,7 +152,11 @@ const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initial
                 name="report-origin"
                 placeholder=""
                 label="Report Origin"
-                defaultValue={report?.report_origin === "witness_text" ? "Text-In" : ("SPM " + report?.creator_user.first_name)}
+                defaultValue={
+                  report?.report_origin === "witness_text"
+                    ? "Text-In"
+                    : "SPM " + report?.creator_user.first_name
+                }
                 readOnly={true}
                 width="1/2"
                 icon={
@@ -162,14 +167,14 @@ const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initial
               />
             </div>
             <InputField
-                name="Incident Type"
-                placeholder=""
-                label="Incident Type"
-                defaultValue={report?.incident_type.join(', ')}
-                readOnly={true}
-                width="1/2"
-                icon="/icons/flag.svg"
-              />
+              name="Incident Type"
+              placeholder=""
+              label="Incident Type"
+              defaultValue={report?.incident_type.join(", ")}
+              readOnly={true}
+              width="1/2"
+              icon="/icons/flag.svg"
+            />
           </div>
         </div>
         {/* Incident Details: Location, Date, Time, Details */}
@@ -193,7 +198,9 @@ const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initial
                 placeholder=""
                 label="Date"
                 icon="/icons/calendar.svg"
-                defaultValue={dayjs(report?.report_initiated_at).format("MM/DD/YYYY")}
+                defaultValue={dayjs(report?.report_initiated_at).format(
+                  "MM/DD/YYYY"
+                )}
                 width="1/2"
               />
               <InputField
@@ -201,7 +208,9 @@ const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initial
                 placeholder=""
                 label="Time"
                 icon="/icons/clock.svg"
-                defaultValue={dayjs(report?.report_initiated_at).format("hh:mm A")}
+                defaultValue={dayjs(report?.report_initiated_at).format(
+                  "hh:mm A"
+                )}
                 width="1/2"
               />
             </div>
@@ -238,7 +247,10 @@ const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initial
                       <button className="text-primary font-medium">No</button>
                     </DialogClose>
                     <DialogClose asChild>
-                      <button onClick={handleStatusUpdate} className="text-primary font-medium">
+                      <button
+                        onClick={handleStatusUpdate}
+                        className="text-primary font-medium"
+                      >
                         Yes
                       </button>
                     </DialogClose>
@@ -251,6 +263,6 @@ const ReportView: React.FC<any> = ({ initialReport, onStatusUpdate } : { initial
       )}
     </form>
   );
-}
+};
 
-export default ReportView
+export default ReportView;
