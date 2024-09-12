@@ -10,7 +10,9 @@ import axios from "axios";
  */
 const fetchReportByReportNumber = async (incidentReportNumber: string) => {
   const report = await axios.get(
-    `/api/get-report?incident_report_number=${Number.parseInt(
+    `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/get-report?incident_report_number=${Number.parseInt(
       incidentReportNumber
     )}`
   );
