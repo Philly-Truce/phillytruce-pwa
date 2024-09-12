@@ -67,15 +67,15 @@ model VerificationToken {
 
 model Report {
   id                     String       @id @default(auto()) @map("_id") @db.ObjectId
-  incident_report_number Int          @unique
-  report_origin          ReportOrigin
-  report_initiated_at    DateTime
-  report_stage           ReportStage
-  incident_type          String[]
-  description            String
-  location               String
-  report_last_updated_at DateTime
-  ppd_notified           Boolean
+  incident_report_number  Int          @unique
+  report_origin           ReportOrigin
+  report_initiated_at     DateTime
+  report_stage            ReportStage
+  incident_type           String[]
+  description             String
+  location                String
+  report_last_updated_at  DateTime
+  ppd_notified            Boolean
 
   // Fields for user-created reports
   creator_user_id String? @db.ObjectId

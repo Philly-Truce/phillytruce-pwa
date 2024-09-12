@@ -87,7 +87,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           <button className="w-full bg-primary rounded-xl text-white py-2 p-2 mb-4 text-md">
             SAVE
           </button>
-          <Link href="/reports">
+          <Link href={"/home"}>
             {" "}
             <button className="w-full rounded-xl text-primary text-md py-2 p-1 border border-black">
               CANCEL

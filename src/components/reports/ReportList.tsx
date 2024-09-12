@@ -1,43 +1,30 @@
 "use client";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/shadcn-ui/tabs";
+import MockReportsBrief from "@/data/reports-brief-mock";
 import { ReportSummaryType } from "@/app/reports/page";
 import { ReportSummary } from "./ReportSummary";
 import { NotificationContext } from "@/lib/notification-provider";
 
-type ReportListProps = {
-  reports: {
-    unclaimed: ReportSummaryType[];
-    claimed: ReportSummaryType[];
-    closed: ReportSummaryType[];
-  };
-  setActiveTab: (tab: string) => void;
-};
-
-const ReportList: React.FC<ReportListProps> = ({ reports, setActiveTab }) => {
+export default function ReportList({ reports }: { reports: any }) {
   const [clickedReports, setClickedReports] = useState<string[]>([]);
-  const { unreadReports } = useContext(NotificationContext);
+  const { unreadReportsCount, unreadReports } = useContext(NotificationContext);
 
-  const handleClick = (id: string) => {
-    if (clickedReports.includes(id)) {
-      setClickedReports(clickedReports.filter((reportId) => reportId !== id));
-    } else {
-      setClickedReports([...clickedReports, id]);
+  const handleClick = (reportName: string) => {
+    if (!clickedReports.includes(reportName)) {
+      setClickedReports([...clickedReports, reportName]);
     }
   };
 
   return (
-    <div id="shadcn-tabs-component" className="w-full relative">
-      <Tabs
-        defaultValue="unclaimed"
-        onValueChange={(value) => setActiveTab(value)}
-      >
-        <TabsList className="grid w-full grid-cols-3">
+    <div id="shadcn-tabs-component" className="">
+      <Tabs defaultValue="unclaimed">
+        <TabsList>
           <TabsTrigger value="unclaimed" className="relative">
             Unclaimed
             {unreadReports.some(
@@ -52,37 +39,34 @@ const ReportList: React.FC<ReportListProps> = ({ reports, setActiveTab }) => {
           <TabsTrigger value="closed">Closed</TabsTrigger>
         </TabsList>
         <TabsContent value="unclaimed">
-          {reports.unclaimed.length === 0
+          {/* <MockReportsBrief /> */}
+          {reports?.unclaimed.length === 0
             ? "There are no reports that are ready to be claimed."
-            : reports.unclaimed.map(
-                (report: ReportSummaryType, index: number) => (
-                  <ReportSummary
-                    clickedReports={clickedReports}
-                    onClick={handleClick}
-                    key={report.id}
-                    report={report}
-                  />
-                )
-              )}
+            : reports?.unclaimed.map((report: ReportSummaryType) => (
+                <ReportSummary
+                  clickedReports={clickedReports}
+                  onClick={handleClick}
+                  key={report.id}
+                  report={report}
+                />
+              ))}
         </TabsContent>
         <TabsContent value="progress">
-          {reports.claimed.length === 0
+          {reports?.claimed.length === 0
             ? "There are no reports that have been claimed."
-            : reports.claimed.map(
-                (report: ReportSummaryType, index: number) => (
-                  <ReportSummary
-                    clickedReports={clickedReports}
-                    onClick={handleClick}
-                    key={report.id}
-                    report={report}
-                  />
-                )
-              )}
+            : reports?.claimed.map((report: ReportSummaryType) => (
+                <ReportSummary
+                  clickedReports={clickedReports}
+                  onClick={handleClick}
+                  key={report.id}
+                  report={report}
+                />
+              ))}
         </TabsContent>
         <TabsContent value="closed">
-          {reports.closed.length === 0
+          {reports?.closed.length === 0
             ? "There are no reports that have been closed."
-            : reports.closed.map((report: ReportSummaryType, index: number) => (
+            : reports?.closed.map((report: ReportSummaryType) => (
                 <ReportSummary
                   clickedReports={clickedReports}
                   onClick={handleClick}
@@ -94,6 +78,4 @@ const ReportList: React.FC<ReportListProps> = ({ reports, setActiveTab }) => {
       </Tabs>
     </div>
   );
-};
-
-export default ReportList;
+}

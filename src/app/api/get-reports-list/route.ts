@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
-type ReportSummary = {
+interface SelectedReport {
   id: string;
   incident_report_number: number;
   report_initiated_at: Date;
-  report_stage: string;
-};
+  report_stage: string | null;
+}
 
 export async function GET(request: NextRequest) {
-  const reports: ReportSummary[] = await prisma.report.findMany({
+  const reports = await prisma.report.findMany({
     select: {
       report_stage: true,
       incident_report_number: true,
@@ -19,18 +19,20 @@ export async function GET(request: NextRequest) {
   });
 
   const unclaimed = reports.filter(
-    (report) => report.report_stage === "unclaimed"
+    (report: SelectedReport) => report.report_stage === "unclaimed"
   );
-  const claimed = reports.filter((report) => report.report_stage === "claimed");
+  const claimed = reports.filter(
+    (report: SelectedReport) => report.report_stage === "claimed"
+  );
   const closed = reports.filter(
-    (report) =>
+    (report: SelectedReport) =>
       report.report_stage === "closed" || report.report_stage === "archived"
   );
 
   const lists = {
-    unclaimed,
-    claimed,
-    closed,
+    unclaimed: unclaimed,
+    claimed: claimed,
+    closed: closed,
   };
 
   return NextResponse.json(lists, {
