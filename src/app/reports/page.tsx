@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import ReportList from "@/components/reports/ReportList";
 import SearchBar from "@/components/search-bar";
+import prisma from "@/db/prisma";
 
 export type ReportSummaryType = {
   id: string;
@@ -10,22 +10,21 @@ export type ReportSummaryType = {
 };
 
 const fetchAllReports = async () => {
-  const response = await fetch(`/api/get-reports-list`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
+  const reports = await prisma.report.findMany({
+    select: {
+      report_stage: true,
+      incident_report_number: true,
+      id: true,
+      report_initiated_at: true,
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch reports");
-  }
-
-  return response.json();
+  console.log("Fetched reports:", reports);
+  return reports;
 };
 
 export default async function Main() {
-  const reports: ReportSummaryType[] = await fetchAllReports();
+  const reports = await fetchAllReports();
 
   return (
     <div
