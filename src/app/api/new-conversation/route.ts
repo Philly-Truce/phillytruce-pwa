@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import twilioClient from "@/lib/twilio-client";
-import prisma from "@/db/index";
+import prisma from "@/db/prisma";
 
 export async function POST(request: NextRequest) {
   try {
-    // Parse request body
     const formData = await request.formData();
     console.log(formData);
     const conversationSid = formData.get("ConversationSid") as string;
 
-    // Add flow webhook
     await twilioClient.conversations.v1
       .conversations(conversationSid)
       .webhooks.create({
@@ -18,7 +16,6 @@ export async function POST(request: NextRequest) {
         "configuration.replayAfter": 0,
       });
 
-    // Add inbound-messages webhook
     await twilioClient.conversations.v1
       .conversations(conversationSid)
       .webhooks.create({
@@ -30,14 +27,13 @@ export async function POST(request: NextRequest) {
         target: "webhook",
       });
 
-    // Create a new report
     await prisma.report.create({
       data: {
-        incident_report_number: conversationSid.slice(-4),
+        incident_report_number: parseInt(conversationSid.slice(-4), 10),
         report_origin: "witness_text",
         report_initiated_at: new Date(),
         report_stage: "data_gathering",
-        incident_type: "Example incident",
+        incident_type: ["fist", "gun", "knifing"],
         description: "This is a test report.",
         location: "Test location",
         report_last_updated_at: new Date(),
@@ -54,7 +50,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: "Webooks added to the conversation successfully" },
+      { message: "Webhooks added to the conversation successfully" },
       { status: 200 }
     );
   } catch (error) {
