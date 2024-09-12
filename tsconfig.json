@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/home/clock-in.js"
+    "src/app/home/clock-in.js",
+    "src/app/sign-up/otp/[phone]/otp-submission.js"
   ],
   "exclude": ["node_modules"]
 }
