@@ -30,6 +30,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
     mode: "onChange",
     reValidateMode: "onChange",
     defaultValues: {
+      incident_report_number: report.incident_report_number || undefined,
       location: report.location || "",
       description: report.description || "",
       incident_type: report.incident_type || [],
@@ -40,11 +41,24 @@ const ReportForm: React.FC<Report> = ({ report }) => {
 
   const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
     try {
-      const res: AxiosResponse<Report> = await axios.post<Report>(
-        `http://localhost:3000/api/create-report`,
-        data
-      );
-      console.log(res);
+      if (!Array.isArray(data.incident_type)) {
+        data.incident_type = data.incident_type.split(",");
+      }
+      if (report.incident_report_number) {
+        console.log(data);
+        const res: AxiosResponse<Report> = await axios.put<Report>(
+          `http://localhost:3000/api/update-report`,
+          data
+        );
+        console.log(res);
+      } else {
+        console.log(data);
+        const res: AxiosResponse<Report> = await axios.post<Report>(
+          `http://localhost:3000/api/create-report`,
+          data
+        );
+        console.log(res);
+      }
 
       methods.reset();
     } catch (error) {

@@ -96,7 +96,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
             <input
               type="text"
               placeholder="Where did this take Place?"
-              className="block w-full p-1 appearance-none bg-white"
+              className="block w-full p-1 focus:outline-none bg-white"
               {...register("location", { required: true })}
             />
 
@@ -163,7 +163,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
             <Image src={descriptionIcon} alt="Description Icon" />
             <textarea
               placeholder="Please describe/explain what happened in detail."
-              className="block w-full px-4"
+              className="block w-full px-4 focus:outline-none"
               {...register("description", {
                 required: "Incident Description is Required",
               })}

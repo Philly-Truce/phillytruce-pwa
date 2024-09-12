@@ -9,7 +9,7 @@ export async function PUT(request: NextRequest) {
 
     // Extract the report ID and the new data from the request body
     const {
-      incident_report_number, // ID of the report to update
+      incident_report_number, 
       incident_type,
       location,
       date,
@@ -28,7 +28,7 @@ export async function PUT(request: NextRequest) {
 
     // Update the report in the database
     const updatedReport = await prisma.report.update({
-      where: { incident_report_number: Number(incident_report_number) }, // assuming 'id' is the primary key field
+      where: { incident_report_number: Number(incident_report_number) },
       data: {
         incident_type,
         report_origin: "user_created",
