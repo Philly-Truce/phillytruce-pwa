@@ -9,7 +9,7 @@ import axios from "axios";
  * @returns report details in JS object format
  */
 const fetchReportByReportNumber = async (incidentReportNumber: string) => {
-  const report = await axios.get(`${process.env.BASE_URL}/api/get-report?incident_report_number=${Number.parseInt(incidentReportNumber)}`);
+  const report = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-report?incident_report_number=${Number.parseInt(incidentReportNumber)}`);
   if (report.status === 404) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -26,7 +26,6 @@ export default async function ReportsViewPage({ params }: { params: { incident_r
   if (!fetchedReport) {
     return <div>Report Not Found</div>;
   }
-  
 
   return (
     <div id="reports-view-page" className="pt-[88px] px-4 w-full h-full">

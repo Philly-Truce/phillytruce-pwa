@@ -13,7 +13,7 @@ export type ReportSummaryType = {
 }
 
 const fetchAllReports = async() => {
-  const response = await axios.get(`${process.env.BASE_URL}/api/get-reports-list`)
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-reports-list`)
   const data = await response.data
 
   return data

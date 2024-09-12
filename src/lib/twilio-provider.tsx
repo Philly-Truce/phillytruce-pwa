@@ -5,7 +5,7 @@ import React, {
   useContext,
   useState,
   useEffect,
-  use,
+  useCallback,
 } from "react";
 import { Client as ConversationsClient } from "@twilio/conversations";
 import Cookies from "js-cookie";
@@ -19,7 +19,7 @@ type TwilioContextType = {
   unreadChatsCount: number;
 };
 
-const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
+export const TwilioContext = createContext<TwilioContextType | undefined>(undefined);
 
 export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -108,7 +108,7 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [token]);
 
   // loop through all conversations and count which ones are unread
-  const fetchUnreadChatsCount = async () => {
+  const fetchUnreadChatsCount = useCallback(async () => {
     if (client) {
       try {
         let temp = 0;
@@ -134,12 +134,12 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error fetching unread chat count:", error);
       }
     }
-  };
+  }, [client]); // Added dependency array
 
   // if user enters a conversation (AKA pathname changes) then refetch unread chat count
   useEffect(() => {
     fetchUnreadChatsCount();
-  }, [client, pathname]);
+  }, [client, fetchUnreadChatsCount, pathname]);
 
   useEffect(() => {
     // call fetchunreadchatscount evertime message is added for each conversation
@@ -148,6 +148,7 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           // Fetch and set all subscribed conversations
           client.getSubscribedConversations().then((paginator) => {
+            console.log('paginator: ' + paginator)
             const conversations = paginator.items;
             conversations.map((conversation) => {
               conversation.on("messageAdded", fetchUnreadChatsCount);
@@ -182,8 +183,10 @@ export const TwilioProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useTwilio = () => {
   const context = useContext(TwilioContext);
+  
   if (context === undefined) {
     throw new Error("useTwilio must be used within a TwilioProvider");
   }
+
   return context;
 };
