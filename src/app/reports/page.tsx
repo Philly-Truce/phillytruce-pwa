@@ -1,43 +1,51 @@
-import { IoMdAdd } from "react-icons/io";
-import List from "../../components/reports/list";
-import ReportList from '@/components/reports/ReportList'
-import Link from "next/link";
+"use client";
+
+import { useState, useEffect } from "react";
+import ReportList from "@/components/reports/ReportList";
 import SearchBar from "@/components/search-bar";
-import axios from "axios";
 
 export type ReportSummaryType = {
-  id: string,
-  report_stage: string,
-  report_initiated_at: Date,
-  incident_report_number: number,
+  id: string;
+  report_stage: string;
+  report_initiated_at: string;
+  incident_report_number: number;
+};
+
+type ReportLists = {
+  unclaimed: ReportSummaryType[];
+  claimed: ReportSummaryType[];
+  closed: ReportSummaryType[];
+};
+
+async function fetchAllReports(): Promise<ReportLists> {
+  const response = await fetch(`/api/get-reports-list`, {
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch reports");
+  }
+  return response.json();
 }
 
-const fetchAllReports = async() => {
-  const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-reports-list`)
-  const data = await response.data
+export default function Main() {
+  const [reports, setReports] = useState<ReportLists | null>(null);
+  const [activeTab, setActiveTab] = useState("unclaimed");
 
-  return data
-}
+  useEffect(() => {
+    fetchAllReports().then(setReports).catch(console.error);
+  }, []);
 
-export default async function Main() {
+  if (!reports) {
+    return <div>Loading...</div>;
+  }
 
-  const reports : any = await fetchAllReports();
-  
   return (
     <div
       id="reports-page-container"
       className="overflow-y-scroll flex flex-col gap-4 pt-20 pb-20 px-4"
     >
       <SearchBar page="reports" />
-      <ReportList reports={reports}/>
-      <div id="new-report-button" className="bottom-10 right-4">
-        <Link href="/create">
-          <button className="flex items-center gap-2 p-4 bg-primary text-white rounded-xl shadow-[rgba(50,50,93,0.25)_0px_13px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_16px_-8px] ml-auto">
-            <IoMdAdd />
-            New Report
-          </button>
-        </Link>
-      </div>
+      <ReportList reports={reports} setActiveTab={setActiveTab} />
     </div>
   );
 }
