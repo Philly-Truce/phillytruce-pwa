@@ -54,7 +54,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
 
   return (
     <div className="pt-10 px-4">
-      {report ? "" : <Continue />}
+      {report.incident_report_number === 0 && <Continue />}
       <p className="text-sm py-2">
         Please provide detailed information of the incident in this form
       </p>
