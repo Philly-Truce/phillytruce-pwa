@@ -79,4 +79,9 @@ model Report {
   // Common field for final stage
   archived_at            DateTime?
   @@map("reports")
+
+  read_by               String[]
 }
+
+// prisma does not support the migrate command for MongoDB so just use the command 
+// ```npx prisma db push``` when updating schema

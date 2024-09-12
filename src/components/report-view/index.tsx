@@ -34,6 +34,7 @@ export type Report = {
   claimed_at?: Date | null; 
   messages?: any; 
   archived_at?: Date | null; 
+  read_by?: String[]
 };
 
 type StatusConfiguration = {

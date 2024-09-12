@@ -2,8 +2,9 @@
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTwilio } from "@/lib/twilio-provider";
+import { NotificationContext } from "@/lib/notification-provider";
 
 const menuItems = [
   {
@@ -27,7 +28,7 @@ const menuItems = [
   {
     href: "/mock-reports",
     icon: (selected: boolean) => (
-      <svg
+      <svg 
         width="25"
         height="24"
         viewBox="0 0 25 24"
@@ -89,6 +90,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
   const [isInitialRender, setIsInitialRender] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const { unreadChatsCount } = useTwilio();
+  const { unreadReportsCount } = useContext(NotificationContext)
 
   const updateHighlightStyle = (index: number) => {
     if (menuRef.current) {
@@ -173,7 +175,8 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
                     <div
                       id="notification-badge"
                       className={`absolute w-4 h-4 top-0 left-8 rounded-full ${
-                        href === "/messages" && unreadChatsCount
+                        (href === "/mock-reports" && unreadReportsCount > 0 || 
+                          href === "/messages" && unreadChatsCount > 0)
                           ? "bg-[#F6893C]"
                           : "invisible"
                       }`}
@@ -182,7 +185,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
                         id="notification-number"
                         className="text-white text-center text-[11px] font-medium leading-4 tracking-[0.5px]"
                       >
-                        {unreadChatsCount}
+                        {unreadReportsCount}
                       </div>
                     </div>
                   </div>
