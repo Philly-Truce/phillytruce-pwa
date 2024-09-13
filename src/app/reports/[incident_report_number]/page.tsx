@@ -25,9 +25,9 @@ const fetchReportByReportNumber = async (incidentReportNumber: string) => {
  * @returns Report view
  */
 export default async function ReportsViewPage({
-  params,
+  params
 }: {
-  params: { incident_report_number: string };
+  params: { incident_report_number: string }, 
 }) {
   // Fetch the report data
   const fetchedReport = await fetchReportByReportNumber(
@@ -39,7 +39,7 @@ export default async function ReportsViewPage({
 
   return (
     <div id="reports-view-page" className="pt-[88px] px-4 w-full h-full">
-      <ReportView initialReport={fetchedReport.foundReport} />
+      <ReportView initialReport={fetchedReport} />
     </div>
   );
 }

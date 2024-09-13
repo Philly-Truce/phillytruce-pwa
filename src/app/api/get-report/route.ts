@@ -20,9 +20,10 @@ export async function GET(request: NextRequest) {
       include: {
         creator_user: {
           select: {
+            name: true,
             phone: true,
-          },
-        },
+          }
+        }
       },
     });
 

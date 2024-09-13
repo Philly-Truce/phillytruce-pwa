@@ -155,7 +155,7 @@ const ReportView: React.FC<any> = ({
                 defaultValue={
                   report?.report_origin === "witness_text"
                     ? "Text-In"
-                    : "SPM " + report?.creator_user.first_name
+                    : "SPM " + report?.creator_user?.name
                 }
                 readOnly={true}
                 width="1/2"
