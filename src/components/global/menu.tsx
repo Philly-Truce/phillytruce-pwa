@@ -176,7 +176,7 @@ export default function Menu({ hasOverflow }: { hasOverflow: boolean }) {
                     <div
                       id="notification-badge"
                       className={`absolute w-4 h-4 top-0 left-8 rounded-full ${
-                        (href === "/mock-reports" && unreadReportsCount > 0) ||
+                        ((href === "/mock-reports" && unreadReportsCount > 0) || (href === "/reports")) ||
                         (href === "/messages" && unreadChatsCount > 0)
                           ? "bg-[#F6893C]"
                           : "invisible"

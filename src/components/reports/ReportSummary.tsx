@@ -13,7 +13,6 @@ export const ReportSummary: React.FC<{
 }> = ({ report, onClick, clickedReports }) => {
   const { unreadReports } = useContext(NotificationContext);
 
-  console.log(unreadReports);
   return (
     <div
       key={report.id}
