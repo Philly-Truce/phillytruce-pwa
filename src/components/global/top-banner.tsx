@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Image from 'next/image'
 
 const pageTitles: Record<string, string> = {
@@ -47,6 +47,7 @@ const ReportIcon = () => (
 
 export default function TopBanner() {
   const pathname = usePathname();
+  const query = useSearchParams()
 
   if (["/login", "/login-otp", "/more"].includes(pathname)) return null;
 
@@ -108,12 +109,22 @@ export default function TopBanner() {
     if(pathname.startsWith("/reports/") || pathname.startsWith("/reports-view")) {
      return (
       <div id="report-icon-wrapper" className="flex flex-row justify-center items-center">
-        <Link href="/edit" className="h-12 w-12 p-3 flex flex-col items-center justify-center"  title="Edit report">
+        <button 
+          className="disabled:opacity-50 h-12 w-12 p-3 flex flex-col items-center justify-center" 
+          title="Edit report" 
+          disabled={query.get('report_stage') === 'unclaimed'} 
+          onClick={() => window.location.href = "/edit"} // Redirect to edit
+        >
           <Image src='/icons/edit.svg' width={48} height={48} alt="Edit icon" />
-        </Link>
-        <Link href="/messages" className="h-12 w-12 p-3 flex flex-col items-center justify-center" title="Go to messages for this report">
+        </button>
+        <button 
+          className="disabled:opacity-50 h-12 w-12 p-3 flex flex-col items-center justify-center" 
+          title="Go to messages for this report" 
+          disabled={query.get('report_stage') === 'unclaimed'} 
+          onClick={() => window.location.href = "/messages"} // Redirect to messages
+        >
           <Image src='/icons/message.svg' width={48} height={48} alt="Message Icon" />
-        </Link>
+        </button>
       </div>
      )
     }
