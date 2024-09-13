@@ -8,16 +8,25 @@ import axios from "axios";
  * @param incidentReportNumber the report number.
  * @returns report details in JS object format
  */
-const fetchReportByReportNumber = async (incidentReportNumber: string) => {
-  const report = await axios.get(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-report?incident_report_number=${Number.parseInt(
-      incidentReportNumber
-    )}`
-  );
-  if (report.status === 404) {
-    throw new Response("Not Found", { status: 404 });
+export const fetchReportByReportNumber = async (incidentReportNumber: string) => {
+
+  console.log("getting report #"+ incidentReportNumber)
+  console.log(typeof incidentReportNumber)
+  try {
+    const report = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-report?incident_report_number=${Number.parseInt(
+        incidentReportNumber
+      )}`
+    );
+    
+    if (report.status === 404) {
+      throw new Response("Not Found", { status: 404 });
+    }
+    return report.data;
+  } catch (error) {
+    // Handle error (e.g., log it or rethrow)
+    throw new Error("Error fetching report");
   }
-  return report.data;
 };
 
 /**

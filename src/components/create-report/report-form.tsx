@@ -72,10 +72,10 @@ const ReportForm: React.FC<Report> = ({ report }) => {
 
           <DetailField
             date={
-              report && report.report_initiated_at.toISOString().split("T")[0]
+              report && report.report_initiated_at
             }
             time={
-              report && report.report_initiated_at.toTimeString().split(" ")[0]
+              report && report.report_initiated_at
             }
           />
 

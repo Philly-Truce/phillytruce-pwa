@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Image from 'next/image'
 
 const pageTitles: Record<string, string> = {
@@ -48,6 +48,8 @@ const ReportIcon = () => (
 export default function TopBanner() {
   const pathname = usePathname();
   const query = useSearchParams()
+  const params = useParams();
+
 
   if (["/login", "/login-otp", "/more"].includes(pathname)) return null;
 
@@ -113,7 +115,7 @@ export default function TopBanner() {
           className="disabled:opacity-50 h-12 w-12 p-3 flex flex-col items-center justify-center" 
           title="Edit report" 
           disabled={query.get('report_stage') === 'unclaimed'} 
-          onClick={() => window.location.href = "/edit"} // Redirect to edit
+          onClick={() => window.location.href = `/edit?incident_report_number=${params?.incident_report_number}`} // Redirect to edit
         >
           <Image src='/icons/edit.svg' width={48} height={48} alt="Edit icon" />
         </button>
