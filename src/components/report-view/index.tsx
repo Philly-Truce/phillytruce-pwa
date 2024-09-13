@@ -78,11 +78,8 @@ const reportStatusState = (statusType: string): StatusConfiguration | null => {
  * @returns
  */
 const ReportView: React.FC<any> = ({
-  initialReport,
-  onStatusUpdate,
-}: {
+  initialReport}: {
   initialReport: Report;
-  onStatusUpdate: () => void;
 }) => {
   const [report, setReport] = useState<Report>(initialReport);
 
@@ -94,8 +91,8 @@ const ReportView: React.FC<any> = ({
   const buttonBaseClasses =
     "uppercase border-accent rounded-2xl px-6 py-2 shadow-2xl w-full text-center";
 
-  const handleStatusUpdate = async () => {
-    const response = await axios.post(`/api/update-report-status`, {
+  const handleStageUpdate = async () => {
+    const response = await axios.post(`/api/update-report-stage`, {
       incident_report_number: report.incident_report_number,
       report_stage: report.report_stage,
     });
@@ -248,7 +245,7 @@ const ReportView: React.FC<any> = ({
                     </DialogClose>
                     <DialogClose asChild>
                       <button
-                        onClick={handleStatusUpdate}
+                        onClick={handleStageUpdate}
                         className="text-primary font-medium"
                       >
                         Yes
