@@ -18,13 +18,17 @@ export async function POST(request: NextRequest) {
                 return report_stage; // No change if the stage is not recognized
         }
     }
+
+    const updatedStage = nextStage();
+
+    console.log(updatedStage)
     
     try {
         // Update current report to have the next report stage
         const updatedReport = await prisma.report.update({ 
             where: { incident_report_number: incident_report_number },
             data: { 
-                report_stage: nextStage(),
+                report_stage: updatedStage
             }
         });
 
