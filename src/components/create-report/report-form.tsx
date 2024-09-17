@@ -17,8 +17,8 @@ type ReportData = {
   location: string;
   report_last_updated_at: Date;
   ppd_notified: boolean;
-  date: String;
-  time: String;
+  date: string;
+  time: string;
 };
 
 type Report = {
@@ -38,11 +38,11 @@ const ReportForm: React.FC<Report> = ({ report }) => {
       ppd_notified: report.ppd_notified || false,
     },
   });
-
+ console.log(report.report_initiated_at.toLocaleDateString())
   const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
     try {
       if (!Array.isArray(data.incident_type)) {
-        data.incident_type = data.incident_type.split(",");
+        data.incident_type = (data.incident_type as string).split(",");
       }
       if (report.incident_report_number) {
         console.log(data);
@@ -86,10 +86,10 @@ const ReportForm: React.FC<Report> = ({ report }) => {
 
           <DetailField
             date={
-              report && report.report_initiated_at
+              report && report.report_initiated_at.toLocaleDateString()
             }
             time={
-              report && report.report_initiated_at
+              report && report.report_initiated_at.toLocaleTimeString()
             }
           />
 
