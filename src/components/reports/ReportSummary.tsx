@@ -13,7 +13,6 @@ export const ReportSummary: React.FC<{
 }> = ({ report, onClick, clickedReports }) => {
   const { unreadReports } = useContext(NotificationContext);
 
-  console.log(unreadReports);
   return (
     <div
       key={report.id}
@@ -41,7 +40,9 @@ export const ReportSummary: React.FC<{
           </p>
         </div>
         {report.incident_report_number ? (
-          <Link href={`/reports/${report.incident_report_number}`}>
+          <Link href={{ 
+            pathname: `/reports/${report.incident_report_number}`, 
+          query: { report_stage: report?.report_stage}}}>
             <button className="flex gap-5 items-center">
               <p className="font-bold text-sm">View Report</p>
               <SlArrowRight />

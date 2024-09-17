@@ -21,7 +21,6 @@ export default function ReportList({
 }: {
   reports: ReportSummaryType[];
 }) {
-  console.log("Reports received in ReportList:", reports);
   const { unreadReports } = useContext(NotificationContext);
   const [clickedReports, setClickedReports] = useState<string[]>([]);
 
