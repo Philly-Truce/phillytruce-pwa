@@ -1,20 +1,23 @@
 import ReportForm from "@/components/create-report/report-form";
-import axios from "axios";
+import { fetchReportByReportNumber } from "../reports/[incident_report_number]/page";
 
-const report = {
-  incident_report_number:5009,
-  report_origin:"user_created",
-  report_initiated_at:new Date("2024-08-12T21:30:00.000+00:00"),
-  report_stage: "claimed",
-  incident_type:['Fight','Bullying'],
-  description:"Witnessed a theft and vandalism incident at the corner store.",
-  location:"123 Main St, Philadelphia, PA 19019",
-  report_last_updated_at:new Date("2024-08-12T22:29:56.203+00:00"),
-  ppd_notified:true
+const initialReport = {
+  incident_report_number: 0,
+  report_origin: "",
+  report_initiated_at: new Date(),
+  report_stage: "",
+  incident_type: [],
+  description: "",
+  location: "",
+  report_last_updated_at: new Date(),
+  ppd_notified: false
 };
 
 
-export default function EditReport() {
+export default async function EditReport({ searchParams } : { searchParams: { incident_report_number: string }}) {
+
+  const report = await fetchReportByReportNumber(searchParams?.incident_report_number) || initialReport;
+
   return (
     <div className="w-full">
       <ReportForm report={report} />
