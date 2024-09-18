@@ -41,7 +41,6 @@ const ReportForm: React.FC<Report> = ({ report }) => {
   });
   const router = useRouter();
   const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
-    console.log(data);
     try {
       if (!Array.isArray(data.incident_type)) {
         data.incident_type = (data.incident_type as string).split(",");
@@ -51,8 +50,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/update-report`,
           data
         );
-        console.log(res);
-       
+
         if (res.status === 201) {
           router.push(`/reports/${res.data.report.incident_report_number}`);
         }
@@ -61,7 +59,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/create-report`,
           data
         );
-        console.log(res);
+
         if (res.status === 201) {
           router.push(`/reports/${res.data.report.incident_report_number}`);
         }
