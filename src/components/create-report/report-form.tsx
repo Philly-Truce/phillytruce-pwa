@@ -6,6 +6,7 @@ import Continue from "./continue-modal";
 import Link from "next/link";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import axios, { AxiosResponse } from "axios";
+import { useRouter } from "next/navigation";
 
 type ReportData = {
   incident_report_number: number;
@@ -38,26 +39,30 @@ const ReportForm: React.FC<Report> = ({ report }) => {
       ppd_notified: report.ppd_notified || false,
     },
   });
- console.log(report.report_initiated_at.toLocaleDateString())
+  const router = useRouter();
   const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
     try {
       if (!Array.isArray(data.incident_type)) {
         data.incident_type = (data.incident_type as string).split(",");
       }
       if (report.incident_report_number) {
-        console.log(data);
         const res: AxiosResponse<Report> = await axios.put<Report>(
-          `http://localhost:3000/api/update-report`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/update-report`,
           data
         );
-        console.log(res);
+
+        if (res.status === 201) {
+          router.push(`/reports/${res.data.report.incident_report_number}`);
+        }
       } else {
-        console.log(data);
         const res: AxiosResponse<Report> = await axios.post<Report>(
-          `http://localhost:3000/api/create-report`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/create-report`,
           data
         );
-        console.log(res);
+
+        if (res.status === 201) {
+          router.push(`/reports/${res.data.report.incident_report_number}`);
+        }
       }
 
       methods.reset();
@@ -85,12 +90,8 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           <h4 className="text-primary font-bold text-md py-2">Details</h4>
 
           <DetailField
-            date={
-              report && report.report_initiated_at.toLocaleDateString()
-            }
-            time={
-              report && report.report_initiated_at.toLocaleTimeString()
-            }
+            date={report && report.report_initiated_at.toLocaleDateString()}
+            time={report && report.report_initiated_at.toLocaleTimeString()}
           />
 
           {/* <h4 className="text-primary font-bold text-md py-2">
