@@ -13,6 +13,7 @@ const initialReport = {
   ppd_notified: false
 };
 
+
 export default async function EditReport({ searchParams } : { searchParams: { incident_report_number: string }}) {
 
   const report = await fetchReportByReportNumber(searchParams?.incident_report_number) || initialReport;

@@ -1,4 +1,3 @@
-
 import flagIcon from "../../assets/create-form-image/flagIcon.svg";
 import dropdownIcon from "../../assets/create-form-image/dropdownIcon.svg";
 import Image from "next/image";
@@ -15,7 +14,7 @@ const OverviewField: React.FC<ReportData> = ({ incident_type }) => {
     formState: { errors },
     setValue,
     trigger,
-    getValues
+    getValues,
   } = useFormContext<ReportData>();
   const [selectedOptions, setSelectedOptions] = useState<string[]>(
     incident_type ? incident_type : []
@@ -48,11 +47,7 @@ const OverviewField: React.FC<ReportData> = ({ incident_type }) => {
     setShowIncident(!showIncident);
   };
 
-  useEffect(() => {
-    setValue("incident_type", selectedOptions);
-    trigger("incident_type");
-  }, [selectedOptions, setValue, trigger]);
-
+  
   return (
     <>
       <fieldset className="border p-1 rounded-md border-black">
@@ -64,19 +59,19 @@ const OverviewField: React.FC<ReportData> = ({ incident_type }) => {
               type="text"
               placeholder="Select"
               value={selectedOptions}
-              className="w-full bg-white"
-              {...register("incident_type", { 
-                validate: () =>(getValues('incident_type')?.length>0) ||
-                  "Please select atleast one incident option",
+              className="w-full bg-white focus:outline-none"
+              {...register("incident_type", {
+                required:true
+                // validate: (value) =>
+                  // value.length > 1 ||"Please select atleast one incident option"
               })}
               readOnly
             />
 
-            <Image src={dropdownIcon} alt="dropdown Icon"/>
+            <Image src={dropdownIcon} alt="dropdown Icon" />
           </div>
         </button>
       </fieldset>
-      
       {showIncident && (
         <div className="w-full flex flex-col bg-gray-100 px-8 py-4 gap-3 rounded-lg shadow-md">
           <small>Select all that apply</small>
