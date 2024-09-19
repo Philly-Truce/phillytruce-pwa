@@ -9,8 +9,8 @@ import DatePicker from "./date-picker";
 import { useFormContext } from "react-hook-form";
 
 type DetailFieldData = {
-  date: string | undefined;
-  time: string | undefined;
+  date: Date | undefined;
+  time: Date | undefined;
 };
 
 type ReportData = {
@@ -86,6 +86,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
   const todayDate = getCurrentDate();
   const todayTime = getCurrentTime(); 
 
+
   return (
     <>
       <fieldset className="border p-1 rounded-md border-black">
@@ -145,8 +146,8 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
               {time ? (
                 <input
                   type="text"
-                  value={time}
-                  className="block w-1/2 appearance-none bg-white placeholder:text-black"
+                  value={new Date(time).toLocaleTimeString()}
+                  className="block w-1/2 focus:outline-none bg-white placeholder:text-black"
             
                 />
               ) : (
