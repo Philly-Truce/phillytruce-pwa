@@ -1,3 +1,7 @@
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
+import SessionControl from "@/components/auth/session-control";
 import ListItems from "../../data/list-items.json";
 import Image from "next/image";
 import Thumbnail from "./list-thumbnail.png";
@@ -5,7 +9,9 @@ import { GoTriangleRight } from "react-icons/go";
 import "./clock-in";
 import ClockIn from "./clock-in";
 
-export default function Home() {
+export default async function Home() {
+
+  const session = await SessionControl();
   const date = new Date();
   const day = date.getDate();
   const months = [
@@ -25,6 +31,7 @@ export default function Home() {
   const month = months[date.getMonth()];
   const year = date.getFullYear();
   const currentDate = month + " " + day + ", " + year;
+
   return (
     <div className="w-full px-4">
       <header className="space-y-1 mt-20 mb-4">
