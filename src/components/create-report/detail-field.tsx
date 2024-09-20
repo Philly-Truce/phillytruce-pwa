@@ -9,8 +9,8 @@ import DatePicker from "./date-picker";
 import { useFormContext } from "react-hook-form";
 
 type DetailFieldData = {
-  date: string | undefined;
-  time: string | undefined;
+  date: Date | undefined;
+  time: Date | undefined;
 };
 
 type ReportData = {
@@ -86,6 +86,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
   const todayDate = getCurrentDate();
   const todayTime = getCurrentTime(); 
 
+
   return (
     <>
       <fieldset className="border p-1 rounded-md border-black">
@@ -96,7 +97,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
             <input
               type="text"
               placeholder="Where did this take Place?"
-              className="block w-full p-1 appearance-none bg-white"
+              className="block w-full p-1 focus:outline-none bg-white"
               {...register("location", { required: true })}
             />
 
@@ -145,8 +146,8 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
               {time ? (
                 <input
                   type="text"
-                  value={time}
-                  className="block w-1/2 appearance-none bg-white placeholder:text-black"
+                  value={new Date(time).toLocaleTimeString()}
+                  className="block w-1/2 focus:outline-none bg-white placeholder:text-black"
             
                 />
               ) : (
@@ -163,7 +164,7 @@ const DetailField: React.FC<DetailFieldData> = ({ date, time }) => {
             <Image src={descriptionIcon} alt="Description Icon" />
             <textarea
               placeholder="Please describe/explain what happened in detail."
-              className="block w-full px-4"
+              className="block w-full px-4 focus:outline-none"
               {...register("description", {
                 required: "Incident Description is Required",
               })}

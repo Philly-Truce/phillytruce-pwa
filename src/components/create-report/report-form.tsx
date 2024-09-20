@@ -6,6 +6,7 @@ import Continue from "./continue-modal";
 import Link from "next/link";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import axios, { AxiosResponse } from "axios";
+import { useRouter } from "next/navigation";
 
 type ReportData = {
   incident_report_number: number;
@@ -17,8 +18,8 @@ type ReportData = {
   location: string;
   report_last_updated_at: Date;
   ppd_notified: boolean;
-  date: String;
-  time: String;
+  date: string;
+  time: string;
 };
 
 type Report = {
@@ -30,6 +31,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
     mode: "onChange",
     reValidateMode: "onChange",
     defaultValues: {
+      incident_report_number: report.incident_report_number || undefined,
       location: report.location || "",
       description: report.description || "",
       incident_type: report.incident_type || [],
@@ -37,14 +39,31 @@ const ReportForm: React.FC<Report> = ({ report }) => {
       ppd_notified: report.ppd_notified || false,
     },
   });
-
+  const router = useRouter();
   const handleCreateForm: SubmitHandler<ReportData> = async (data) => {
     try {
-      const res: AxiosResponse<Report> = await axios.post<Report>(
-        `http://localhost:3000/api/create-report`,
-        data
-      );
-      console.log(res);
+      if (!Array.isArray(data.incident_type)) {
+        data.incident_type = (data.incident_type as string).split(",");
+      }
+      if (report.incident_report_number) {
+        const res: AxiosResponse<Report> = await axios.put<Report>(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/update-report`,
+          data
+        );
+
+        if (res.status === 200) {
+          router.push(`/reports/${res.data.report.incident_report_number}`);
+        }
+      } else {
+        const res: AxiosResponse<Report> = await axios.post<Report>(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/create-report`,
+          data
+        );
+
+        if (res.status === 201) {
+          router.push(`/reports/${res.data.report.incident_report_number}`);
+        }
+      }
 
       methods.reset();
     } catch (error) {
@@ -71,12 +90,8 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           <h4 className="text-primary font-bold text-md py-2">Details</h4>
 
           <DetailField
-            date={
-              report && report.report_initiated_at.toISOString().split("T")[0]
-            }
-            time={
-              report && report.report_initiated_at.toTimeString().split(" ")[0]
-            }
+            date={report && report.report_initiated_at}
+            time={report && report.report_initiated_at}
           />
 
           {/* <h4 className="text-primary font-bold text-md py-2">
