@@ -11,6 +11,12 @@ Contributors:
 
 Philly Truce aims to use technology to reduce violent conflict in Philadelphia. Partnering with the Penn Injury Science Center's Safe Path Program, they are developing an incident-management platform based on the original Philly Truce app. This platform will provide a free, anonymous way for students, community members, and Safe Path personnel to report conflicts along school routes, preventing potentially deadly disputes. Mediators will also use the platform to resolve conflicts before they turn violent.
 
+![Philly Truce Violence](./src/assets/philly-issue.png)
+
+## Phase 3 Development Team contribution
+
+![Philly Truce Phase 3 Development Team Achievement](./src/assets/phase-3-achievement.mp4) Please watch the video from 32:00
+
 ## Local Setup
 
 1. Copy & paste the environment variables with one of the following commands:
