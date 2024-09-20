@@ -1,7 +1,7 @@
 import flagIcon from "../../assets/create-form-image/flagIcon.svg";
 import dropdownIcon from "../../assets/create-form-image/dropdownIcon.svg";
 import Image from "next/image";
-import { useState, MouseEvent, useEffect } from "react";
+import { useState, MouseEvent} from "react";
 import { useFormContext } from "react-hook-form";
 
 type ReportData = {
@@ -12,9 +12,6 @@ const OverviewField: React.FC<ReportData> = ({ incident_type }) => {
   const {
     register,
     formState: { errors },
-    setValue,
-    trigger,
-    getValues,
   } = useFormContext<ReportData>();
   const [selectedOptions, setSelectedOptions] = useState<string[]>(
     incident_type ? incident_type : []

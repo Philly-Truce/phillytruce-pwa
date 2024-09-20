@@ -51,7 +51,7 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           data
         );
 
-        if (res.status === 201) {
+        if (res.status === 200) {
           router.push(`/reports/${res.data.report.incident_report_number}`);
         }
       } else {
@@ -90,8 +90,8 @@ const ReportForm: React.FC<Report> = ({ report }) => {
           <h4 className="text-primary font-bold text-md py-2">Details</h4>
 
           <DetailField
-            date={report && report.report_initiated_at.toLocaleDateString()}
-            time={report && report.report_initiated_at.toLocaleTimeString()}
+            date={report && report.report_initiated_at}
+            time={report && report.report_initiated_at}
           />
 
           {/* <h4 className="text-primary font-bold text-md py-2">

@@ -17,14 +17,14 @@ export async function GET(request: NextRequest) {
       where: {
         incident_report_number: Number(incidentReportNumber),
       },
-      include: {
-        creator_user: {
-          select: {
-            name: true,
-            phone: true,
-          }
-        }
-      },
+      // include: {
+      //   creator_user: {
+      //     select: {
+      //       name: true,
+      //       phone: true,
+      //     }
+      //   }
+      // },
     });
 
     if (!foundReport) {
