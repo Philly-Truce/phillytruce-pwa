@@ -41,7 +41,6 @@ yarn dev # or npm run dev or pnpm run dev
 ## Tech Stack
 
 - Front-End
-
   - Next.js
   - TypeScript
   - Tailwind CSS
