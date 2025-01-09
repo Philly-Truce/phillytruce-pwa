@@ -5,7 +5,7 @@ We are the platform engineers who have gathered to build a platform called Phill
 Contributors:
 
 - The Lead: John Jang
-- The Apprentices: Karelle Hofler, Divya Praveen, Fuguo Xue, Sydney Burrell, Gaurav Varma
+- The Apprentices: Karelle Hofler, Divya Praveen, Fuguo Xue, Sydney Burrell, Gaurav Varma.
 
 ## Background
 
